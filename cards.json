@@ -1663,8 +1663,8 @@
     },
     "LETTER-A": {
       "id": "LETTER-A",
-      "text": "А",
-      "emoji": "🅰️",
+      "text": "А - Аист",
+      "emoji": "🦢",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -1677,9 +1677,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1688,8 +1688,8 @@
     },
     "LETTER-B": {
       "id": "LETTER-B",
-      "text": "Б",
-      "emoji": "🅱️",
+      "text": "Б - Бабочка",
+      "emoji": "🦋",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -1702,9 +1702,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1713,8 +1713,8 @@
     },
     "LETTER-V": {
       "id": "LETTER-V",
-      "text": "В",
-      "emoji": "📖",
+      "text": "В - Воробей",
+      "emoji": "🐦",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -1727,9 +1727,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1738,8 +1738,8 @@
     },
     "LETTER-G": {
       "id": "LETTER-G",
-      "text": "Г",
-      "emoji": "🎮",
+      "text": "Г - Гриб",
+      "emoji": "🍄",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -1752,9 +1752,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1763,7 +1763,7 @@
     },
     "LETTER-D": {
       "id": "LETTER-D",
-      "text": "Д",
+      "text": "Д - Дом",
       "emoji": "🏠",
       "type": "letter",
       "category": "CAT-LETTERS",
@@ -1777,9 +1777,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1788,8 +1788,8 @@
     },
     "LETTER-E": {
       "id": "LETTER-E",
-      "text": "Е",
-      "emoji": "🍽️",
+      "text": "Е - Енот",
+      "emoji": "🦝",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -1802,9 +1802,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1813,7 +1813,7 @@
     },
     "LETTER-YO": {
       "id": "LETTER-YO",
-      "text": "Ё",
+      "text": "Ё - Ёлка",
       "emoji": "🎄",
       "type": "letter",
       "category": "CAT-LETTERS",
@@ -1827,9 +1827,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1838,8 +1838,8 @@
     },
     "LETTER-ZH": {
       "id": "LETTER-ZH",
-      "text": "Ж",
-      "emoji": "🕷️",
+      "text": "Ж - Жук",
+      "emoji": "🐞",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -1852,9 +1852,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1863,8 +1863,8 @@
     },
     "LETTER-Z": {
       "id": "LETTER-Z",
-      "text": "З",
-      "emoji": "🦷",
+      "text": "З - Заяц",
+      "emoji": "🐇",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -1877,9 +1877,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1888,8 +1888,8 @@
     },
     "LETTER-I": {
       "id": "LETTER-I",
-      "text": "И",
-      "emoji": "👨‍👩‍👧‍👦",
+      "text": "И - Игрушка",
+      "emoji": "🧸",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -1902,9 +1902,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1913,7 +1913,7 @@
     },
     "LETTER-K": {
       "id": "LETTER-K",
-      "text": "К",
+      "text": "К - Кот",
       "emoji": "🐱",
       "type": "letter",
       "category": "CAT-LETTERS",
@@ -1927,9 +1927,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1938,7 +1938,7 @@
     },
     "LETTER-L": {
       "id": "LETTER-L",
-      "text": "Л",
+      "text": "Л - Лев",
       "emoji": "🦁",
       "type": "letter",
       "category": "CAT-LETTERS",
@@ -1952,9 +1952,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1963,8 +1963,8 @@
     },
     "LETTER-M": {
       "id": "LETTER-M",
-      "text": "М",
-      "emoji": "🐭",
+      "text": "М - Медведь",
+      "emoji": "🐻",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -1977,9 +1977,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -1988,8 +1988,8 @@
     },
     "LETTER-N": {
       "id": "LETTER-N",
-      "text": "Н",
-      "emoji": "👃",
+      "text": "Н - Носорог",
+      "emoji": "🦏",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2002,9 +2002,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2013,8 +2013,8 @@
     },
     "LETTER-O": {
       "id": "LETTER-O",
-      "text": "О",
-      "emoji": "🦉",
+      "text": "О - Обезьяна",
+      "emoji": "🐵",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2027,9 +2027,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2038,7 +2038,7 @@
     },
     "LETTER-P": {
       "id": "LETTER-P",
-      "text": "П",
+      "text": "П - Пингвин",
       "emoji": "🐧",
       "type": "letter",
       "category": "CAT-LETTERS",
@@ -2052,9 +2052,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2063,8 +2063,8 @@
     },
     "LETTER-R": {
       "id": "LETTER-R",
-      "text": "Р",
-      "emoji": "🌹",
+      "text": "Р - Рыба",
+      "emoji": "🐠",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2077,9 +2077,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2088,8 +2088,8 @@
     },
     "LETTER-S": {
       "id": "LETTER-S",
-      "text": "С",
-      "emoji": "☀️",
+      "text": "С - Слон",
+      "emoji": "🐘",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2102,9 +2102,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2113,8 +2113,8 @@
     },
     "LETTER-T": {
       "id": "LETTER-T",
-      "text": "Т",
-      "emoji": "🌳",
+      "text": "Т - Тигр",
+      "emoji": "🐯",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2127,9 +2127,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2138,7 +2138,7 @@
     },
     "LETTER-U": {
       "id": "LETTER-U",
-      "text": "У",
+      "text": "У - Улитка",
       "emoji": "🐌",
       "type": "letter",
       "category": "CAT-LETTERS",
@@ -2152,9 +2152,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2163,8 +2163,8 @@
     },
     "LETTER-F": {
       "id": "LETTER-F",
-      "text": "Ф",
-      "emoji": "🦊",
+      "text": "Ф - Филин",
+      "emoji": "🦉",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2177,9 +2177,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2188,8 +2188,8 @@
     },
     "LETTER-H": {
       "id": "LETTER-H",
-      "text": "Х",
-      "emoji": "🏠",
+      "text": "Х - Хомяк",
+      "emoji": "🐹",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2202,9 +2202,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2213,8 +2213,8 @@
     },
     "LETTER-TS": {
       "id": "LETTER-TS",
-      "text": "Ц",
-      "emoji": "👑",
+      "text": "Ц - Цапля",
+      "emoji": "🦩",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2227,9 +2227,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2238,8 +2238,8 @@
     },
     "LETTER-CH": {
       "id": "LETTER-CH",
-      "text": "Ч",
-      "emoji": "☕",
+      "text": "Ч - Черепаха",
+      "emoji": "🐢",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2252,9 +2252,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2263,8 +2263,8 @@
     },
     "LETTER-SH": {
       "id": "LETTER-SH",
-      "text": "Ш",
-      "emoji": "🎓",
+      "text": "Ш - Шарик",
+      "emoji": "🎈",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2277,9 +2277,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2288,8 +2288,8 @@
     },
     "LETTER-SHCH": {
       "id": "LETTER-SHCH",
-      "text": "Щ",
-      "emoji": "🦔",
+      "text": "Щ - Щенок",
+      "emoji": "🐶",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2302,9 +2302,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2313,8 +2313,8 @@
     },
     "LETTER-HARD": {
       "id": "LETTER-HARD",
-      "text": "Ъ",
-      "emoji": "💪",
+      "text": "Ъ - Твердый знак",
+      "emoji": "🪨",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2327,9 +2327,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2338,8 +2338,8 @@
     },
     "LETTER-Y": {
       "id": "LETTER-Y",
-      "text": "Ы",
-      "emoji": "🧀",
+      "text": "Й - Йогурт",
+      "emoji": "🥛",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2348,13 +2348,13 @@
         "обучение",
         "алфавит"
       ],
-      "difficulty": 3,
+      "difficulty": 2,
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2363,8 +2363,8 @@
     },
     "LETTER-SOFT": {
       "id": "LETTER-SOFT",
-      "text": "Ь",
-      "emoji": "🕊️",
+      "text": "Ь - Мягкий знак",
+      "emoji": "☁️",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2377,9 +2377,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2388,8 +2388,8 @@
     },
     "LETTER-E2": {
       "id": "LETTER-E2",
-      "text": "Э",
-      "emoji": "🔌",
+      "text": "Э - Экскаватор",
+      "emoji": "🚜",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2402,9 +2402,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2413,8 +2413,8 @@
     },
     "LETTER-YU": {
       "id": "LETTER-YU",
-      "text": "Ю",
-      "emoji": "🧒",
+      "text": "Ю - Юла",
+      "emoji": "🪀",
       "type": "letter",
       "category": "CAT-LETTERS",
       "forms": {},
@@ -2427,9 +2427,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
@@ -2438,7 +2438,7 @@
     },
     "LETTER-YA": {
       "id": "LETTER-YA",
-      "text": "Я",
+      "text": "Я - Яблоко",
       "emoji": "🍎",
       "type": "letter",
       "category": "CAT-LETTERS",
@@ -2452,9 +2452,9 @@
       "status": "active",
       "usageCount": 0,
       "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:47:57.989Z",
       "author": "user",
-      "version": 1,
+      "version": 2,
       "color": "#D6FFE7",
       "sections": [
         "Обучение"
