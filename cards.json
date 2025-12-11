@@ -1,32 +1,120 @@
 {
   "cards": {
-    "CAT-GAMES": {
-      "id": "CAT-GAMES",
-      "text": "Играть",
-      "emoji": "🎲",
+    "CAT-PEOPLE": {
+      "id": "CAT-PEOPLE",
+      "text": "Люди",
+      "emoji": "👥",
       "type": "category",
       "category": null,
       "forms": {},
       "tags": [
         "категория",
-        "игры",
-        "играть"
+        "люди"
       ],
       "difficulty": 1,
       "status": "active",
-      "usageCount": 125,
-      "created": "2025-11-28T11:42:07.593Z",
-      "modified": "2025-12-10T14:11:26.842Z",
+      "usageCount": 98,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
       "author": "user",
-      "version": 2,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
+      "version": 1,
+      "color": "#E3F2FD",
+      "borderColor": "#2196F3",
       "sections": [
         "Главная"
       ],
       "metadata": {
-        "isCategory": true,
-        "description": "Игры, игрушки и игровые действия"
+        "allowedWith": [
+          "people",
+          "places"
+        ],
+        "allowedObjects": [],
+        "maxPeople": 2,
+        "maxPets": 0,
+        "maxPlaces": 1,
+        "maxObjects": 0,
+        "description": "Люди для совместной деятельности",
+        "metadataVersion": 1
+      }
+    },
+    "FOOD-APPLE": {
+      "id": "FOOD-APPLE",
+      "text": "Яблоко",
+      "emoji": "🍎",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "with": "с яблоком",
+        "in": "в яблоке",
+        "accusative": "яблоко"
+      },
+      "tags": [
+        "еда",
+        "фрукт",
+        "еда-фрукты"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 45,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "user",
+      "version": 1,
+      "color": "#FFEBEE",
+      "borderColor": "#F44336",
+      "sections": [
+        "Главная",
+        "Обучение"
+      ],
+      "metadata": {
+        "allowedWith": [],
+        "allowedObjects": [],
+        "maxPeople": 0,
+        "maxPets": 0,
+        "maxPlaces": 0,
+        "maxObjects": 0,
+        "description": "Съедобный фрукт",
+        "metadataVersion": 1
+      }
+    },
+    "FOOD-BANANA": {
+      "id": "FOOD-BANANA",
+      "text": "Банан",
+      "emoji": "🍌",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "with": "с бананом",
+        "in": "в банане",
+        "accusative": "банан"
+      },
+      "tags": [
+        "еда",
+        "фрукт",
+        "еда-фрукты"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 38,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "user",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная",
+        "Обучение"
+      ],
+      "metadata": {
+        "allowedWith": [],
+        "allowedObjects": [],
+        "maxPeople": 0,
+        "maxPets": 0,
+        "maxPlaces": 0,
+        "maxObjects": 0,
+        "description": "Съедобный фрукт",
+        "metadataVersion": 1
       }
     },
     "CAT-BOOKS": {
@@ -83,33 +171,6 @@
       "metadata": {
         "isCategory": true,
         "description": "Творческие занятия"
-      }
-    },
-    "CAT-PEOPLE": {
-      "id": "CAT-PEOPLE",
-      "text": "Люди",
-      "emoji": "👥",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": [
-        "категория",
-        "люди"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 98,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E3F2FD",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {
-        "isCategory": true,
-        "description": "Люди для совместной деятельности"
       }
     },
     "CAT-PETS": {
@@ -4968,168 +5029,6 @@
       ],
       "metadata": {}
     },
-    "GAME-CUBES": {
-      "id": "GAME-CUBES",
-      "text": "кубики",
-      "emoji": "🧊",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "in": "в кубики"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "кубики"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 45,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-BALL": {
-      "id": "GAME-BALL",
-      "text": "мяч",
-      "emoji": "⚽",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "in": "в мяч"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "мяч"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 40,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-DOLL": {
-      "id": "GAME-DOLL",
-      "text": "кукла",
-      "emoji": "🧸",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "in": "в куклы"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "кукла"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 32,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FCE4EC",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-CAR": {
-      "id": "GAME-CAR",
-      "text": "машинка",
-      "emoji": "🚗",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "in": "в машинки"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "машинка"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 38,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#E3F2FD",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-PUZZLE": {
-      "id": "GAME-PUZZLE",
-      "text": "пазл",
-      "emoji": "🧩",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "in": "в пазл"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "пазл"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 20,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-BLOCKS": {
-      "id": "GAME-BLOCKS",
-      "text": "конструктор",
-      "emoji": "🧱",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "accusative": "конструктор"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "конструктор"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 22,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
     "BOOK-STORY": {
       "id": "BOOK-STORY",
       "text": "книга",
@@ -5307,32 +5206,6 @@
       "author": "user",
       "version": 1,
       "color": "#F3E5F5",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "FOOD-APPLE": {
-      "id": "FOOD-APPLE",
-      "text": "яблоко",
-      "emoji": "🍎",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "accusative": "яблоко"
-      },
-      "tags": [
-        "еда",
-        "фрукт"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 35,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFEBEE",
       "sections": [
         "Главная"
       ],
@@ -7143,32 +7016,6 @@
         "maxPlaces": 1,
         "maxObjects": 1
       }
-    },
-    "FOOD-BANANA": {
-      "id": "FOOD-BANANA",
-      "text": "банан",
-      "emoji": "🍌",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "accusative": "банан"
-      },
-      "tags": [
-        "еда",
-        "фрукт"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:30:00.000Z",
-      "modified": "2025-12-10T07:30:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
     },
     "FOOD-PEAR": {
       "id": "FOOD-PEAR",
@@ -10122,247 +9969,6 @@
         "maxObjects": 0
       }
     },
-    "GAME-LEGO": {
-      "id": "GAME-LEGO",
-      "text": "лего",
-      "emoji": "🧱",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "accusative": "лего"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "конструктор"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T08:00:00.000Z",
-      "modified": "2025-12-10T08:00:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-TRAIN": {
-      "id": "GAME-TRAIN",
-      "text": "поезд",
-      "emoji": "🚂",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "accusative": "поезд"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "поезд"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T08:00:00.000Z",
-      "modified": "2025-12-10T08:00:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E3F2FD",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-ANIMALS": {
-      "id": "GAME-ANIMALS",
-      "text": "игрушечные животные",
-      "emoji": "🐘",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "accusative": "игрушечных животных"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "животные"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T08:00:00.000Z",
-      "modified": "2025-12-10T08:00:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-ROBOT": {
-      "id": "GAME-ROBOT",
-      "text": "робот",
-      "emoji": "🤖",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "accusative": "робота"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "робот"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T08:00:00.000Z",
-      "modified": "2025-12-10T08:00:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-FRISBEE": {
-      "id": "GAME-FRISBEE",
-      "text": "летающая тарелка",
-      "emoji": "🥏",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "accusative": "летающую тарелку"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "фрисби"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T08:00:00.000Z",
-      "modified": "2025-12-10T08:00:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E1F5FE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-SOFTBALL": {
-      "id": "GAME-SOFTBALL",
-      "text": "мягкий мяч",
-      "emoji": "🎾",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "accusative": "мягкий мяч"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "мяч"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T08:00:00.000Z",
-      "modified": "2025-12-10T08:00:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-BOWLING": {
-      "id": "GAME-BOWLING",
-      "text": "кегли",
-      "emoji": "🎳",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "accusative": "кегли"
-      },
-      "tags": [
-        "игрушка",
-        "игра",
-        "боулинг"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T08:00:00.000Z",
-      "modified": "2025-12-10T08:00:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-DOMINO": {
-      "id": "GAME-DOMINO",
-      "text": "домино",
-      "emoji": "🀄",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "accusative": "домино"
-      },
-      "tags": [
-        "игра",
-        "настольная игра"
-      ],
-      "difficulty": 3,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T08:00:00.000Z",
-      "modified": "2025-12-10T08:00:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "GAME-LOTTO": {
-      "id": "GAME-LOTTO",
-      "text": "лото",
-      "emoji": "🎴",
-      "type": "object",
-      "category": "CAT-GAMES",
-      "forms": {
-        "accusative": "лото"
-      },
-      "tags": [
-        "игра",
-        "настольная игра"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T08:00:00.000Z",
-      "modified": "2025-12-10T08:00:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
     "CAT-COLORS": {
       "id": "CAT-COLORS",
       "text": "Цвета",
@@ -10913,6 +10519,740 @@
       "borderColor": "#2196F3",
       "sections": [
         "Диалог"
+      ],
+      "metadata": {}
+    },
+    "CAT-GAMES": {
+      "id": "CAT-GAMES",
+      "text": "Игры",
+      "emoji": "🎮",
+      "type": "category",
+      "category": null,
+      "forms": {},
+      "tags": [
+        "категория",
+        "игры",
+        "развлечения"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 125,
+      "created": "2025-11-28T11:42:07.593Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "user",
+      "version": 1,
+      "color": "#E8F5E9",
+      "borderColor": "#4CAF50",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {
+        "isCategory": true,
+        "description": "Игры и игрушки для развлечения и развития"
+      }
+    },
+    "ACT-COLLECT": {
+      "id": "ACT-COLLECT",
+      "text": "собирать",
+      "emoji": "🧩",
+      "type": "action",
+      "category": "CAT-GAMES",
+      "forms": {},
+      "tags": [
+        "действие",
+        "пазл",
+        "конструктор"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {
+        "allowedWith": [
+          "people",
+          "places",
+          "objects"
+        ],
+        "allowedObjects": [
+          "GAME-PUZZLE",
+          "GAME-CONSTRUCTOR",
+          "GAME-LEGO",
+          "GAME-BLOCKS"
+        ],
+        "maxPeople": 2,
+        "maxPets": 0,
+        "maxPlaces": 1,
+        "maxObjects": 1
+      }
+    },
+    "GAME-CUBES": {
+      "id": "GAME-CUBES",
+      "text": "кубики",
+      "emoji": "🧊",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в кубики",
+        "accusative": "кубики",
+        "genitive": "кубиков",
+        "dative": "кубикам",
+        "instrumental": "кубиками",
+        "prepositional": "кубиках"
+      },
+      "tags": [
+        "игрушка",
+        "игра",
+        "строительство"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 45,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "user",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-BALL": {
+      "id": "GAME-BALL",
+      "text": "мяч",
+      "emoji": "⚽",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в мяч",
+        "accusative": "мяч",
+        "genitive": "мяча",
+        "dative": "мячу",
+        "instrumental": "мячом",
+        "prepositional": "мяче"
+      },
+      "tags": [
+        "игрушка",
+        "игра",
+        "спорт"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 40,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "user",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-CONSTRUCTOR": {
+      "id": "GAME-CONSTRUCTOR",
+      "text": "конструктор",
+      "emoji": "🧱",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в конструктор",
+        "accusative": "конструктор",
+        "genitive": "конструктора",
+        "dative": "конструктору",
+        "instrumental": "конструктором",
+        "prepositional": "конструкторе"
+      },
+      "tags": [
+        "игрушка",
+        "строительство",
+        "развитие"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-PUZZLE": {
+      "id": "GAME-PUZZLE",
+      "text": "пазл",
+      "emoji": "🧩",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в пазл",
+        "accusative": "пазл",
+        "genitive": "пазла",
+        "dative": "пазлу",
+        "instrumental": "пазлом",
+        "prepositional": "пазле"
+      },
+      "tags": [
+        "игра",
+        "головоломка",
+        "развитие"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-DOLL": {
+      "id": "GAME-DOLL",
+      "text": "кукла",
+      "emoji": "👸",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "with": "с куклой",
+        "accusative": "куклу",
+        "genitive": "куклы",
+        "dative": "кукле",
+        "instrumental": "куклой",
+        "prepositional": "кукле"
+      },
+      "tags": [
+        "игрушка",
+        "кукла",
+        "ролевая игра"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FCE4EC",
+      "borderColor": "#E91E63",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-CAR": {
+      "id": "GAME-CAR",
+      "text": "машинка",
+      "emoji": "🚗",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в машинки",
+        "with": "с машинкой",
+        "accusative": "машинку",
+        "genitive": "машинки",
+        "dative": "машинке",
+        "instrumental": "машинкой",
+        "prepositional": "машинке"
+      },
+      "tags": [
+        "игрушка",
+        "транспорт",
+        "игра"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E3F2FD",
+      "borderColor": "#2196F3",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-TEDDY": {
+      "id": "GAME-TEDDY",
+      "text": "мишка",
+      "emoji": "🧸",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "with": "с мишкой",
+        "accusative": "мишку",
+        "genitive": "мишки",
+        "dative": "мишке",
+        "instrumental": "мишкой",
+        "prepositional": "мишке"
+      },
+      "tags": [
+        "игрушка",
+        "плюшевый",
+        "друг"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-BOARD": {
+      "id": "GAME-BOARD",
+      "text": "настольная игра",
+      "emoji": "🎲",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в настольную игру",
+        "accusative": "настольную игру",
+        "genitive": "настольной игры",
+        "dative": "настольной игре",
+        "instrumental": "настольной игрой",
+        "prepositional": "настольной игре"
+      },
+      "tags": [
+        "игра",
+        "настольная",
+        "семейная"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-CARDS": {
+      "id": "GAME-CARDS",
+      "text": "карточки",
+      "emoji": "🃏",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в карточки",
+        "accusative": "карточки",
+        "genitive": "карточек",
+        "dative": "карточкам",
+        "instrumental": "карточками",
+        "prepositional": "карточках"
+      },
+      "tags": [
+        "игра",
+        "карты",
+        "развитие"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-ROCKING": {
+      "id": "GAME-ROCKING",
+      "text": "качалка",
+      "emoji": "🦄",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "on": "на качалке",
+        "accusative": "качалку",
+        "genitive": "качалки",
+        "dative": "качалке",
+        "instrumental": "качалкой",
+        "prepositional": "качалке"
+      },
+      "tags": [
+        "игрушка",
+        "качалка",
+        "активность"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#F3E5F5",
+      "borderColor": "#9C27B0",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-BUBBLES": {
+      "id": "GAME-BUBBLES",
+      "text": "пузыри",
+      "emoji": "🫧",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "with": "с пузырями",
+        "accusative": "пузыри",
+        "genitive": "пузырей",
+        "dative": "пузырям",
+        "instrumental": "пузырями",
+        "prepositional": "пузырях"
+      },
+      "tags": [
+        "игра",
+        "пузыри",
+        "улица"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E3F2FD",
+      "borderColor": "#2196F3",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-SAND": {
+      "id": "GAME-SAND",
+      "text": "песочница",
+      "emoji": "🏖️",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в песочнице",
+        "accusative": "песочницу",
+        "genitive": "песочницы",
+        "dative": "песочнице",
+        "instrumental": "песочницей",
+        "prepositional": "песочнице"
+      },
+      "tags": [
+        "игра",
+        "песок",
+        "улица"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-LEGO": {
+      "id": "GAME-LEGO",
+      "text": "лего",
+      "emoji": "🧱",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в лего",
+        "with": "из лего",
+        "accusative": "лего",
+        "genitive": "лего",
+        "dative": "лего",
+        "instrumental": "лего",
+        "prepositional": "лего"
+      },
+      "tags": [
+        "конструктор",
+        "строительство",
+        "развитие"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-TRAIN": {
+      "id": "GAME-TRAIN",
+      "text": "поезд",
+      "emoji": "🚂",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в поезд",
+        "with": "с поездом",
+        "accusative": "поезд",
+        "genitive": "поезда",
+        "dative": "поезду",
+        "instrumental": "поездом",
+        "prepositional": "поезде"
+      },
+      "tags": [
+        "игрушка",
+        "транспорт",
+        "поезд"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E3F2FD",
+      "borderColor": "#2196F3",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-DINOSAUR": {
+      "id": "GAME-DINOSAUR",
+      "text": "динозавр",
+      "emoji": "🦕",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "with": "с динозавром",
+        "accusative": "динозавра",
+        "genitive": "динозавра",
+        "dative": "динозавру",
+        "instrumental": "динозавром",
+        "prepositional": "динозавре"
+      },
+      "tags": [
+        "игрушка",
+        "динозавр",
+        "животные"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E8F5E9",
+      "borderColor": "#4CAF50",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-ROBOT": {
+      "id": "GAME-ROBOT",
+      "text": "робот",
+      "emoji": "🤖",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "with": "с роботом",
+        "accusative": "робота",
+        "genitive": "робота",
+        "dative": "роботу",
+        "instrumental": "роботом",
+        "prepositional": "роботе"
+      },
+      "tags": [
+        "игрушка",
+        "робот",
+        "техника"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FCE4EC",
+      "borderColor": "#E91E63",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-MUSIC": {
+      "id": "GAME-MUSIC",
+      "text": "музыкальные игрушки",
+      "emoji": "🎵",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "with": "с музыкальными игрушками",
+        "accusative": "музыкальные игрушки",
+        "genitive": "музыкальных игрушек",
+        "dative": "музыкальным игрушкам",
+        "instrumental": "музыкальными игрушками",
+        "prepositional": "музыкальных игрушках"
+      },
+      "tags": [
+        "игрушка",
+        "музыка",
+        "развитие"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#F3E5F5",
+      "borderColor": "#9C27B0",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-DRAW": {
+      "id": "GAME-DRAW",
+      "text": "рисование",
+      "emoji": "🎨",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "in": "в рисование",
+        "accusative": "рисование",
+        "genitive": "рисования",
+        "dative": "рисованию",
+        "instrumental": "рисованием",
+        "prepositional": "рисовании"
+      },
+      "tags": [
+        "игра",
+        "творчество",
+        "рисование"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FCE4EC",
+      "borderColor": "#E91E63",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-PLAYDOUGH": {
+      "id": "GAME-PLAYDOUGH",
+      "text": "пластилин",
+      "emoji": "🟡",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "with": "из пластилина",
+        "accusative": "пластилин",
+        "genitive": "пластилина",
+        "dative": "пластилину",
+        "instrumental": "пластилином",
+        "prepositional": "пластилине"
+      },
+      "tags": [
+        "игра",
+        "творчество",
+        "лепка"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "GAME-BLOCKS": {
+      "id": "GAME-BLOCKS",
+      "text": "строительные блоки",
+      "emoji": "🧱",
+      "type": "object",
+      "category": "CAT-GAMES",
+      "forms": {
+        "with": "из строительных блоков",
+        "accusative": "строительные блоки",
+        "genitive": "строительных блоков",
+        "dative": "строительным блокам",
+        "instrumental": "строительными блоками",
+        "prepositional": "строительных блоках"
+      },
+      "tags": [
+        "строительство",
+        "блоки",
+        "развитие"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-11-28T11:42:07.594Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": [
+        "Главная"
       ],
       "metadata": {}
     }
