@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ком-Ком: Коммуникатор для детей с РАС</title>
   <style>
-    /* Основные стили */
+    /* Основные стили (остаются без изменений) */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -1251,6 +1251,178 @@
     let currentDay = 'monday';
     let currentEmojiEdit = null;
 
+    // Грамматическая система
+    class GrammarSystem {
+      constructor() {
+        this.caseRules = {
+          'accusative': { question: 'кого? что?', preposition: null },
+          'genitive': { question: 'кого? чего?', preposition: null },
+          'dative': { question: 'кому? чему?', preposition: null },
+          'instrumental': { question: 'кем? чем?', preposition: null },
+          'prepositional': { question: 'о ком? о чем?', preposition: 'о' }
+        };
+        
+        this.prepositionRules = {
+          'with': { case: 'instrumental', defaultPreposition: 'с' },
+          'in': { case: 'prepositional', defaultPreposition: 'в' },
+          'on': { case: 'prepositional', defaultPreposition: 'на' },
+          'at': { case: 'prepositional', defaultPreposition: 'у' },
+          'about': { case: 'prepositional', defaultPreposition: 'о' }
+        };
+      }
+
+      // Получить правильную форму слова в зависимости от контекста
+      getWordForm(card, context) {
+        if (!card.forms) return card.text;
+        
+        const { case: requiredCase, preposition, contextType } = context;
+        
+        // Если есть готовая форма для конкретного контекста
+        if (contextType && card.forms[contextType]) {
+          return card.forms[contextType];
+        }
+        
+        // Если есть форма для нужного падежа
+        if (requiredCase && card.forms[requiredCase]) {
+          if (preposition && this.prepositionRules[preposition]) {
+            const prepRule = this.prepositionRules[preposition];
+            return `${prepRule.defaultPreposition} ${card.forms[requiredCase]}`;
+          }
+          return card.forms[requiredCase];
+        }
+        
+        // Если есть общая форма для предлога
+        if (preposition && card.forms[preposition]) {
+          return card.forms[preposition];
+        }
+        
+        // По умолчанию возвращаем базовую форму
+        return card.text;
+      }
+
+      // Определить нужный падеж для объекта в зависимости от действия
+      getObjectCaseForAction(action) {
+        if (!action || !action.forms) return 'accusative';
+        
+        // Определяем, какой предлог использует действие для объектов
+        const actionForms = action.forms;
+        
+        // Если действие требует предлога "в" (играть в)
+        if (actionForms.in) return 'accusative';
+        
+        // Если действие требует предлога "на" (играть на)
+        if (actionForms.on) return 'prepositional';
+        
+        // Если действие требует предлога "с" (играть с)
+        if (actionForms.with) return 'instrumental';
+        
+        // По умолчанию винительный падеж (есть яблоко)
+        return 'accusative';
+      }
+
+      // Получить предлог для объекта в зависимости от действия
+      getObjectPrepositionForAction(action) {
+        if (!action || !action.forms) return null;
+        
+        const actionForms = action.forms;
+        
+        if (actionForms.in) return 'in';
+        if (actionForms.on) return 'on';
+        if (actionForms.with) return 'with';
+        
+        return null;
+      }
+
+      // Сформировать фразу для человека
+      getPersonPhrase(person, isMultiple = false) {
+        if (person.forms && person.forms.with) {
+          return person.forms.with;
+        }
+        
+        if (person.forms && person.forms.instrumental) {
+          return `с ${person.forms.instrumental}`;
+        }
+        
+        return `с ${person.text}`;
+      }
+
+      // Сформировать фразу для места
+      getPlacePhrase(place) {
+        if (place.forms && place.forms.in) {
+          return place.forms.in;
+        }
+        
+        if (place.forms && place.forms.prepositional) {
+          return `в ${place.forms.prepositional}`;
+        }
+        
+        return `в ${place.text}`;
+      }
+
+      // Сформировать фразу для объекта
+      getObjectPhrase(object, action = null) {
+        if (!action) {
+          // Без действия - используем винительный падеж
+          if (object.forms && object.forms.accusative) {
+            return object.forms.accusative;
+          }
+          return object.text;
+        }
+        
+        const preposition = this.getObjectPrepositionForAction(action);
+        const requiredCase = this.getObjectCaseForAction(action);
+        
+        if (preposition) {
+          // Если есть специальная форма для этого предлога
+          if (object.forms && object.forms[preposition]) {
+            return object.forms[preposition];
+          }
+          
+          // Если есть форма для нужного падежа
+          if (object.forms && object.forms[requiredCase]) {
+            const prepRule = this.prepositionRules[preposition];
+            return `${prepRule.defaultPreposition} ${object.forms[requiredCase]}`;
+          }
+          
+          // По умолчанию с предлогом
+          const prepRule = this.prepositionRules[preposition];
+          return `${prepRule.defaultPreposition} ${object.text}`;
+        } else {
+          // Без предлога, только падеж
+          if (object.forms && object.forms[requiredCase]) {
+            return object.forms[requiredCase];
+          }
+          return object.text;
+        }
+      }
+
+      // Сформировать фразу для времени
+      getTimePhrase(time) {
+        if (time.forms && time.forms.genitive) {
+          return time.forms.genitive;
+        }
+        return time.text;
+      }
+
+      // Соединить однородные члены предложения
+      joinHomogeneous(items, conjunction = 'и') {
+        if (items.length === 0) return '';
+        if (items.length === 1) return items[0];
+        if (items.length === 2) return `${items[0]} ${conjunction} ${items[1]}`;
+        
+        const last = items.pop();
+        return `${items.join(', ')} ${conjunction} ${last}`;
+      }
+
+      // Проверить согласование числительных
+      checkNumericalAgreement(count, word) {
+        // Простая проверка для русских числительных
+        if (count === 1) return word;
+        // Можно расширить для разных падежей
+        return word;
+      }
+    }
+
     // Минимальный набор карточек для fallback
     const FALLBACK_CARDS = {
       "cards": {
@@ -1575,7 +1747,12 @@
           "type": "person",
           "category": "CAT-PEOPLE",
           "forms": {
-            "with": "с папой"
+            "with": "с папой",
+            "instrumental": "папой",
+            "genitive": "папы",
+            "dative": "папе",
+            "accusative": "папу",
+            "prepositional": "папе"
           },
           "tags": ["человек", "семья"],
           "difficulty": 1,
@@ -1597,7 +1774,12 @@
           "type": "person",
           "category": "CAT-PEOPLE",
           "forms": {
-            "with": "с мамой"
+            "with": "с мамой",
+            "instrumental": "мамой",
+            "genitive": "мамы",
+            "dative": "маме",
+            "accusative": "маму",
+            "prepositional": "маме"
           },
           "tags": ["человек", "семья"],
           "difficulty": 1,
@@ -1619,7 +1801,12 @@
           "type": "place",
           "category": "CAT-PLACES",
           "forms": {
-            "in": "дома"
+            "in": "дома",
+            "prepositional": "доме",
+            "genitive": "дома",
+            "dative": "дому",
+            "accusative": "дом",
+            "instrumental": "домом"
           },
           "tags": ["место", "жилье"],
           "difficulty": 1,
@@ -1641,7 +1828,12 @@
           "type": "place",
           "category": "CAT-PLACES",
           "forms": {
-            "in": "в парке"
+            "in": "в парке",
+            "prepositional": "парке",
+            "genitive": "парка",
+            "dative": "парку",
+            "accusative": "парк",
+            "instrumental": "парком"
           },
           "tags": ["место", "отдых"],
           "difficulty": 1,
@@ -1663,7 +1855,11 @@
           "type": "object",
           "category": "CAT-FOOD",
           "forms": {
-            "accusative": "яблоко"
+            "accusative": "яблоко",
+            "genitive": "яблока",
+            "dative": "яблоку",
+            "instrumental": "яблоком",
+            "prepositional": "яблоке"
           },
           "tags": ["еда", "фрукт"],
           "difficulty": 1,
@@ -1685,7 +1881,11 @@
           "type": "object",
           "category": "CAT-FOOD",
           "forms": {
-            "accusative": "хлеб"
+            "accusative": "хлеб",
+            "genitive": "хлеба",
+            "dative": "хлебу",
+            "instrumental": "хлебом",
+            "prepositional": "хлебе"
           },
           "tags": ["еда", "продукт"],
           "difficulty": 1,
@@ -1707,7 +1907,11 @@
           "type": "object",
           "category": "CAT-FOOD",
           "forms": {
-            "accusative": "конфету"
+            "accusative": "конфету",
+            "genitive": "конфеты",
+            "dative": "конфете",
+            "instrumental": "конфетой",
+            "prepositional": "конфете"
           },
           "tags": ["еда", "сладости"],
           "difficulty": 1,
@@ -1729,7 +1933,11 @@
           "type": "object",
           "category": "CAT-DRINK",
           "forms": {
-            "accusative": "сок"
+            "accusative": "сок",
+            "genitive": "сока",
+            "dative": "соку",
+            "instrumental": "соком",
+            "prepositional": "соке"
           },
           "tags": ["питье", "напиток"],
           "difficulty": 1,
@@ -1751,7 +1959,11 @@
           "type": "object",
           "category": "CAT-DRINK",
           "forms": {
-            "accusative": "воду"
+            "accusative": "воду",
+            "genitive": "воды",
+            "dative": "воде",
+            "instrumental": "водой",
+            "prepositional": "воде"
           },
           "tags": ["питье", "напиток"],
           "difficulty": 1,
@@ -1773,7 +1985,11 @@
           "type": "object",
           "category": "CAT-DRINK",
           "forms": {
-            "accusative": "молоко"
+            "accusative": "молоко",
+            "genitive": "молока",
+            "dative": "молоку",
+            "instrumental": "молоком",
+            "prepositional": "молоке"
           },
           "tags": ["питье", "напиток"],
           "difficulty": 1,
@@ -1925,7 +2141,11 @@
           "type": "pain",
           "category": "CAT-PAIN",
           "forms": {
-            "accusative": "голова"
+            "accusative": "голову",
+            "genitive": "головы",
+            "dative": "голове",
+            "instrumental": "головой",
+            "prepositional": "голове"
           },
           "tags": ["боль", "тело"],
           "difficulty": 1,
@@ -1947,7 +2167,11 @@
           "type": "pain",
           "category": "CAT-PAIN",
           "forms": {
-            "accusative": "живот"
+            "accusative": "живот",
+            "genitive": "живота",
+            "dative": "животу",
+            "instrumental": "животом",
+            "prepositional": "животе"
           },
           "tags": ["боль", "тело"],
           "difficulty": 1,
@@ -1968,7 +2192,13 @@
           "emoji": "⏱️",
           "type": "time",
           "category": "CAT-TIME",
-          "forms": {},
+          "forms": {
+            "genitive": "сейчас",
+            "dative": "сейчас",
+            "accusative": "сейчас",
+            "instrumental": "сейчас",
+            "prepositional": "сейчас"
+          },
           "tags": ["время", "сейчас"],
           "difficulty": 2,
           "status": "active",
@@ -1989,7 +2219,12 @@
           "type": "object",
           "category": "CAT-GAMES",
           "forms": {
-            "in": "в кубики"
+            "in": "в кубики",
+            "accusative": "кубики",
+            "genitive": "кубиков",
+            "dative": "кубикам",
+            "instrumental": "кубиками",
+            "prepositional": "кубиках"
           },
           "tags": ["игрушка", "игра"],
           "difficulty": 1,
@@ -2011,7 +2246,12 @@
           "type": "object",
           "category": "CAT-GAMES",
           "forms": {
-            "in": "в мяч"
+            "in": "в мяч",
+            "accusative": "мяч",
+            "genitive": "мяча",
+            "dative": "мячу",
+            "instrumental": "мячом",
+            "prepositional": "мяче"
           },
           "tags": ["игрушка", "игра"],
           "difficulty": 1,
@@ -2131,6 +2371,7 @@
         this.currentTab = 'main';
         this.isQuickNavMode = false;
         this.currentReplacement = null;
+        this.grammar = new GrammarSystem();
         
         // Индексы для циклической замены
         this.nextReplacementIndex = {
@@ -3494,10 +3735,12 @@
         this.updateUI();
       }
 
+      // ПЕРЕПИСАННЫЙ МЕТОД: Обновление отображения фразы с учетом грамматики
       updatePhraseDisplay() {
         const phraseDisplay = document.getElementById('phraseDisplay');
         const phraseParts = [];
 
+        // Особые случаи
         if (this.currentPhrase.action && this.currentPhrase.action.id === 'ACT-HURT') {
           if (this.currentPhrase.objects.length > 0) {
             phraseParts.push('У меня болит', this.currentPhrase.objects[0].text);
@@ -3509,17 +3752,13 @@
         } else if (this.currentPhrase.action && this.currentPhrase.action.metadata && this.currentPhrase.action.metadata.isStandalone) {
           phraseParts.push(this.currentPhrase.action.text);
           if (this.currentPhrase.objects.length > 0) {
-            const objectForms = this.currentPhrase.objects.map(object => {
-              return object.forms.accusative || object.text;
-            });
-            if (objectForms.length === 1) {
-              phraseParts.push(objectForms[0]);
-            } else {
-              const lastObject = objectForms.pop();
-              phraseParts.push(objectForms.join(', ') + ' и ' + lastObject);
-            }
+            const objectPhrases = this.currentPhrase.objects.map(object => 
+              this.grammar.getObjectPhrase(object, this.currentPhrase.action)
+            );
+            phraseParts.push(this.grammar.joinHomogeneous(objectPhrases));
           }
         } else {
+          // Стандартная фраза с учетом грамматики
           if (this.currentPhrase.subject) {
             phraseParts.push(this.currentPhrase.subject);
           }
@@ -3529,67 +3768,43 @@
           if (this.currentPhrase.action) {
             phraseParts.push(this.currentPhrase.action.text);
           }
+          
+          // Люди
           if (this.currentPhrase.people.length > 0) {
-            const peopleForms = this.currentPhrase.people.map(person => {
-              return person.forms.with || `с ${person.text}`;
-            });
-            if (peopleForms.length === 1) {
-              phraseParts.push(peopleForms[0]);
-            } else {
-              const lastPerson = peopleForms.pop();
-              phraseParts.push(peopleForms.join(', ') + ' и ' + lastPerson);
-            }
+            const peoplePhrases = this.currentPhrase.people.map(person => 
+              this.grammar.getPersonPhrase(person)
+            );
+            phraseParts.push(this.grammar.joinHomogeneous(peoplePhrases));
           }
+          
+          // Питомцы (аналогично людям)
           if (this.currentPhrase.pets.length > 0) {
-            const petForms = this.currentPhrase.pets.map(pet => {
-              if (this.currentPhrase.action && (this.currentPhrase.action.id === 'ACT-FEED-PET' || this.currentPhrase.action.id === 'ACT-PET')) {
-                return pet.forms.accusative || pet.text;
-              }
-              return pet.forms.with || `с ${pet.text}`;
-            });
-            if (petForms.length === 1) {
-              phraseParts.push(petForms[0]);
-            } else {
-              const lastPet = petForms.pop();
-              phraseParts.push(petForms.join(', ') + ' и ' + lastPet);
-            }
+            const petPhrases = this.currentPhrase.pets.map(pet => 
+              this.grammar.getPersonPhrase(pet)
+            );
+            phraseParts.push(this.grammar.joinHomogeneous(petPhrases));
           }
+          
+          // Места
           if (this.currentPhrase.places.length > 0) {
-            const placeForms = this.currentPhrase.places.map(place => {
-              return place.forms.in || `в ${place.text}`;
-            });
-            if (placeForms.length === 1) {
-              phraseParts.push(placeForms[0]);
-            }
+            const placePhrases = this.currentPhrase.places.map(place => 
+              this.grammar.getPlacePhrase(place)
+            );
+            // Обычно только одно место
+            phraseParts.push(placePhrases[0]);
           }
+          
+          // Объекты
           if (this.currentPhrase.objects.length > 0) {
-            const objectForms = this.currentPhrase.objects.map(object => {
-              if (this.currentPhrase.action && this.currentPhrase.action.type === 'request') {
-                return object.forms.accusative || object.text;
-              } else if (this.currentPhrase.action && this.currentPhrase.action.forms && this.currentPhrase.action.forms.in && this.currentPhrase.action.type !== 'request') {
-                return object.forms.in || object.forms.accusative || object.text;
-              } else {
-                return object.forms.accusative || object.text;
-              }
-            });
-            if (objectForms.length === 1) {
-              if (this.currentPhrase.action && this.currentPhrase.action.forms && this.currentPhrase.action.forms.in && this.currentPhrase.action.type !== 'request') {
-                phraseParts.push(this.currentPhrase.action.forms.in, objectForms[0]);
-              } else {
-                phraseParts.push(objectForms[0]);
-              }
-            } else {
-              const lastObject = objectForms.pop();
-              const objectsText = objectForms.join(', ') + ' и ' + lastObject;
-              if (this.currentPhrase.action && this.currentPhrase.action.forms && this.currentPhrase.action.forms.in && this.currentPhrase.action.type !== 'request') {
-                phraseParts.push(this.currentPhrase.action.forms.in, objectsText);
-              } else {
-                phraseParts.push(objectsText);
-              }
-            }
+            const objectPhrases = this.currentPhrase.objects.map(object => 
+              this.grammar.getObjectPhrase(object, this.currentPhrase.action)
+            );
+            phraseParts.push(this.grammar.joinHomogeneous(objectPhrases));
           }
+          
+          // Время
           if (this.currentPhrase.time) {
-            phraseParts.push(this.currentPhrase.time.text);
+            phraseParts.push(this.grammar.getTimePhrase(this.currentPhrase.time));
           }
         }
 
@@ -4517,13 +4732,13 @@
         const dataSize = (new Blob([cardsJson]).size / 1024).toFixed(2);
         
         const info = {
-          'Версия приложения': '1.0.0',
+          'Версия приложения': '4.1.2',
           'Количество карточек': cardCount,
           'Размер данных': `${dataSize} КБ`,
           'Последнее обновление': new Date().toLocaleString(),
           'Скорость чтения': speechRate,
           'Размер шрифта': `${(fontSizeScale * 100).toFixed(0)}%`,
-          'PIN-код установлен': currentPin !== DEFAULT_PIN ? 'Да' : 'Нет (по умолчанию)'
+          'PIN-код установлен': currentPin !== DEFAULT_PIN ? 'Да' : 'Нет (по умолчанию 0000)'
         };
         
         let html = '';
