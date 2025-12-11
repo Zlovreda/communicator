@@ -31,7 +31,7 @@
 
 ### Вариант 1: Использовать онлайн версию
 1. Перейдите по ссылке: https://zlovreda.github.io/Kom-Kom-Communicator/
-2. Начните использовать сразу
+2. Начните использовать сразу, при необходимости прочитайте [инструкцию](https://zlovreda.github.io/Kom-Kom-Communicator/index-manual.html) 
 
 ### Вариант 2: Локальная установка
 1. Скачайте файл `index.html`
