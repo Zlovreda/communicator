@@ -1,0 +1,12 @@
+{
+  "name": "kom-kom-communicator",
+  "version": "1.0.0",
+  "description": "Коммуникатор для детей с РАС",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'Откройте index.html в браузере'"
+  },
+  "keywords": ["autism", "aac", "communication"],
+  "author": "Павел Николаевич Копченов",
+  "license": "Apache-2.0"
+}
