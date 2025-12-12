@@ -1,0 +1,86 @@
+name: CLA Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  cla-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check if CLA is signed
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const issue = await github.rest.issues.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number
+          });
+          
+          const prAuthor = issue.data.user.login;
+          const comments = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number
+          });
+          
+          // Check for CLA agreement in comments
+          const claPattern = /Я, .*, согласен с условиями CLA|I agree to the CLA terms/i;
+          const hasCLA = comments.data.some(comment => 
+            claPattern.test(comment.body) && 
+            comment.user.login === prAuthor
+          );
+          
+          if (!hasCLA) {
+            // Add CLA reminder
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `👋 @${prAuthor}, спасибо за ваш Pull Request!
+
+Для принятия вашего вклада необходимо подписать CLA (Contributor License Agreement).
+
+Пожалуйста, прочитайте [INDIVIDUAL-CLA.md](cla/INDIVIDUAL-CLA.md) и подтвердите согласие, оставив комментарий:
+
+\`\`\`
+Я, [Ваше полное имя], согласен с условиями CLA
+\`\`\`
+
+**Без подписанного CLA мы не сможем принять ваш Pull Request.**
+
+Если вы представляете организацию, пожалуйста, свяжитесь с нами по email.`
+            });
+            
+            // Add label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['cla-required']
+            });
+          } else {
+            // Remove label if CLA is signed
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: 'cla-required'
+              });
+            } catch (e) {
+              console.log('Label not found or already removed');
+            }
+            
+            // Add signed label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['cla-signed']
+            });
+          }
