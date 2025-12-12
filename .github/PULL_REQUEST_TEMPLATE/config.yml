@@ -1,0 +1,8 @@
+blank_prs_enabled: false
+branches:
+  - main
+  - develop
+require_cla: true
+cla_documents:
+  individual: cla/INDIVIDUAL-CLA.md
+  corporate: cla/CORPORATE-CLA.md
