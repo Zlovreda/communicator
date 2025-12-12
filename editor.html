@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -97,6 +97,47 @@
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .panel-collapse-btn {
+            position: absolute;
+            right: -12px;
+            top: 20px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+            font-size: 12px;
+        }
+
+        .panel-collapse-btn:hover {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .left-panel.collapsed {
+            width: 50px;
+        }
+
+        .left-panel.collapsed .card-search,
+        .left-panel.collapsed .filters,
+        .left-panel.collapsed .card-list-container {
+            display: none;
+        }
+
+        .left-panel.collapsed .panel-collapse-btn {
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%) rotate(180deg);
         }
 
         .card-list-container {
@@ -258,6 +299,17 @@
             padding: 4px 8px;
             border-radius: 6px;
             font-weight: 500;
+        }
+
+        .card-order {
+            font-size: 11px;
+            color: white;
+            background: #10b981;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            min-width: 24px;
+            text-align: center;
         }
 
         .card-checkbox {
@@ -507,6 +559,48 @@
             border-radius: 16px;
             border: 2px solid #e2e8f0;
             transition: all 0.3s;
+            position: relative;
+        }
+
+        .section-collapse-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #64748b;
+            font-size: 20px;
+        }
+
+        .section-collapse-btn:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .form-section.collapsed {
+            padding: 16px;
+        }
+
+        .form-section.collapsed .form-group,
+        .form-section.collapsed .word-forms-grid,
+        .form-section.collapsed .metadata-editor {
+            display: none;
+        }
+
+        .form-section.collapsed h3 {
+            margin-bottom: 0;
+        }
+
+        .form-section.collapsed .section-collapse-btn {
+            transform: rotate(180deg);
         }
 
         .form-section:hover {
@@ -522,6 +616,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            padding-right: 40px;
         }
 
         .form-section h3::before {
@@ -545,6 +640,47 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .required-field::after {
+            content: '*';
+            color: #ef4444;
+            margin-left: 4px;
+        }
+
+        .field-required {
+            color: #ef4444;
+        }
+
+        .field-recommended {
+            color: #f59e0b;
+        }
+
+        .field-optional {
+            color: #64748b;
+        }
+
+        .field-hint {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        .field-hint.required {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .field-hint.recommended {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .field-hint.optional {
+            background: #f1f5f9;
+            color: #64748b;
         }
 
         .form-group input,
@@ -892,7 +1028,7 @@
         .modal-content {
             background: white;
             border-radius: 20px;
-            max-width: 500px;
+            max-width: 900px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -1129,6 +1265,216 @@
             cursor: pointer;
         }
 
+        /* Окно сортировки */
+        .sort-order-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sort-order-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .sort-order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            min-height: 200px;
+        }
+
+        .sort-order-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: move;
+            transition: all 0.3s;
+            user-select: none;
+            position: relative;
+        }
+
+        .sort-order-item:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .sort-order-item.dragging {
+            opacity: 0.8;
+            background: #f0f9ff;
+            transform: rotate(2deg);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+            z-index: 1000;
+        }
+
+        .sort-order-item .handle {
+            cursor: move;
+            color: #94a3b8;
+            font-size: 16px;
+            padding: 4px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background: #f1f5f9;
+            transition: all 0.3s;
+        }
+
+        .sort-order-item .handle:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .sort-order-item .order-badge {
+            background: #3b82f6;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .sort-order-item .card-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sort-order-item .emoji {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 8px;
+            color: white;
+        }
+
+        .sort-order-item .text {
+            font-weight: 500;
+            color: #1e293b;
+            flex: 1;
+        }
+
+        .sort-order-item .type-badge {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .sort-order-preview {
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #64748b;
+        }
+
+        .sort-order-preview strong {
+            color: #1e293b;
+        }
+
+        /* Drop target styling */
+        .drop-target {
+            border: 2px dashed #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 14px;
+            border-radius: 10px;
+            margin: 8px 0;
+            transition: all 0.3s;
+        }
+
+        .drop-target.drag-over {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #1d4ed8;
+        }
+
+        /* Категории-родители в сортировке */
+        .parent-category {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-left: 4px solid #3b82f6;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .parent-category-header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            background: #f0f9ff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .parent-category-header .toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background: #3b82f6;
+            color: white;
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+
+        .parent-category-header .toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .parent-category-header .emoji {
+            font-size: 24px;
+        }
+
+        .parent-category-header .text {
+            font-weight: 600;
+            color: #1e293b;
+            flex: 1;
+        }
+
+        .parent-category-content {
+            padding: 16px;
+            background: white;
+            display: grid;
+            gap: 8px;
+        }
+
+        .parent-category-content.collapsed {
+            display: none;
+        }
+
         /* Анимации */
         @keyframes slideIn {
             from {
@@ -1342,7 +1688,7 @@
             <div class="header-left">
                 <div>
                     <h1>🎴 Редактор карточек Ком-Ком</h1>
-                    <div class="app-version">Версия 2.2</div>
+                    <div class="app-version">Версия 2.4 • Улучшенная сортировка категорий</div>
                 </div>
             </div>
             
@@ -1365,7 +1711,9 @@
 
         <div class="main-content">
             <!-- Левая панель -->
-            <div class="left-panel">
+            <div class="left-panel" id="leftPanel">
+                <div class="panel-collapse-btn" id="leftPanelCollapseBtn">‹</div>
+                
                 <div class="card-search">
                     <input type="text" id="searchInput" placeholder="Поиск по названию, ID или тегам...">
                 </div>
@@ -1391,6 +1739,7 @@
                     <div class="filter-group">
                         <label>🔀 Сортировка:</label>
                         <select id="sortSelect">
+                            <option value="order">По порядку (order)</option>
                             <option value="text">По названию (А-Я)</option>
                             <option value="text-desc">По названию (Я-А)</option>
                             <option value="id">По ID</option>
@@ -1403,9 +1752,9 @@
                 
                 <div class="card-list-container">
                     <div class="sort-controls">
+                        <button class="sort-btn active" data-sort="order">🔢 По порядку</button>
                         <button class="sort-btn" data-sort="text">📝 А-Я</button>
                         <button class="sort-btn" data-sort="type">📁 Тип</button>
-                        <button class="sort-btn" data-sort="usageCount">🔥 Популярность</button>
                     </div>
                     
                     <ul class="card-list" id="cardList">
@@ -1422,6 +1771,7 @@
                         <button class="btn btn-success" id="saveCardBtn">💾 Сохранить</button>
                         <button class="btn btn-warning" id="duplicateBtn">⎘ Дублировать</button>
                         <button class="btn btn-danger" id="deleteCardBtn">🗑️ Удалить</button>
+                        <button class="btn btn-info" id="sortOrderBtn">📂 Сортировать категории</button>
                     </div>
                     
                     <div class="button-group">
@@ -1441,17 +1791,18 @@
 
                 <!-- Форма редактирования -->
                 <div class="editor-form" id="editorForm">
-                    <div class="form-section">
+                    <div class="form-section" id="mainInfoSection">
+                        <button class="section-collapse-btn">▼</button>
                         <h3>📋 Основная информация</h3>
                         
                         <div class="form-group">
-                            <label for="cardId">🔖 ID карточки:</label>
+                            <label for="cardId" class="required-field">🔖 ID карточки:</label>
                             <input type="text" id="cardId" placeholder="Например: CAT-GAMES" required>
                             <small>Уникальный идентификатор. Формат: ТИП-НАЗВАНИЕ (заглавные буквы, цифры, дефисы)</small>
                         </div>
                         
                         <div class="form-group">
-                            <label for="cardText">📝 Текст (основная форма):</label>
+                            <label for="cardText" class="required-field">📝 Текст (основная форма):</label>
                             <input type="text" id="cardText" placeholder="Например: играть" required>
                         </div>
                         
@@ -1462,7 +1813,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="cardType">📁 Тип карточки:</label>
+                            <label for="cardType" class="required-field">📁 Тип карточки:</label>
                             <select id="cardType">
                                 <option value="category">Категория</option>
                                 <option value="action">Действие</option>
@@ -1481,15 +1832,22 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="cardCategory">🏷️ Категория:</label>
+                            <label for="cardCategory">🏷️ Родительская категория:</label>
                             <select id="cardCategory">
-                                <option value="">Без категории</option>
+                                <option value="">Без категории (верхний уровень)</option>
                                 <!-- Категории будут загружены динамически -->
                             </select>
                         </div>
+
+                        <div class="form-group">
+                            <label for="cardOrder">🔢 Порядок (order):</label>
+                            <input type="number" id="cardOrder" min="0" value="0">
+                            <small>Число для сортировки (меньше → выше). Используйте кнопку "Сортировать категории" для удобной сортировки</small>
+                        </div>
                     </div>
 
-                    <div class="form-section">
+                    <div class="form-section" id="visualSection">
+                        <button class="section-collapse-btn">▼</button>
                         <h3>🎨 Визуальное оформление</h3>
                         
                         <div class="form-group">
@@ -1516,53 +1874,83 @@
                         </div>
                     </div>
 
-                    <div class="form-section">
+                    <div class="form-section" id="grammarSection">
+                        <button class="section-collapse-btn">▼</button>
                         <h3>📚 Грамматические формы</h3>
+                        <div id="grammarHints" style="margin-bottom: 20px; padding: 12px; background: #f0f9ff; border-radius: 10px; border-left: 4px solid #3b82f6; font-size: 13px; color: #1e293b;">
+                            <strong>Подсказки:</strong>
+                            <div id="grammarHintsContent">Выберите тип карточки для просмотра требований</div>
+                        </div>
                         
                         <div class="word-forms-grid">
                             <div class="word-form-item">
-                                <label for="formAccusative">Винительный (кого? что?)</label>
+                                <label for="formAccusative">
+                                    Винительный (кого? что?)
+                                    <span class="field-hint required" id="hintAccusative">?</span>
+                                </label>
                                 <input type="text" id="formAccusative" placeholder="яблоко">
                             </div>
                             
                             <div class="word-form-item">
-                                <label for="formGenitive">Родительный (кого? чего?)</label>
+                                <label for="formGenitive">
+                                    Родительный (кого? чего?)
+                                    <span class="field-hint required" id="hintGenitive">?</span>
+                                </label>
                                 <input type="text" id="formGenitive" placeholder="яблока">
                             </div>
                             
                             <div class="word-form-item">
-                                <label for="formDative">Дательный (кому? чему?)</label>
+                                <label for="formDative">
+                                    Дательный (кому? чему?)
+                                    <span class="field-hint recommended" id="hintDative">?</span>
+                                </label>
                                 <input type="text" id="formDative" placeholder="яблоку">
                             </div>
                             
                             <div class="word-form-item">
-                                <label for="formInstrumental">Творительный (кем? чем?)</label>
+                                <label for="formInstrumental">
+                                    Творительный (кем? чем?)
+                                    <span class="field-hint required" id="hintInstrumental">?</span>
+                                </label>
                                 <input type="text" id="formInstrumental" placeholder="яблоком">
                             </div>
                             
                             <div class="word-form-item">
-                                <label for="formPrepositional">Предложный (о ком? о чем?)</label>
+                                <label for="formPrepositional">
+                                    Предложный (о ком? о чём?)
+                                    <span class="field-hint recommended" id="hintPrepositional">?</span>
+                                </label>
                                 <input type="text" id="formPrepositional" placeholder="яблоке">
                             </div>
                             
                             <div class="word-form-item">
-                                <label for="formWith">С предлогом "с"</label>
+                                <label for="formWith">
+                                    С предлогом "с"
+                                    <span class="field-hint required" id="hintWith">?</span>
+                                </label>
                                 <input type="text" id="formWith" placeholder="с яблоком">
                             </div>
                             
                             <div class="word-form-item">
-                                <label for="formIn">С предлогом "в"</label>
+                                <label for="formIn">
+                                    С предлогом "в"
+                                    <span class="field-hint recommended" id="hintIn">?</span>
+                                </label>
                                 <input type="text" id="formIn" placeholder="в яблоко">
                             </div>
                             
                             <div class="word-form-item">
-                                <label for="formOn">С предлогом "на"</label>
+                                <label for="formOn">
+                                    С предлогом "на"
+                                    <span class="field-hint optional" id="hintOn">?</span>
+                                </label>
                                 <input type="text" id="formOn" placeholder="на яблоке">
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-section" style="grid-column: 1 / -1;">
+                    <div class="form-section" id="metadataSection" style="grid-column: 1 / -1;">
+                        <button class="section-collapse-btn">▼</button>
                         <h3>⚙️ Метаданные</h3>
                         
                         <div class="metadata-editor">
@@ -1633,7 +2021,8 @@
                         </div>
                     </div>
 
-                    <div class="form-section">
+                    <div class="form-section" id="settingsSection">
+                        <button class="section-collapse-btn">▼</button>
                         <h3>🏷️ Дополнительные настройки</h3>
                         
                         <div class="form-group">
@@ -1670,8 +2059,20 @@
                         </div>
                     </div>
 
-                    <div class="form-section">
+                    <div class="form-section" id="systemSection">
+                        <button class="section-collapse-btn">▼</button>
                         <h3>⚙️ Системная информация</h3>
+                        
+                        <div class="form-group">
+                            <label for="author">👤 Автор:</label>
+                            <input type="text" id="author" placeholder="Ваше имя" value="user">
+                            <small>Имя создателя карточки</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="version">🔄 Версия:</label>
+                            <input type="number" id="version" min="1" value="1" style="width: 100px;">
+                        </div>
                         
                         <div class="form-group">
                             <label>📅 Дата создания:</label>
@@ -1681,20 +2082,6 @@
                         <div class="form-group">
                             <label>🔄 Дата изменения:</label>
                             <input type="text" id="modifiedDate" disabled style="background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; color: #64748b;">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="author">👤 Автор:</label>
-                            <select id="author">
-                                <option value="system">🤖 Система</option>
-                                <option value="user">👤 Пользователь</option>
-                                <option value="admin">👑 Администратор</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="version">🔄 Версия:</label>
-                            <input type="number" id="version" min="1" value="1" style="width: 100px;">
                         </div>
                         
                         <div class="form-group">
@@ -1712,6 +2099,7 @@
                         <button class="btn btn-secondary" id="bulkRemoveTagBtn">➖ Удалить тег</button>
                         <button class="btn btn-secondary" id="bulkChangeStatusBtn">📊 Изменить статус</button>
                         <button class="btn btn-secondary" id="bulkChangeCategoryBtn">🏷️ Изменить категорию</button>
+                        <button class="btn btn-secondary" id="bulkUpdateOrderBtn">🔢 Обновить порядок</button>
                         <button class="btn btn-secondary" id="resetSelectionBtn">🗑️ Сбросить выбор</button>
                         <button class="btn btn-warning" id="applyBulkBtn">💾 Применить изменения</button>
                     </div>
@@ -1733,15 +2121,15 @@
                 <a href="https://github.com/Zlovreda/Kom-Kom-Communicator" target="_blank" class="footer-link">📂 GitHub проекта</a>
                 <a href="https://github.com/Zlovreda/Kom-Kom-Communicator/blob/main/LICENSE" target="_blank" class="footer-link">📜 Apache License 2.0</a>
                 <a href="https://zlovreda.github.io/Kom-Kom-Communicator/" target="_blank" class="footer-link">🚀 Коммуникатор</a>
-                <a href="https://github.com/Zlovreda" target="_blank" class="footer-link">👤 Автор</a>
+                <a href="https://github.com/Zlovreda" target="_blank" class="footer-link">👤 Zlovreda</a>
             </div>
             <div class="copyright">
-                Copyright © 2025 Pavel Nikolaevich Kopchenov • Kom-Kom Communicator — открытый проект для альтернативной и дополнительной коммуникации
+                Copyright © 2025 Павел Николаевич Копченов • Kom-Kom Communicator — открытый проект для альтернативной и дополнительной коммуникации (AAC)
             </div>
         </footer>
     </div>
 
-    <!-- Модальные окна (остаются без изменений, но будут автоматически получать новые стили) -->
+    <!-- Модальные окна -->
     <div class="modal preview-modal" id="previewModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1769,6 +2157,10 @@
                         <div class="preview-info-item">
                             <span class="preview-info-label">📁 Тип:</span>
                             <span class="preview-info-value" id="previewType">действие</span>
+                        </div>
+                        <div class="preview-info-item">
+                            <span class="preview-info-label">🔢 Порядок:</span>
+                            <span class="preview-info-value" id="previewOrder">0</span>
                         </div>
                         <div class="preview-info-item">
                             <span class="preview-info-label">🎨 Цвет фона:</span>
@@ -1802,11 +2194,53 @@
                             <span class="preview-info-label">🔥 Использований:</span>
                             <span class="preview-info-value" id="previewUsageCount">0</span>
                         </div>
+                        <div class="preview-info-item">
+                            <span class="preview-info-label">👤 Автор:</span>
+                            <span class="preview-info-value" id="previewAuthor">user</span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" id="closePreviewBtn">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="sortOrderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📂 Сортировка категорий</h3>
+                <button class="close-btn" id="closeSortOrderModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="sort-order-container">
+                    <div class="sort-order-controls">
+                        <select id="sortParentFilter">
+                            <option value="">Все категории верхнего уровня</option>
+                            <!-- Категории будут загружены динамически -->
+                        </select>
+                        <button class="btn btn-secondary" id="sortAutoOrderBtn">🔄 Авто-порядок</button>
+                        <button class="btn btn-success" id="sortApplyBtn">💾 Применить порядок</button>
+                    </div>
+                    
+                    <div class="sort-order-preview">
+                        <strong>Инструкция:</strong> Перетаскивайте категории для изменения порядка. Порядок сохраняется в поле "order" (меньше → выше). 
+                        <br><em>Примечание:</em> Сортировка работает только для категорий (тип "category"). Карточки других типов не отображаются.
+                    </div>
+                    
+                    <div class="sort-order-list" id="sortOrderList">
+                        <!-- Категории для сортировки будут здесь -->
+                    </div>
+                    
+                    <div id="sortOrderStatus" style="padding: 12px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 14px; color: #64748b; text-align: center;">
+                        Перетащите категории для изменения порядка. Только категории верхнего уровня.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelSortOrderBtn">Отмена</button>
+                <button class="btn btn-primary" id="saveSortOrderBtn">Сохранить изменения</button>
             </div>
         </div>
     </div>
@@ -1952,31 +2386,19 @@
     </div>
 
     <script>
-        // Обновление отображения цветов
-        document.getElementById('cardColor').addEventListener('input', function() {
-            document.getElementById('colorValue').textContent = this.value;
-        });
-        
-        document.getElementById('borderColor').addEventListener('input', function() {
-            document.getElementById('borderColorValue').textContent = this.value;
-        });
-
-        // Инициализация цветов
-        document.getElementById('colorValue').textContent = document.getElementById('cardColor').value;
-        document.getElementById('borderColorValue').textContent = document.getElementById('borderColor').value;
-
         // Конфигурация
         const REMOTE_CARDS_URL = 'https://raw.githubusercontent.com/Zlovreda/communicator/refs/heads/main/cards.json';
         const APP_URL = 'https://zlovreda.github.io/Kom-Kom-Communicator/';
         const STORAGE_KEY = 'komkom_cards_editor_data';
-        const STORAGE_VERSION = '2.2';
+        const STORAGE_VERSION = '2.4';
         const STORAGE_METADATA_KEY = 'komkom_editor_metadata';
+        const COLLAPSE_STATE_KEY = 'komkom_editor_collapse_state';
         
         // Глобальные переменные
         let cards = {};
         let currentCardId = null;
         let selectedCards = new Set();
-        let currentSort = 'text';
+        let currentSort = 'order';
         let allSections = ['Главная', 'Обучение', 'Диалог', 'Эмоции'];
         let metadata = {
             allowedWith: [],
@@ -1991,6 +2413,65 @@
         let lastSaveTimestamp = 0;
         let unsavedChanges = false;
         
+        // Требования к грамматическим формам по типам карточек
+        const grammarRequirements = {
+            'object': {
+                hints: 'Для объектов обязательно заполните винительный и родительный падежи, желательно остальные.',
+                accusative: 'required',
+                genitive: 'required',
+                dative: 'recommended',
+                instrumental: 'recommended',
+                prepositional: 'recommended',
+                with: 'optional',
+                in: 'optional',
+                on: 'optional'
+            },
+            'action': {
+                hints: 'Для действий важны предлоги "с" и "в" для построения предложений.',
+                accusative: 'optional',
+                genitive: 'optional',
+                dative: 'optional',
+                instrumental: 'optional',
+                prepositional: 'optional',
+                with: 'recommended',
+                in: 'recommended',
+                on: 'optional'
+            },
+            'person': {
+                hints: 'Для людей критически важны формы с предлогом "с" и творительный падеж.',
+                accusative: 'recommended',
+                genitive: 'recommended',
+                dative: 'recommended',
+                instrumental: 'required',
+                prepositional: 'recommended',
+                with: 'required',
+                in: 'optional',
+                on: 'optional'
+            },
+            'category': {
+                hints: 'Для категорий грамматические формы не требуются.',
+                accusative: 'optional',
+                genitive: 'optional',
+                dative: 'optional',
+                instrumental: 'optional',
+                prepositional: 'optional',
+                with: 'optional',
+                in: 'optional',
+                on: 'optional'
+            },
+            'default': {
+                hints: 'Заполните грамматические формы для улучшения качества предложений.',
+                accusative: 'recommended',
+                genitive: 'recommended',
+                dative: 'optional',
+                instrumental: 'optional',
+                prepositional: 'optional',
+                with: 'optional',
+                in: 'optional',
+                on: 'optional'
+            }
+        };
+        
         // Класс редактора карточек
         class CardEditor {
             constructor() {
@@ -2003,6 +2484,7 @@
                 this.setupAutoSave();
                 this.updateMiniPreview();
                 this.updateLastSaveTime();
+                this.loadCollapseState();
                 
                 // Восстановить сессию
                 this.restoreSession();
@@ -2060,11 +2542,47 @@
                         // Восстановить состояние фильтров
                         if (parsed.filters) {
                             document.getElementById('typeFilter').value = parsed.filters.type || '';
-                            document.getElementById('sortSelect').value = parsed.filters.sort || 'text';
+                            document.getElementById('sortSelect').value = parsed.filters.sort || 'order';
+                            currentSort = parsed.filters.sort || 'order';
                         }
                     }
                 } catch (e) {
                     console.error('❌ Ошибка загрузки метаданных:', e);
+                }
+            }
+            
+            // Загрузка состояния сворачивания
+            loadCollapseState() {
+                try {
+                    const collapseState = localStorage.getItem(COLLAPSE_STATE_KEY);
+                    if (collapseState) {
+                        const state = JSON.parse(collapseState);
+                        
+                        // Применить состояние ко всем секциям
+                        Object.keys(state).forEach(sectionId => {
+                            const section = document.getElementById(sectionId);
+                            const button = section?.querySelector('.section-collapse-btn');
+                            if (section && button && state[sectionId]) {
+                                section.classList.add('collapsed');
+                                button.textContent = '▲';
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error('❌ Ошибка загрузки состояния сворачивания:', e);
+                }
+            }
+            
+            // Сохранение состояния сворачивания
+            saveCollapseState() {
+                try {
+                    const state = {};
+                    document.querySelectorAll('.form-section').forEach(section => {
+                        state[section.id] = section.classList.contains('collapsed');
+                    });
+                    localStorage.setItem(COLLAPSE_STATE_KEY, JSON.stringify(state));
+                } catch (e) {
+                    console.error('❌ Ошибка сохранения состояния сворачивания:', e);
                 }
             }
             
@@ -2261,6 +2779,7 @@
                 document.getElementById('exportBtn').addEventListener('click', () => this.showExportModal());
                 document.getElementById('loadFromServerBtn').addEventListener('click', () => this.showServerLoadModal());
                 document.getElementById('validateBtn').addEventListener('click', () => this.validateCards());
+                document.getElementById('sortOrderBtn').addEventListener('click', () => this.showSortOrderModal());
                 
                 // Мини-превью
                 document.getElementById('miniPreview').addEventListener('click', () => this.showPreviewModal());
@@ -2325,7 +2844,7 @@
                 
                 // Основные поля карточки
                 const previewFields = ['cardId', 'cardText', 'cardEmoji', 'cardType', 'cardCategory', 
-                                     'cardColor', 'borderColor', 'cardTags', 'status', 'difficulty', 'usageCount'];
+                                     'cardColor', 'borderColor', 'cardTags', 'status', 'difficulty', 'usageCount', 'cardOrder', 'author'];
                 
                 previewFields.forEach(fieldId => {
                     const element = document.getElementById(fieldId);
@@ -2356,6 +2875,27 @@
                 document.getElementById('cardId').addEventListener('blur', () => this.validateCardId());
                 document.getElementById('cardType').addEventListener('change', () => this.onCardTypeChange());
                 
+                // Грамматические формы
+                document.getElementById('cardType').addEventListener('change', () => this.updateGrammarHints());
+                
+                // Сворачивание левой панели
+                document.getElementById('leftPanelCollapseBtn').addEventListener('click', () => {
+                    const leftPanel = document.getElementById('leftPanel');
+                    leftPanel.classList.toggle('collapsed');
+                    const btn = document.getElementById('leftPanelCollapseBtn');
+                    btn.textContent = leftPanel.classList.contains('collapsed') ? '›' : '‹';
+                });
+                
+                // Сворачивание секций формы
+                document.querySelectorAll('.section-collapse-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const section = e.target.closest('.form-section');
+                        section.classList.toggle('collapsed');
+                        e.target.textContent = section.classList.contains('collapsed') ? '▲' : '▼';
+                        this.saveCollapseState();
+                    });
+                });
+                
                 // Модальные окна
                 this.initModalEvents();
                 
@@ -2367,7 +2907,36 @@
                 document.getElementById('bulkRemoveTagBtn').addEventListener('click', () => this.bulkRemoveTag());
                 document.getElementById('bulkChangeStatusBtn').addEventListener('click', () => this.bulkChangeStatus());
                 document.getElementById('bulkChangeCategoryBtn').addEventListener('click', () => this.bulkChangeCategory());
+                document.getElementById('bulkUpdateOrderBtn').addEventListener('click', () => this.bulkUpdateOrder());
                 document.getElementById('applyBulkBtn').addEventListener('click', () => this.applyBulkChanges());
+            }
+            
+            // Обновление подсказок для грамматических форм
+            updateGrammarHints() {
+                const cardType = document.getElementById('cardType').value;
+                const requirements = grammarRequirements[cardType] || grammarRequirements.default;
+                
+                // Обновить текст подсказки
+                document.getElementById('grammarHintsContent').textContent = requirements.hints;
+                
+                // Обновить индикаторы для каждого поля
+                const fields = ['accusative', 'genitive', 'dative', 'instrumental', 'prepositional', 'with', 'in', 'on'];
+                fields.forEach(field => {
+                    const hintElement = document.getElementById(`hint${field.charAt(0).toUpperCase() + field.slice(1)}`);
+                    const requirement = requirements[field];
+                    
+                    hintElement.className = 'field-hint';
+                    hintElement.classList.add(requirement);
+                    
+                    // Установить текст подсказки
+                    const texts = {
+                        'required': 'Обязательно',
+                        'recommended': 'Желательно',
+                        'optional': 'Необязательно'
+                    };
+                    hintElement.textContent = texts[requirement] || requirement;
+                    hintElement.title = texts[requirement] || requirement;
+                });
             }
             
             // Инициализация событий модальных окон
@@ -2379,6 +2948,17 @@
                 document.getElementById('closePreviewBtn').addEventListener('click', () => {
                     document.getElementById('previewModal').classList.remove('active');
                 });
+                
+                // Сортировка порядка
+                document.getElementById('closeSortOrderModal').addEventListener('click', () => {
+                    document.getElementById('sortOrderModal').classList.remove('active');
+                });
+                document.getElementById('cancelSortOrderBtn').addEventListener('click', () => {
+                    document.getElementById('sortOrderModal').classList.remove('active');
+                });
+                document.getElementById('saveSortOrderBtn').addEventListener('click', () => this.saveSortOrder());
+                document.getElementById('sortAutoOrderBtn').addEventListener('click', () => this.autoGenerateOrder());
+                document.getElementById('sortApplyBtn').addEventListener('click', () => this.applySortOrder());
                 
                 // Импорт
                 document.getElementById('closeImportModal').addEventListener('click', () => {
@@ -2418,6 +2998,297 @@
                 document.getElementById('closeDuplicatesBtn').addEventListener('click', () => {
                     document.getElementById('duplicatesModal').classList.remove('active');
                 });
+            }
+            
+            // Показать модальное окно сортировки порядка (только категории)
+            showSortOrderModal() {
+                this.populateSortOrderFilters();
+                this.renderSortOrderList();
+                document.getElementById('sortOrderModal').classList.add('active');
+                this.setupDragAndDrop();
+            }
+            
+            // Заполнить фильтры в окне сортировки (только родительские категории)
+            populateSortOrderFilters() {
+                const parentFilter = document.getElementById('sortParentFilter');
+                
+                // Очистить фильтры
+                parentFilter.innerHTML = '<option value="">Все категории верхнего уровня</option>';
+                
+                // Получить только категории верхнего уровня (без родительской категории)
+                const topLevelCategories = Object.values(cards).filter(card => 
+                    card.type === 'category' && (!card.category || card.category === '')
+                );
+                
+                // Отсортировать по order
+                topLevelCategories.sort((a, b) => {
+                    const orderA = a.order || 9999;
+                    const orderB = b.order || 9999;
+                    if (orderA !== orderB) return orderA - orderB;
+                    return a.text.localeCompare(b.text);
+                });
+                
+                // Заполнить фильтр
+                topLevelCategories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = `${category.emoji || '📁'} ${category.text}`;
+                    parentFilter.appendChild(option);
+                });
+                
+                // Назначить обработчик изменений
+                parentFilter.addEventListener('change', () => this.renderSortOrderList());
+            }
+            
+            // Отрисовать список для сортировки (только категории)
+            renderSortOrderList() {
+                const list = document.getElementById('sortOrderList');
+                const parentFilter = document.getElementById('sortParentFilter').value;
+                
+                // Фильтровать карточки: только тип 'category'
+                let categoriesToShow = Object.values(cards).filter(card => card.type === 'category');
+                
+                // Применить фильтр по родительской категории
+                if (parentFilter) {
+                    // Показать подкатегории выбранной родительской категории
+                    categoriesToShow = categoriesToShow.filter(card => card.category === parentFilter);
+                } else {
+                    // Показать только категории верхнего уровня
+                    categoriesToShow = categoriesToShow.filter(card => !card.category || card.category === '');
+                }
+                
+                // Сортировать по текущему order
+                categoriesToShow.sort((a, b) => {
+                    const orderA = a.order || 9999;
+                    const orderB = b.order || 9999;
+                    if (orderA !== orderB) return orderA - orderB;
+                    return a.text.localeCompare(b.text);
+                });
+                
+                // Отрисовать
+                list.innerHTML = '';
+                
+                if (categoriesToShow.length === 0) {
+                    const emptyMessage = document.createElement('div');
+                    emptyMessage.className = 'drop-target';
+                    emptyMessage.innerHTML = `
+                        <div style="text-align: center; padding: 40px 20px; color: #64748b;">
+                            <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
+                            <p style="font-size: 16px; margin-bottom: 8px;">Категории не найдены</p>
+                            <p style="font-size: 14px;">${parentFilter ? 'У выбранной категории нет подкатегорий' : 'Создайте категории в редакторе'}</p>
+                        </div>
+                    `;
+                    list.appendChild(emptyMessage);
+                    return;
+                }
+                
+                categoriesToShow.forEach((card, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'sort-order-item';
+                    item.dataset.id = card.id;
+                    item.dataset.order = card.order || 9999;
+                    item.innerHTML = `
+                        <div class="handle">⋮⋮</div>
+                        <div class="order-badge">${card.order || '?'}</div>
+                        <div class="card-info">
+                            <div class="emoji">${card.emoji || '📁'}</div>
+                            <div class="text">${card.text}</div>
+                            <div class="type-badge">${card.category ? 'Подкатегория' : 'Категория'}</div>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+                
+                // Обновить статус
+                const count = categoriesToShow.length;
+                const parentName = parentFilter ? cards[parentFilter]?.text : 'верхнего уровня';
+                document.getElementById('sortOrderStatus').textContent = 
+                    `Найдено категорий: ${count} (${parentName}). Перетащите для изменения порядка.`;
+            }
+            
+            // Настроить перетаскивание с улучшенной работой
+            setupDragAndDrop() {
+                const list = document.getElementById('sortOrderList');
+                let draggedItem = null;
+                let dragOverItem = null;
+                
+                // Очистить предыдущие обработчики
+                list.querySelectorAll('.sort-order-item').forEach(item => {
+                    item.setAttribute('draggable', 'true');
+                    
+                    item.addEventListener('dragstart', (e) => {
+                        draggedItem = item;
+                        setTimeout(() => {
+                            item.classList.add('dragging');
+                        }, 0);
+                        
+                        // Установить данные для переноса
+                        e.dataTransfer.setData('text/plain', item.dataset.id);
+                        e.dataTransfer.effectAllowed = 'move';
+                    });
+                    
+                    item.addEventListener('dragend', () => {
+                        setTimeout(() => {
+                            if (draggedItem) {
+                                draggedItem.classList.remove('dragging');
+                            }
+                            // Убрать подсветку со всех элементов
+                            list.querySelectorAll('.sort-order-item').forEach(i => {
+                                i.style.borderTop = '';
+                                i.style.borderBottom = '';
+                                i.style.marginTop = '';
+                                i.style.marginBottom = '';
+                            });
+                            draggedItem = null;
+                            dragOverItem = null;
+                        }, 0);
+                    });
+                    
+                    item.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                        
+                        // Определить позицию для вставки
+                        const rect = item.getBoundingClientRect();
+                        const mouseY = e.clientY;
+                        const middleY = rect.top + rect.height / 2;
+                        
+                        // Убрать подсветку со всех элементов
+                        list.querySelectorAll('.sort-order-item').forEach(i => {
+                            i.style.borderTop = '';
+                            i.style.borderBottom = '';
+                            i.style.marginTop = '';
+                            i.style.marginBottom = '';
+                        });
+                        
+                        // Подсветить границу в зависимости от позиции
+                        if (mouseY < middleY) {
+                            // Вставить перед текущим элементом
+                            item.style.borderTop = '2px solid #3b82f6';
+                            item.style.marginTop = '8px';
+                            dragOverItem = { element: item, position: 'before' };
+                        } else {
+                            // Вставить после текущего элемента
+                            item.style.borderBottom = '2px solid #3b82f6';
+                            item.style.marginBottom = '8px';
+                            dragOverItem = { element: item, position: 'after' };
+                        }
+                    });
+                    
+                    item.addEventListener('dragleave', () => {
+                        // Убрать подсветку при уходе с элемента
+                        item.style.borderTop = '';
+                        item.style.borderBottom = '';
+                        item.style.marginTop = '';
+                        item.style.marginBottom = '';
+                    });
+                });
+                
+                list.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                });
+                
+                list.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    
+                    if (!draggedItem || !dragOverItem) return;
+                    
+                    const draggedId = draggedItem.dataset.id;
+                    const targetId = dragOverItem.element.dataset.id;
+                    
+                    // Не переставлять элемент сам на себя
+                    if (draggedId === targetId) return;
+                    
+                    // Найти индексы элементов
+                    const items = Array.from(list.querySelectorAll('.sort-order-item'));
+                    const draggedIndex = items.findIndex(item => item.dataset.id === draggedId);
+                    const targetIndex = items.findIndex(item => item.dataset.id === targetId);
+                    
+                    // Определить новую позицию
+                    let newIndex;
+                    if (dragOverItem.position === 'before') {
+                        newIndex = draggedIndex < targetIndex ? targetIndex - 1 : targetIndex;
+                    } else {
+                        newIndex = draggedIndex < targetIndex ? targetIndex : targetIndex + 1;
+                    }
+                    
+                    // Убедиться, что индекс в пределах
+                    newIndex = Math.max(0, Math.min(newIndex, items.length - 1));
+                    
+                    // Переместить элемент в DOM
+                    if (draggedIndex !== newIndex) {
+                        list.insertBefore(draggedItem, items[newIndex] || null);
+                        
+                        // Обновить порядок в данных
+                        this.updateOrderFromSortList();
+                        
+                        // Показать уведомление
+                        this.showSaveStatus('🔄 Порядок обновлен', 'success');
+                    }
+                    
+                    // Сбросить состояние
+                    draggedItem.classList.remove('dragging');
+                    list.querySelectorAll('.sort-order-item').forEach(i => {
+                        i.style.borderTop = '';
+                        i.style.borderBottom = '';
+                        i.style.marginTop = '';
+                        i.style.marginBottom = '';
+                    });
+                    
+                    draggedItem = null;
+                    dragOverItem = null;
+                });
+            }
+            
+            // Обновить порядок из отсортированного списка
+            updateOrderFromSortList() {
+                const list = document.getElementById('sortOrderList');
+                const items = list.querySelectorAll('.sort-order-item');
+                
+                items.forEach((item, index) => {
+                    const cardId = item.dataset.id;
+                    const newOrder = index + 1; // Начинаем с 1
+                    
+                    if (cards[cardId]) {
+                        cards[cardId].order = newOrder;
+                        item.querySelector('.order-badge').textContent = newOrder;
+                        item.dataset.order = newOrder;
+                    }
+                });
+            }
+            
+            // Автоматически сгенерировать порядок
+            autoGenerateOrder() {
+                const list = document.getElementById('sortOrderList');
+                const items = list.querySelectorAll('.sort-order-item');
+                
+                items.forEach((item, index) => {
+                    const badge = item.querySelector('.order-badge');
+                    const newOrder = index + 1;
+                    badge.textContent = newOrder;
+                    item.dataset.order = newOrder;
+                });
+                
+                // Обновить данные
+                this.updateOrderFromSortList();
+                
+                this.showSaveStatus('🔄 Порядок автоматически сгенерирован', 'success');
+            }
+            
+            // Применить порядок из списка
+            applySortOrder() {
+                this.updateOrderFromSortList();
+                this.showSaveStatus('✅ Порядок применен к категориям', 'success');
+                this.renderCardList(); // Обновить список в левой панели
+            }
+            
+            // Сохранить порядок сортировки
+            saveSortOrder() {
+                this.applySortOrder();
+                this.saveCards();
+                document.getElementById('sortOrderModal').classList.remove('active');
+                this.showSaveStatus('💾 Порядок категорий сохранен!', 'success');
             }
             
             // Сбросить выбор карточек
@@ -2542,10 +3413,32 @@
                 this.showSaveStatus(`✅ Категория изменена у ${count} карточек`, 'success');
             }
             
+            // Массовое обновление порядка
+            bulkUpdateOrder() {
+                if (selectedCards.size === 0) {
+                    this.showSaveStatus('⚠️ Сначала выберите карточки!', 'error');
+                    return;
+                }
+                
+                const startOrder = parseInt(prompt('Введите начальное значение order (например, 10):', '10')) || 10;
+                
+                let count = 0;
+                selectedCards.forEach(cardId => {
+                    if (cards[cardId]) {
+                        cards[cardId].order = startOrder + count;
+                        count++;
+                    }
+                });
+                
+                this.saveCards();
+                this.renderCardList();
+                this.showSaveStatus(`✅ Порядок обновлен у ${count} карточек`, 'success');
+            }
+            
             // Применить массовые изменения
             applyBulkChanges() {
                 this.saveCards();
-                this.showSaveStatus(`✅ Массовые изменения применены к ${selectedCards.size} карточкам`, 'success');
+                this.showSaveStatus(`✅ Массовые изменения применены к ${selectedCards.size} карточек`, 'success');
             }
             
             // Обновление мини-предпросмотра
@@ -2574,11 +3467,13 @@
                 const borderColor = document.getElementById('borderColor').value;
                 const id = document.getElementById('cardId').value || 'ID';
                 const type = document.getElementById('cardType').value;
+                const order = document.getElementById('cardOrder').value || '0';
                 const category = document.getElementById('cardCategory').value;
                 const tags = document.getElementById('cardTags').value;
                 const status = document.getElementById('status').value;
                 const difficulty = document.getElementById('difficulty').value;
                 const usageCount = document.getElementById('usageCount').value;
+                const author = document.getElementById('author').value || 'user';
                 
                 // Секции
                 const sections = [];
@@ -2598,6 +3493,7 @@
                 document.getElementById('previewEmojiText').textContent = emoji;
                 document.getElementById('previewTextValue').textContent = text;
                 document.getElementById('previewType').textContent = this.getTypeName(type);
+                document.getElementById('previewOrder').textContent = order;
                 document.getElementById('previewColor').textContent = color;
                 document.getElementById('previewBorderColor').textContent = borderColor;
                 document.getElementById('previewCategory').textContent = category ? 
@@ -2607,6 +3503,7 @@
                 document.getElementById('previewDifficulty').textContent = difficulty + ' ' + this.getDifficultyName(difficulty);
                 document.getElementById('previewSections').textContent = sections.length > 0 ? sections.join(', ') : 'нет';
                 document.getElementById('previewUsageCount').textContent = usageCount;
+                document.getElementById('previewAuthor').textContent = author;
             }
             
             // Показать модальное окно предпросмотра
@@ -2662,15 +3559,26 @@
             populateFilters() {
                 // Заполнение категорий
                 const categorySelect = document.getElementById('cardCategory');
-                categorySelect.innerHTML = '<option value="">Без категории</option>';
+                categorySelect.innerHTML = '<option value="">Без категории (верхний уровень)</option>';
                 
-                Object.values(cards).forEach(card => {
-                    if (card.type === 'category') {
-                        const option = document.createElement('option');
-                        option.value = card.id;
-                        option.textContent = `${card.emoji || '📁'} ${card.text} (${card.id})`;
-                        categorySelect.appendChild(option);
-                    }
+                // Получить только категории верхнего уровня
+                const topLevelCategories = Object.values(cards).filter(card => 
+                    card.type === 'category' && (!card.category || card.category === '')
+                );
+                
+                // Отсортировать по order
+                topLevelCategories.sort((a, b) => {
+                    const orderA = a.order || 9999;
+                    const orderB = b.order || 9999;
+                    if (orderA !== orderB) return orderA - orderB;
+                    return a.text.localeCompare(b.text);
+                });
+                
+                topLevelCategories.forEach(card => {
+                    const option = document.createElement('option');
+                    option.value = card.id;
+                    option.textContent = `${card.emoji || '📁'} ${card.text} (${card.id})`;
+                    categorySelect.appendChild(option);
                 });
                 
                 // Заполнение секций
@@ -2711,6 +3619,11 @@
                 // Сортировка
                 filteredCards.sort((a, b) => {
                     switch (currentSort) {
+                        case 'order':
+                            const orderA = a.order || 9999;
+                            const orderB = b.order || 9999;
+                            if (orderA !== orderB) return orderA - orderB;
+                            return a.text.localeCompare(b.text);
                         case 'text':
                             return a.text.localeCompare(b.text);
                         case 'text-desc':
@@ -2761,6 +3674,7 @@
                         <input type="checkbox" class="card-checkbox" ${isSelected ? 'checked' : ''}>
                         <div class="card-emoji">${card.emoji || '📄'}</div>
                         <div class="card-text">${card.text}</div>
+                        <div class="card-order" title="Порядок: ${card.order || 'не задан'}">${card.order || '?'}</div>
                         <div class="card-id">${card.id}</div>
                     `;
                     
@@ -2798,6 +3712,7 @@
                 document.getElementById('cardCategory').value = card.category || '';
                 document.getElementById('cardColor').value = card.color || '#E3F2FD';
                 document.getElementById('borderColor').value = card.borderColor || card.color || '#2196F3';
+                document.getElementById('cardOrder').value = card.order || 0;
                 document.getElementById('cardTags').value = card.tags ? card.tags.join(', ') : '';
                 document.getElementById('difficulty').value = card.difficulty || 1;
                 document.getElementById('status').value = card.status || 'active';
@@ -2826,6 +3741,9 @@
                 
                 // Метаданные
                 this.loadMetadataCard(card.metadata || {});
+                
+                // Обновить подсказки грамматики
+                this.updateGrammarHints();
                 
                 // Обновить предпросмотр
                 this.updateMiniPreview();
@@ -2890,6 +3808,7 @@
                 card.category = document.getElementById('cardCategory').value;
                 card.color = document.getElementById('cardColor').value;
                 card.borderColor = document.getElementById('borderColor').value;
+                card.order = parseInt(document.getElementById('cardOrder').value) || 0;
                 
                 // Теги
                 const tagsText = document.getElementById('cardTags').value;
@@ -2898,7 +3817,7 @@
                 card.difficulty = parseInt(document.getElementById('difficulty').value);
                 card.status = document.getElementById('status').value;
                 card.usageCount = parseInt(document.getElementById('usageCount').value) || 0;
-                card.author = document.getElementById('author').value;
+                card.author = document.getElementById('author').value || 'user';
                 card.version = parseInt(document.getElementById('version').value);
                 
                 // Даты
@@ -3162,8 +4081,10 @@
             
             // Добавление новой карточки
             addNewCard() {
-                const defaultId = `NEW-${Date.now().toString(36).toUpperCase()}`;
-                const cardId = prompt('Введите ID новой карточки (например: NEW-CARD):', defaultId);
+                const cardType = document.getElementById('cardType').value || 'object';
+                const prefix = cardType.toUpperCase().substring(0, 3);
+                const defaultId = `${prefix}-${Date.now().toString(36).toUpperCase()}`;
+                const cardId = prompt('Введите ID новой карточки:', defaultId);
                 if (!cardId) return;
                 
                 if (cards[cardId]) {
@@ -3171,21 +4092,30 @@
                     return;
                 }
                 
+                // Найти максимальный order
+                let maxOrder = 0;
+                Object.values(cards).forEach(card => {
+                    if (card.order && card.order > maxOrder) {
+                        maxOrder = card.order;
+                    }
+                });
+                
                 // Создать новую карточку
                 const newCard = {
                     id: cardId,
                     text: 'Новая карточка',
                     emoji: '✨',
-                    type: 'object',
+                    type: cardType,
                     category: '',
                     forms: {},
                     tags: ['новая'],
                     difficulty: 1,
                     status: 'draft',
                     usageCount: 0,
+                    order: maxOrder + 10,
                     created: new Date().toISOString(),
                     modified: new Date().toISOString(),
-                    author: 'user',
+                    author: document.getElementById('author').value || 'user',
                     version: 1,
                     color: '#E3F2FD',
                     borderColor: '#2196F3',
@@ -3236,6 +4166,15 @@
                 duplicate.modified = new Date().toISOString();
                 duplicate.usageCount = 0;
                 duplicate.version = 1;
+                
+                // Найти максимальный order для нового порядка
+                let maxOrder = 0;
+                Object.values(cards).forEach(card => {
+                    if (card.order && card.order > maxOrder) {
+                        maxOrder = card.order;
+                    }
+                });
+                duplicate.order = maxOrder + 10;
                 
                 cards[newId] = duplicate;
                 this.saveCards();
@@ -3301,12 +4240,17 @@
                 document.getElementById('usageCount').value = 0;
                 document.getElementById('author').value = 'user';
                 document.getElementById('version').value = 1;
+                document.getElementById('cardOrder').value = '0';
                 document.getElementById('cardEmoji').value = '✨';
                 document.getElementById('cardText').value = '';
                 document.getElementById('cardId').value = '';
+                document.getElementById('cardType').value = 'object';
                 
                 // Сбросить метаданные
                 this.loadMetadataCard({});
+                
+                // Обновить подсказки грамматики
+                this.updateGrammarHints();
                 
                 // Показать первую секцию как выбранную
                 const mainCheckbox = document.querySelector('#sectionsCheckbox input[value="Главная"]');
@@ -3368,6 +4312,9 @@
                     const newId = `${prefix}-${random}`;
                     idInput.value = newId;
                 }
+                
+                // Обновить подсказки грамматики
+                this.updateGrammarHints();
             }
             
             // Поиск дубликатов
@@ -3980,6 +4927,30 @@
                         errors.push(`Карточка ${id}: отсутствует тип`);
                     }
                     
+                    // Проверить грамматические формы по типу
+                    if (card.forms) {
+                        const requirements = grammarRequirements[card.type] || grammarRequirements.default;
+                        
+                        // Проверить обязательные поля
+                        if (requirements.accusative === 'required' && !card.forms.accusative) {
+                            warnings.push(`Карточка ${id} (${card.type}): отсутствует обязательная форма винительного падежа`);
+                        }
+                        
+                        if (requirements.genitive === 'required' && !card.forms.genitive) {
+                            warnings.push(`Карточка ${id} (${card.type}): отсутствует обязательная форма родительного падежа`);
+                        }
+                        
+                        if (requirements.instrumental === 'required' && !card.forms.instrumental) {
+                            warnings.push(`Карточка ${id} (${card.type}): отсутствует обязательная форма творительного падежа`);
+                        }
+                        
+                        if (requirements.with === 'required' && !card.forms.with) {
+                            warnings.push(`Карточка ${id} (${card.type}): отсутствует обязательная форма с предлогом "с"`);
+                        }
+                    } else if (card.type === 'object' || card.type === 'person') {
+                        warnings.push(`Карточка ${id} (${card.type}): отсутствуют грамматические формы`);
+                    }
+                    
                     // Проверить ссылки на категории
                     if (card.category && !cardSet[card.category]) {
                         warnings.push(`Карточка ${id}: категория "${card.category}" не найдена`);
@@ -3990,16 +4961,6 @@
                         card.metadata.allowedObjects.forEach(objId => {
                             if (!cardSet[objId]) {
                                 warnings.push(`Карточка ${id}: объект "${objId}" не найден`);
-                            }
-                        });
-                    }
-                    
-                    // Проверить forms
-                    if (card.forms) {
-                        const validForms = ['accusative', 'genitive', 'dative', 'instrumental', 'prepositional', 'with', 'in', 'on'];
-                        Object.keys(card.forms).forEach(form => {
-                            if (!validForms.includes(form)) {
-                                warnings.push(`Карточка ${id}: нестандартная форма слова: ${form}`);
                             }
                         });
                     }
@@ -4021,7 +4982,7 @@
                 
                 // Показать приветственное сообщение
                 setTimeout(() => {
-                    window.cardEditor.showSaveStatus('✨ Добро пожаловать в редактор карточек Ком-Ком!', 'success');
+                    window.cardEditor.showSaveStatus('✨ Добро пожаловать в редактор карточек Ком-Ком 2.4!', 'success');
                 }, 1000);
             }, 1000);
         });
