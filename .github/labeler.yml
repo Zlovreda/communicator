@@ -1,0 +1,28 @@
+bug:
+  - title: ['[BUG]', 'bug', 'ошибка', 'не работает', 'сломалось']
+  - body: ['ошибка', 'баг', 'не работает', 'сломалось', 'exception', 'error']
+
+enhancement:
+  - title: ['[FEATURE]', 'feature', 'функция', 'улучшение', 'enhancement']
+  - body: ['хочу', 'нужно', 'предлагаю', 'можно ли', 'было бы здорово']
+
+documentation:
+  - title: ['[DOCS]', 'документация', 'docs', 'readme']
+  - body: ['документация', 'документ', 'readme', 'wiki']
+
+question:
+  - title: ['[QUESTION]', 'вопрос', 'question', 'как', 'помогите']
+  - body: ['?', 'вопрос', 'не понимаю', 'как сделать', 'помогите']
+
+good first issue:
+  - body: ['легко', 'просто', 'начало', 'новичок', 'first', 'beginner']
+
+help wanted:
+  - body: ['помощь', 'help', 'нужна помощь', 'кто может', 'не получается']
+
+security:
+  - title: ['безопасность', 'security', 'уязвимость', 'vulnerability']
+  - body: ['безопасность', 'security', 'уязвимость', 'vulnerability', 'опасно']
+
+cla-required:
+  - body: ['cla', 'лицензия', 'соглашение', 'contributor agreement']
