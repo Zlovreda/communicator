@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ком-Ком: Коммуникатор для детей с РАС</title>
   <style>
-    /* Основные стили (остаются без изменений) */
+    /* Все стили остаются без изменений */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -128,6 +128,10 @@
 
     .control-btn.remote {
       background: #9b59b6;
+    }
+
+    .control-btn.editor {
+      background: #17a2b8;
     }
 
     .phrase-container {
@@ -711,6 +715,12 @@
       align-items: center;
       gap: 15px;
       box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+
+    .schedule-card-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
     .schedule-time {
@@ -718,23 +728,61 @@
       font-size: 1.1rem;
       min-width: 80px;
       color: #2c3e50;
+      background: #f8f9fa;
+      padding: 5px 10px;
+      border-radius: 5px;
+      text-align: center;
     }
 
     .schedule-emoji {
       font-size: 2rem;
       min-width: 50px;
       text-align: center;
+      background: #f0f8ff;
+      padding: 10px;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .schedule-activity {
       flex: 1;
       font-size: 1rem;
+      font-weight: 500;
     }
 
     .schedule-actions {
       display: flex;
       gap: 5px;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
+
+    .schedule-card-item:hover .schedule-actions {
+      opacity: 1;
+    }
+
+    .schedule-actions button {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 5px;
+      transition: all 0.3s;
+    }
+
+    .schedule-actions button:hover {
+      background: #f0f0f0;
+      transform: scale(1.1);
+    }
+
+    .schedule-actions button:nth-child(1) { color: #3498db; }
+    .schedule-actions button:nth-child(2) { color: #9b59b6; }
+    .schedule-actions button:nth-child(3) { color: #e74c3c; }
 
     .emoji-picker {
       display: grid;
@@ -917,135 +965,6 @@
       margin-bottom: 15px;
     }
 
-    /* Стили для наград */
-    .rewards-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .reward-card {
-      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-      border-radius: 15px;
-      padding: 25px 20px;
-      text-align: center;
-      box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
-      border: 3px solid #ffc107;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .reward-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(255, 215, 0, 0.3);
-    }
-
-    .reward-card.locked {
-      background: linear-gradient(135deg, #ccc 0%, #eee 100%);
-      border-color: #999;
-      opacity: 0.7;
-    }
-
-    .reward-icon {
-      font-size: 3.5rem;
-      margin-bottom: 15px;
-    }
-
-    .reward-title {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #2c3e50;
-      margin-bottom: 10px;
-    }
-
-    .reward-description {
-      color: #34495e;
-      font-size: 0.9rem;
-      margin-bottom: 15px;
-    }
-
-    .reward-progress {
-      height: 8px;
-      background: rgba(255, 255, 255, 0.5);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 10px;
-    }
-
-    .reward-progress-bar {
-      height: 100%;
-      background: #27ae60;
-      transition: width 0.5s;
-    }
-
-    .reward-stats {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: #2c3e50;
-    }
-
-    .stars-container {
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      margin: 20px 0;
-    }
-
-    .star {
-      font-size: 2.5rem;
-      color: #ccc;
-      transition: color 0.3s, transform 0.3s;
-    }
-
-    .star.active {
-      color: #ffd700;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-    }
-
-    .star:hover {
-      transform: scale(1.2);
-    }
-
-    .achievement-badge {
-      display: inline-block;
-      background: #27ae60;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      margin: 5px;
-    }
-
-    .motivation-message {
-      text-align: center;
-      padding: 15px;
-      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-      border-radius: 10px;
-      margin: 20px 0;
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-
-    .celebration-animation {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      pointer-events: none;
-      z-index: 3000;
-      display: none;
-    }
-
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background: #f00;
-      opacity: 0.8;
-    }
-
     @media (max-width: 768px) {
       .categories-container, .cards-container {
         grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -1107,10 +1026,67 @@
       .schedule-cards {
         grid-template-columns: 1fr;
       }
+    }
 
-      .rewards-container {
-        grid-template-columns: 1fr;
-      }
+    /* Стили для ссылок в футере */
+    .footer-link {
+      color: #3498db;
+      text-decoration: none;
+      margin-right: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+      color: #2980b9;
+    }
+
+    /* Улучшенные стили для редактирования расписания */
+    .schedule-edit-mode .schedule-card-item {
+      background: #f9f9f9;
+      border-style: dashed;
+    }
+
+    .schedule-empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #7f8c8d;
+    }
+
+    .schedule-empty-state h3 {
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .schedule-empty-state p {
+      margin-bottom: 20px;
+    }
+
+    .time-input {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .time-input input {
+      width: 70px;
+      text-align: center;
+      padding: 8px;
+      border: 2px solid #3498db;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .schedule-total {
+      text-align: center;
+      padding: 10px;
+      background: #e8f5e9;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #2e7d32;
     }
   </style>
 </head>
@@ -1127,7 +1103,6 @@
       <button class="tab-btn" data-tab="emergency">Экстренные ситуации</button>
       <button class="tab-btn" data-tab="schedule">Распорядок</button>
       <button class="tab-btn" data-tab="history">История</button>
-      <button class="tab-btn" data-tab="rewards">Награды</button>
       <button class="tab-btn" data-tab="child">Данные о ребенке</button>
       <button class="tab-btn" data-tab="settings">Настройки</button>
     </div>
@@ -1200,8 +1175,15 @@
         <button class="day-btn" data-day="saturday">Суббота</button>
         <button class="day-btn" data-day="sunday">Воскресенье</button>
       </div>
+      
+      <div class="schedule-total" id="scheduleTotal">
+        Всего занятий: <span id="totalActivities">0</span>
+      </div>
+      
       <button class="edit-btn" id="editScheduleBtn">Редактировать распорядок</button>
-      <div class="schedule-cards" id="scheduleCards"></div>
+      <div class="schedule-cards" id="scheduleCards">
+        <!-- Расписание будет загружено здесь -->
+      </div>
     </div>
 
     <!-- Страница обучения -->
@@ -1293,26 +1275,6 @@
       </div>
     </div>
 
-    <!-- Страница наград -->
-    <div id="rewards" class="tab-content">
-      <h2>Мои награды</h2>
-      
-      <div class="motivation-message" id="motivationMessage">
-        Ты молодец! Продолжай в том же духе!
-      </div>
-      
-      <div class="stars-container" id="starsContainer">
-        <!-- Звезды будут добавлены динамически -->
-      </div>
-      
-      <div class="rewards-container" id="rewardsContainer">
-        <!-- Награды будут загружены динамически -->
-      </div>
-      
-      <div class="section-title">Достижения</div>
-      <div id="achievementsContainer"></div>
-    </div>
-
     <!-- Страница настроек -->
     <div id="settings" class="tab-content">
       <h2>Настройки</h2>
@@ -1328,8 +1290,9 @@
           <div class="settings-controls">
             <button class="control-btn import" id="importBtn">Импорт карточек</button>
             <button class="control-btn export" id="exportBtn">Экспорт карточек</button>
-            <button class="control-btn reset" id="resetBtn">Сброс к начальным</button>
             <button class="control-btn remote" id="remoteLoadBtn">Загрузить с сервера</button>
+            <button class="control-btn editor" id="editorBtn">Редактор карточек</button>
+            <button class="control-btn reset" id="resetBtn">Сброс к начальным</button>
             <input type="file" id="fileInput" class="file-input" accept=".json">
           </div>
         </div>
@@ -1337,11 +1300,15 @@
         <div class="settings-card">
           <h3>Настройки безопасности</h3>
           <div class="form-group">
-            <label>Сменить PIN-код (4 цифры)</label>
+            <label>Текущий PIN-код</label>
+            <input type="password" id="currentPin" maxlength="4" placeholder="Введите текущий PIN">
+          </div>
+          <div class="form-group">
+            <label>Новый PIN-код (4 цифры)</label>
             <input type="password" id="newPin" maxlength="4" placeholder="Новый PIN">
           </div>
           <div class="form-group">
-            <label>Подтвердите PIN-код</label>
+            <label>Подтвердите новый PIN-код</label>
             <input type="password" id="confirmPin" maxlength="4" placeholder="Подтвердите PIN">
           </div>
           <button class="save-btn" id="changePinBtn">Сменить PIN</button>
@@ -1381,16 +1348,45 @@
         </div>
 
         <div class="settings-card">
-          <h3>Настройки наград</h3>
-          <div class="form-group">
-            <label>Цель на день: <span id="dailyGoalValue">10</span> фраз</label>
-            <div class="slider-container">
-              <span>5</span>
-              <input type="range" id="dailyGoalSlider" min="5" max="50" step="5" value="10">
-              <span>50</span>
+          <h3>О приложении</h3>
+          <div class="settings-info">
+            <div class="settings-info-item">
+              <span class="settings-info-label">Лицензия:</span>
+              <span class="settings-info-value">
+                <a href="https://github.com/Zlovreda/Kom-Kom-Communicator/blob/main/LICENSE" target="_blank" class="footer-link">📜 Apache License 2.0</a>
+              </span>
+            </div>
+            <div class="settings-info-item">
+              <span class="settings-info-label">Автор:</span>
+              <span class="settings-info-value">
+                <a href="https://github.com/Zlovreda" target="_blank" class="footer-link">👤 Zlovreda</a>
+              </span>
+            </div>
+            <div class="settings-info-item">
+              <span class="settings-info-label">Copyright:</span>
+              <span class="settings-info-value">© 2025 Pavel Nikolaevich Kopchenov</span>
+            </div>
+            <div class="settings-info-item">
+              <span class="settings-info-label">Версия:</span>
+              <span class="settings-info-value">4.4.0</span>
+            </div>
+            <div class="settings-info-item">
+              <span class="settings-info-label">Репозиторий:</span>
+              <span class="settings-info-value">
+                <a href="https://github.com/Zlovreda/Kom-Kom-Communicator" target="_blank" class="footer-link">GitHub</a>
+              </span>
+            </div>
+            <div class="settings-info-item">
+              <span class="settings-info-label">Поддержка:</span>
+              <span class="settings-info-value">
+                <a href="https://github.com/Zlovreda/Kom-Kom-Communicator/issues" target="_blank" class="footer-link">Сообщить о проблеме</a>
+              </span>
             </div>
           </div>
-          <button class="save-btn" id="saveRewardsBtn">Сохранить настройки</button>
+          <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">
+            Ком-Ком - открытый проект для помощи детям с расстройствами аутистического спектра.
+            Все материалы распространяются свободно.
+          </p>
         </div>
       </div>
     </div>
@@ -1464,12 +1460,10 @@
     </div>
   </div>
 
-  <!-- Анимация празднования -->
-  <div class="celebration-animation" id="celebrationAnimation"></div>
-
   <script>
     // Конфигурация URL для удаленной загрузки карточек
     const REMOTE_CARDS_URL = 'https://raw.githubusercontent.com/Zlovreda/communicator/refs/heads/main/cards.json';
+    const EDITOR_URL = 'https://zlovreda.github.io/Kom-Kom-Communicator/editor.html';
     
     // Конфигурация PIN-кода
     const DEFAULT_PIN = "0000";
@@ -1483,14 +1477,6 @@
     let voices = [];
     let selectedVoice = null;
     let history = JSON.parse(localStorage.getItem('communicator_history') || '[]');
-    let rewardsData = JSON.parse(localStorage.getItem('communicator_rewards') || JSON.stringify({
-      totalPhrases: 0,
-      dailyPhrases: 0,
-      lastActivityDate: new Date().toISOString().split('T')[0],
-      stars: 0,
-      achievements: [],
-      dailyGoal: parseInt(localStorage.getItem('daily_goal') || '10')
-    }));
     
     // Инициализация голосов
     function loadVoices() {
@@ -1519,7 +1505,7 @@
       speechSynthesis.onvoiceschanged = loadVoices;
     }
 
-    // Грамматическая система
+    // УЛУЧШЕННАЯ УНИВЕРСАЛЬНАЯ ГРАММАТИЧЕСКАЯ СИСТЕМА
     class GrammarSystem {
       constructor() {
         this.caseRules = {
@@ -1545,7 +1531,7 @@
         
         const { case: requiredCase, preposition, contextType } = context;
         
-        // Если есть готовая форма для конкретного контекста
+        // Если есть специальная форма для конкретного контекста
         if (contextType && card.forms[contextType]) {
           return card.forms[contextType];
         }
@@ -1572,19 +1558,19 @@
       getObjectCaseForAction(action) {
         if (!action || !action.forms) return 'accusative';
         
-        // Определяем, какой предлог использует действие для объектов
-        const actionForms = action.forms;
+        // Проверяем формы действия
+        if (action.forms) {
+          // Если действие требует предлога "с" (играть с)
+          if (action.forms.with) return 'instrumental';
+          
+          // Если действие требует предлога "в" (играть в)
+          if (action.forms.in) return 'accusative';
+          
+          // Если действие требует предлога "на" (играть на)
+          if (action.forms.on) return 'prepositional';
+        }
         
-        // Если действие требует предлога "в" (играть в)
-        if (actionForms.in) return 'accusative';
-        
-        // Если действие требует предлога "на" (играть на)
-        if (actionForms.on) return 'prepositional';
-        
-        // Если действие требует предлога "с" (играть с)
-        if (actionForms.with) return 'instrumental';
-        
-        // По умолчанию винительный падеж (есть яблоко)
+        // По умолчанию винительный падеж
         return 'accusative';
       }
 
@@ -1592,22 +1578,43 @@
       getObjectPrepositionForAction(action) {
         if (!action || !action.forms) return null;
         
-        const actionForms = action.forms;
-        
-        if (actionForms.in) return 'in';
-        if (actionForms.on) return 'on';
-        if (actionForms.with) return 'with';
+        // Проверяем формы действия
+        if (action.forms) {
+          if (action.forms.with) return 'with';
+          if (action.forms.in) return 'in';
+          if (action.forms.on) return 'on';
+        }
         
         return null;
       }
 
+      // Является ли действие самостоятельным (не требует объектов)
+      isStandaloneAction(action) {
+        if (!action) return false;
+        
+        if (action.metadata && action.metadata.isStandalone) {
+          return true;
+        }
+        
+        // Определяем по id если это базовые физиологические действия
+        if (action.id && ['ACT-TOILET-PEE', 'ACT-TOILET-POO', 'ACT-HURT'].includes(action.id)) {
+          return true;
+        }
+        
+        return false;
+      }
+
       // Сформировать фразу для человека
       getPersonPhrase(person, isMultiple = false) {
-        if (person.forms && person.forms.with) {
+        if (!person.forms) return `с ${person.text}`;
+        
+        // Проверяем специальную форму для предлога "с"
+        if (person.forms.with) {
           return person.forms.with;
         }
         
-        if (person.forms && person.forms.instrumental) {
+        // Используем творительный падеж для предлога "с"
+        if (person.forms.instrumental) {
           return `с ${person.forms.instrumental}`;
         }
         
@@ -1616,11 +1623,15 @@
 
       // Сформировать фразу для места
       getPlacePhrase(place) {
-        if (place.forms && place.forms.in) {
+        if (!place.forms) return `в ${place.text}`;
+        
+        // Проверяем специальную форму для предлога "в"
+        if (place.forms.in) {
           return place.forms.in;
         }
         
-        if (place.forms && place.forms.prepositional) {
+        // Используем предложный падеж для предлога "в"
+        if (place.forms.prepositional) {
           return `в ${place.forms.prepositional}`;
         }
         
@@ -1682,16 +1693,83 @@
         return `${items.join(', ')} ${conjunction} ${last}`;
       }
 
-      // Проверить согласование числительных
-      checkNumericalAgreement(count, word) {
-        // Простая проверка для русских числительных
-        if (count === 1) return word;
-        // Можно расширить для разных падежей
-        return word;
+      // Основной метод для формирования фразы
+      buildPhrase(phrase) {
+        const parts = [];
+        
+        // Особые случаи
+        if (phrase.action && phrase.action.id === 'ACT-HURT') {
+          // Фраза "У меня болит ..."
+          parts.push('У меня болит');
+          if (phrase.objects.length > 0) {
+            parts.push(this.getObjectPhrase(phrase.objects[0], phrase.action));
+          }
+          return parts.join(' ');
+        }
+        
+        if (phrase.action && phrase.action.type === 'emotion') {
+          // Фраза "Я ..." для эмоций
+          parts.push('Я', phrase.action.text);
+          return parts.join(' ');
+        }
+        
+        if (phrase.action && this.isStandaloneAction(phrase.action)) {
+          // Самостоятельные действия
+          if (phrase.subject) parts.push(phrase.subject);
+          if (phrase.desire) parts.push(phrase.desire);
+          parts.push(phrase.action.text);
+          if (phrase.time) parts.push(this.getTimePhrase(phrase.time));
+          return parts.join(' ');
+        }
+        
+        // Стандартная фраза
+        if (phrase.subject) parts.push(phrase.subject);
+        if (phrase.desire) parts.push(phrase.desire);
+        if (phrase.action) parts.push(phrase.action.text);
+        
+        // Люди
+        if (phrase.people.length > 0) {
+          const peoplePhrases = phrase.people.map(person => 
+            this.getPersonPhrase(person)
+          );
+          parts.push(this.joinHomogeneous(peoplePhrases));
+        }
+        
+        // Питомцы (аналогично людям)
+        if (phrase.pets.length > 0) {
+          const petPhrases = phrase.pets.map(pet => 
+            this.getPersonPhrase(pet)
+          );
+          parts.push(this.joinHomogeneous(petPhrases));
+        }
+        
+        // Места
+        if (phrase.places.length > 0) {
+          const placePhrases = phrase.places.map(place => 
+            this.getPlacePhrase(place)
+          );
+          // Обычно только одно место
+          parts.push(placePhrases[0]);
+        }
+        
+        // Объекты
+        if (phrase.objects.length > 0) {
+          const objectPhrases = phrase.objects.map(object => 
+            this.getObjectPhrase(object, phrase.action)
+          );
+          parts.push(this.joinHomogeneous(objectPhrases));
+        }
+        
+        // Время
+        if (phrase.time) {
+          parts.push(this.getTimePhrase(phrase.time));
+        }
+        
+        return parts.join(' ');
       }
     }
 
-    // Минимальный набор карточек для fallback
+    // Минимальный набор карточек для fallback с полем order для категорий
     const FALLBACK_CARDS = {
       "cards": {
         "CAT-GAMES": {
@@ -1715,7 +1793,8 @@
           "metadata": {
             "isCategory": true,
             "description": "Игры и игрушки"
-          }
+          },
+          "order": 10
         },
         "CAT-PEOPLE": {
           "id": "CAT-PEOPLE",
@@ -1738,7 +1817,8 @@
           "metadata": {
             "isCategory": true,
             "description": "Люди для совместной деятельности"
-          }
+          },
+          "order": 20
         },
         "CAT-PLACES": {
           "id": "CAT-PLACES",
@@ -1761,7 +1841,8 @@
           "metadata": {
             "isCategory": true,
             "description": "Различные места"
-          }
+          },
+          "order": 30
         },
         "CAT-FOOD": {
           "id": "CAT-FOOD",
@@ -1784,7 +1865,8 @@
           "metadata": {
             "isCategory": true,
             "description": "Различные виды еды"
-          }
+          },
+          "order": 40
         },
         "CAT-TIME": {
           "id": "CAT-TIME",
@@ -1807,7 +1889,8 @@
           "metadata": {
             "isCategory": true,
             "description": "Время и продолжительность"
-          }
+          },
+          "order": 50
         },
         "CAT-DRINK": {
           "id": "CAT-DRINK",
@@ -1830,7 +1913,8 @@
           "metadata": {
             "isCategory": true,
             "description": "Различные напитки"
-          }
+          },
+          "order": 60
         },
         "CAT-EMOTIONS": {
           "id": "CAT-EMOTIONS",
@@ -1853,7 +1937,8 @@
           "metadata": {
             "isCategory": true,
             "description": "Эмоциональное состояние"
-          }
+          },
+          "order": 70
         },
         "CAT-PAIN": {
           "id": "CAT-PAIN",
@@ -1876,742 +1961,389 @@
           "metadata": {
             "isCategory": true,
             "description": "Части тела, которые болят"
-          }
-        },
-        "CAT-COLORS": {
-          "id": "CAT-COLORS",
-          "text": "Цвета",
-          "emoji": "🎨",
-          "type": "category",
-          "category": null,
-          "forms": {},
-          "tags": ["категория", "обучение", "цвета"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 0,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "system",
-          "version": 1,
-          "color": "#F3E5F5",
-          "borderColor": "#9C27B0",
-          "sections": ["Обучение"],
-          "metadata": {
-            "isCategory": true,
-            "description": "Изучение цветов"
-          }
-        },
-        "CAT-DIALOG-BASIC": {
-          "id": "CAT-DIALOG-BASIC",
-          "text": "Основное",
-          "emoji": "💬",
-          "type": "category",
-          "category": null,
-          "forms": {},
-          "tags": ["категория", "диалог", "основное"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 0,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "system",
-          "version": 1,
-          "color": "#E3F2FD",
-          "borderColor": "#2196F3",
-          "sections": ["Диалог"],
-          "metadata": {
-            "isCategory": true,
-            "description": "Основные фразы для диалога"
-          }
-        },
-        "ACT-PLAY": {
-          "id": "ACT-PLAY",
-          "text": "играть",
-          "emoji": "🎮",
-          "type": "action",
-          "category": "CAT-GAMES",
-          "forms": {
-            "with": "с",
-            "in": "в"
           },
-          "tags": ["действие", "игра"],
+          "order": 80
+        },
+        "CAT-HYGIENE": {
+          "id": "CAT-HYGIENE",
+          "text": "Гигиена",
+          "emoji": "🚿",
+          "type": "category",
+          "category": null,
+          "forms": {},
+          "tags": ["категория", "гигиена", "чистота"],
           "difficulty": 1,
           "status": "active",
-          "usageCount": 65,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
+          "version": 1,
+          "color": "#E0F7FA",
+          "borderColor": "#00BCD4",
+          "sections": ["Главная"],
+          "metadata": {
+            "isCategory": true,
+            "description": "Гигиена и уход за собой"
+          },
+          "order": 85
+        },
+        
+        // ГИГИЕНА: Основные действия
+        "ACT-TOILET-PEE": {
+          "id": "ACT-TOILET-PEE",
+          "text": "пописать",
+          "emoji": "💦",
+          "type": "action",
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "accusative": "сходить",
+            "genitive": "посещения",
+            "instrumental": "посещением"
+          },
+          "tags": ["гигиена", "действие", "туалет"],
+          "difficulty": 2,
+          "status": "active",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
+          "version": 1,
+          "color": "#E8F5E9",
+          "borderColor": "#4CAF50",
+          "sections": ["Главная"],
+          "metadata": {
+            "isStandalone": true,
+            "allowedWith": [],
+            "allowedObjects": [],
+            "maxPeople": 0,
+            "maxPets": 0,
+            "maxPlaces": 0,
+            "maxObjects": 0
+          }
+        },
+        
+        "ACT-TOILET-POO": {
+          "id": "ACT-TOILET-POO",
+          "text": "покакать",
+          "emoji": "💩",
+          "type": "action",
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "accusative": "сходить",
+            "genitive": "посещения",
+            "instrumental": "посещением"
+          },
+          "tags": ["гигиена", "действие", "туалет"],
+          "difficulty": 2,
+          "status": "active",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
           "version": 1,
           "color": "#FFF3E0",
           "borderColor": "#FF9800",
           "sections": ["Главная"],
           "metadata": {
-            "allowedWith": ["people", "pets", "places", "objects"],
-            "allowedObjects": ["GAME-CUBES", "GAME-BALL"],
-            "maxPeople": 2,
-            "maxPets": 1,
-            "maxPlaces": 1,
-            "maxObjects": 2
+            "isStandalone": true,
+            "allowedWith": [],
+            "allowedObjects": [],
+            "maxPeople": 0,
+            "maxPets": 0,
+            "maxPlaces": 0,
+            "maxObjects": 0
           }
         },
-        "ACT-EAT": {
-          "id": "ACT-EAT",
-          "text": "есть",
-          "emoji": "🍴",
+        
+        "ACT-WASH-HANDS": {
+          "id": "ACT-WASH-HANDS",
+          "text": "помыть руки",
+          "emoji": "🧼",
           "type": "action",
-          "category": "CAT-FOOD",
-          "forms": {},
-          "tags": ["действие", "еда"],
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "accusative": "помыть",
+            "genitive": "мытья",
+            "instrumental": "мытьём"
+          },
+          "tags": ["гигиена", "действие", "чистота"],
           "difficulty": 1,
           "status": "active",
-          "usageCount": 48,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
           "version": 1,
-          "color": "#FFF3E0",
-          "borderColor": "#FF9800",
+          "color": "#E1F5FE",
+          "borderColor": "#03A9F4",
           "sections": ["Главная"],
           "metadata": {
             "allowedWith": ["places", "objects"],
-            "allowedObjects": ["FOOD-APPLE", "FOOD-BREAD", "FOOD-CANDY"],
+            "allowedObjects": ["HYG-SOAP", "HYG-TOWEL", "HYG-WATER"],
             "maxPeople": 0,
             "maxPets": 0,
             "maxPlaces": 1,
             "maxObjects": 2
           }
         },
-        "ACT-DRINK": {
-          "id": "ACT-DRINK",
-          "text": "пить",
-          "emoji": "🥛",
+        
+        "ACT-BRUSH-TEETH": {
+          "id": "ACT-BRUSH-TEETH",
+          "text": "почистить зубы",
+          "emoji": "🦷",
           "type": "action",
-          "category": "CAT-DRINK",
-          "forms": {},
-          "tags": ["действие", "питье"],
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "accusative": "почистить",
+            "genitive": "чистки",
+            "instrumental": "чисткой"
+          },
+          "tags": ["гигиена", "действие", "зубы"],
           "difficulty": 1,
           "status": "active",
-          "usageCount": 42,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
+          "version": 1,
+          "color": "#E8F5E9",
+          "borderColor": "#4CAF50",
+          "sections": ["Главная"],
+          "metadata": {
+            "allowedWith": ["places", "objects"],
+            "allowedObjects": ["HYG-TOOTHBRUSH", "HYG-TOOTHPASTE", "HYG-CUP"],
+            "maxPeople": 0,
+            "maxPets": 0,
+            "maxPlaces": 1,
+            "maxObjects": 2
+          }
+        },
+        
+        // ГИГИЕНА: Объекты
+        "HYG-TOILET": {
+          "id": "HYG-TOILET",
+          "text": "туалет",
+          "emoji": "🚽",
+          "type": "object",
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "accusative": "туалет",
+            "genitive": "туалета",
+            "dative": "туалету",
+            "instrumental": "туалетом",
+            "prepositional": "туалете",
+            "in": "в туалет",
+            "on": "на унитаз"
+          },
+          "tags": ["гигиена", "объект", "туалет"],
+          "difficulty": 1,
+          "status": "active",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
+          "version": 1,
+          "color": "#FFF3E0",
+          "borderColor": "#FF9800",
+          "sections": ["Главная"],
+          "metadata": {}
+        },
+        
+        "HYG-TOILET-PAPER": {
+          "id": "HYG-TOILET-PAPER",
+          "text": "туалетная бумага",
+          "emoji": "🧻",
+          "type": "object",
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "accusative": "туалетную бумагу",
+            "genitive": "туалетной бумаги",
+            "dative": "туалетной бумаге",
+            "instrumental": "туалетной бумагой",
+            "prepositional": "туалетной бумаге",
+            "with": "с туалетной бумагой"
+          },
+          "tags": ["гигиена", "объект", "туалет"],
+          "difficulty": 1,
+          "status": "active",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
+          "version": 1,
+          "color": "#FFF3E0",
+          "borderColor": "#FF9800",
+          "sections": ["Главная"],
+          "metadata": {}
+        },
+        
+        "HYG-SOAP": {
+          "id": "HYG-SOAP",
+          "text": "мыло",
+          "emoji": "🧼",
+          "type": "object",
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "accusative": "мыло",
+            "genitive": "мыла",
+            "dative": "мылу",
+            "instrumental": "мылом",
+            "prepositional": "мыле",
+            "with": "с мылом"
+          },
+          "tags": ["гигиена", "объект", "чистота"],
+          "difficulty": 1,
+          "status": "active",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
+          "version": 1,
+          "color": "#FFF3E0",
+          "borderColor": "#FF9800",
+          "sections": ["Главная"],
+          "metadata": {}
+        },
+        
+        "HYG-TOWEL": {
+          "id": "HYG-TOWEL",
+          "text": "полотенце",
+          "emoji": "🧺",
+          "type": "object",
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "accusative": "полотенце",
+            "genitive": "полотенца",
+            "dative": "полотенцу",
+            "instrumental": "полотенцем",
+            "prepositional": "полотенце",
+            "with": "с полотенцем"
+          },
+          "tags": ["гигиена", "объект", "сушить"],
+          "difficulty": 1,
+          "status": "active",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
+          "version": 1,
+          "color": "#E3F2FD",
+          "borderColor": "#2196F3",
+          "sections": ["Главная"],
+          "metadata": {}
+        },
+        
+        "HYG-TOOTHBRUSH": {
+          "id": "HYG-TOOTHBRUSH",
+          "text": "зубная щётка",
+          "emoji": "🪥",
+          "type": "object",
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "accusative": "зубную щётку",
+            "genitive": "зубной щётки",
+            "dative": "зубной щётке",
+            "instrumental": "зубной щёткой",
+            "prepositional": "зубной щётке",
+            "with": "зубной щёткой"
+          },
+          "tags": ["гигиена", "объект", "зубы"],
+          "difficulty": 1,
+          "status": "active",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
+          "version": 1,
+          "color": "#E8F5E9",
+          "borderColor": "#4CAF50",
+          "sections": ["Главная"],
+          "metadata": {}
+        },
+        
+        "HYG-TOOTHPASTE": {
+          "id": "HYG-TOOTHPASTE",
+          "text": "зубная паста",
+          "emoji": "🦷",
+          "type": "object",
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "accusative": "зубную пасту",
+            "genitive": "зубной пасты",
+            "dative": "зубной пасте",
+            "instrumental": "зубной пастой",
+            "prepositional": "зубной пасте",
+            "with": "с зубной пастой"
+          },
+          "tags": ["гигиена", "объект", "зубы"],
+          "difficulty": 1,
+          "status": "active",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
+          "version": 1,
+          "color": "#E8F5E9",
+          "borderColor": "#4CAF50",
+          "sections": ["Главная"],
+          "metadata": {}
+        },
+        
+        // ГИГИЕНА: Места
+        "PLACE-BATHROOM": {
+          "id": "PLACE-BATHROOM",
+          "text": "ванная комната",
+          "emoji": "🚽",
+          "type": "place",
+          "category": "CAT-HYGIENE",
+          "forms": {
+            "in": "в ванной",
+            "prepositional": "ванной",
+            "genitive": "ванной",
+            "dative": "ванной",
+            "accusative": "ванную комнату",
+            "instrumental": "ванной комнатой"
+          },
+          "tags": ["гигиена", "место", "ванная"],
+          "difficulty": 1,
+          "status": "active",
+          "usageCount": 0,
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
+          "author": "system",
           "version": 1,
           "color": "#E0F2F1",
           "borderColor": "#009688",
           "sections": ["Главная"],
-          "metadata": {
-            "allowedWith": ["places", "objects"],
-            "allowedObjects": ["DRINK-JUICE", "DRINK-WATER", "DRINK-MILK"],
-            "maxPeople": 0,
-            "maxPets": 0,
-            "maxPlaces": 1,
-            "maxObjects": 1
-          }
-        },
-        "PERSON-DAD": {
-          "id": "PERSON-DAD",
-          "text": "папа",
-          "emoji": "👨",
-          "type": "person",
-          "category": "CAT-PEOPLE",
-          "forms": {
-            "with": "с папой",
-            "instrumental": "папой",
-            "genitive": "папы",
-            "dative": "папе",
-            "accusative": "папу",
-            "prepositional": "папе"
-          },
-          "tags": ["человек", "семья"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 42,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#E3F2FD",
-          "borderColor": "#2196F3",
-          "sections": ["Главная"],
           "metadata": {}
         },
-        "PERSON-MOM": {
-          "id": "PERSON-MOM",
-          "text": "мама",
-          "emoji": "👩",
-          "type": "person",
-          "category": "CAT-PEOPLE",
-          "forms": {
-            "with": "с мамой",
-            "instrumental": "мамой",
-            "genitive": "мамы",
-            "dative": "маме",
-            "accusative": "маму",
-            "prepositional": "маме"
-          },
-          "tags": ["человек", "семья"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 38,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FCE4EC",
-          "borderColor": "#E91E63",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "PLACE-HOME": {
-          "id": "PLACE-HOME",
-          "text": "дом",
-          "emoji": "🏠",
+        
+        "PLACE-TOILET": {
+          "id": "PLACE-TOILET",
+          "text": "туалет",
+          "emoji": "🚽",
           "type": "place",
-          "category": "CAT-PLACES",
+          "category": "CAT-HYGIENE",
           "forms": {
-            "in": "дома",
-            "prepositional": "доме",
-            "genitive": "дома",
-            "dative": "дому",
-            "accusative": "дом",
-            "instrumental": "домом"
+            "in": "в туалете",
+            "prepositional": "туалете",
+            "genitive": "туалета",
+            "dative": "туалету",
+            "accusative": "туалет",
+            "instrumental": "туалетом"
           },
-          "tags": ["место", "жилье"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 35,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FFF3E0",
-          "borderColor": "#FF9800",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "PLACE-PARK": {
-          "id": "PLACE-PARK",
-          "text": "парк",
-          "emoji": "🌳",
-          "type": "place",
-          "category": "CAT-PLACES",
-          "forms": {
-            "in": "в парке",
-            "prepositional": "парке",
-            "genitive": "парка",
-            "dative": "парку",
-            "accusative": "парк",
-            "instrumental": "парком"
-          },
-          "tags": ["место", "отдых"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 28,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#E8F5E9",
-          "borderColor": "#4CAF50",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "FOOD-APPLE": {
-          "id": "FOOD-APPLE",
-          "text": "яблоко",
-          "emoji": "🍎",
-          "type": "object",
-          "category": "CAT-FOOD",
-          "forms": {
-            "accusative": "яблоко",
-            "genitive": "яблока",
-            "dative": "яблоку",
-            "instrumental": "яблоком",
-            "prepositional": "яблоке"
-          },
-          "tags": ["еда", "фрукт"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 35,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FFEBEE",
-          "borderColor": "#F44336",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "FOOD-BREAD": {
-          "id": "FOOD-BREAD",
-          "text": "хлеб",
-          "emoji": "🍞",
-          "type": "object",
-          "category": "CAT-FOOD",
-          "forms": {
-            "accusative": "хлеб",
-            "genitive": "хлеба",
-            "dative": "хлебу",
-            "instrumental": "хлебом",
-            "prepositional": "хлебе"
-          },
-          "tags": ["еда", "продукт"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 28,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FFF3E0",
-          "borderColor": "#FF9800",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "FOOD-CANDY": {
-          "id": "FOOD-CANDY",
-          "text": "конфета",
-          "emoji": "🍬",
-          "type": "object",
-          "category": "CAT-FOOD",
-          "forms": {
-            "accusative": "конфету",
-            "genitive": "конфеты",
-            "dative": "конфете",
-            "instrumental": "конфетой",
-            "prepositional": "конфете"
-          },
-          "tags": ["еда", "сладости"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 32,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FFEBEE",
-          "borderColor": "#F44336",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "DRINK-JUICE": {
-          "id": "DRINK-JUICE",
-          "text": "сок",
-          "emoji": "🧃",
-          "type": "object",
-          "category": "CAT-DRINK",
-          "forms": {
-            "accusative": "сок",
-            "genitive": "сока",
-            "dative": "соку",
-            "instrumental": "соком",
-            "prepositional": "соке"
-          },
-          "tags": ["питье", "напиток"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 32,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#E8F5E9",
-          "borderColor": "#4CAF50",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "DRINK-WATER": {
-          "id": "DRINK-WATER",
-          "text": "вода",
-          "emoji": "💧",
-          "type": "object",
-          "category": "CAT-DRINK",
-          "forms": {
-            "accusative": "воду",
-            "genitive": "воды",
-            "dative": "воде",
-            "instrumental": "водой",
-            "prepositional": "воде"
-          },
-          "tags": ["питье", "напиток"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 30,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#E8F5E9",
-          "borderColor": "#4CAF50",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "DRINK-MILK": {
-          "id": "DRINK-MILK",
-          "text": "молоко",
-          "emoji": "🥛",
-          "type": "object",
-          "category": "CAT-DRINK",
-          "forms": {
-            "accusative": "молоко",
-            "genitive": "молока",
-            "dative": "молоку",
-            "instrumental": "молоком",
-            "prepositional": "молоке"
-          },
-          "tags": ["питье", "напиток"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 22,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#E8F5E9",
-          "borderColor": "#4CAF50",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "EMOTION-HAPPY": {
-          "id": "EMOTION-HAPPY",
-          "text": "радостный",
-          "emoji": "😊",
-          "type": "emotion",
-          "category": "CAT-EMOTIONS",
-          "forms": {},
-          "tags": ["эмоция", "положительная"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 40,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FCE4EC",
-          "borderColor": "#E91E63",
-          "sections": ["Главная", "Эмоции"],
-          "metadata": {
-            "allowedWith": [],
-            "allowedObjects": [],
-            "maxPeople": 0,
-            "maxPets": 0,
-            "maxPlaces": 0,
-            "maxObjects": 0
-          }
-        },
-        "EMOTION-SAD": {
-          "id": "EMOTION-SAD",
-          "text": "грустный",
-          "emoji": "😢",
-          "type": "emotion",
-          "category": "CAT-EMOTIONS",
-          "forms": {},
-          "tags": ["эмоция", "отрицательная"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 35,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FCE4EC",
-          "borderColor": "#E91E63",
-          "sections": ["Главная", "Эмоции"],
-          "metadata": {
-            "allowedWith": [],
-            "allowedObjects": [],
-            "maxPeople": 0,
-            "maxPets": 0,
-            "maxPlaces": 0,
-            "maxObjects": 0
-          }
-        },
-        "COLOR-RED": {
-          "id": "COLOR-RED",
-          "text": "красный",
-          "emoji": "🔴",
-          "type": "color",
-          "category": "CAT-COLORS",
-          "forms": {},
-          "tags": ["цвет", "обучение"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 15,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FF0000",
-          "sections": ["Обучение"],
-          "metadata": {}
-        },
-        "COLOR-BLUE": {
-          "id": "COLOR-BLUE",
-          "text": "синий",
-          "emoji": "🔵",
-          "type": "color",
-          "category": "CAT-COLORS",
-          "forms": {},
-          "tags": ["цвет", "обучение"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 12,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#2196F3",
-          "sections": ["Обучение"],
-          "metadata": {}
-        },
-        "COLOR-GREEN": {
-          "id": "COLOR-GREEN",
-          "text": "зеленый",
-          "emoji": "🟢",
-          "type": "color",
-          "category": "CAT-COLORS",
-          "forms": {},
-          "tags": ["цвет", "обучение"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 10,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#4CAF50",
-          "sections": ["Обучение"],
-          "metadata": {}
-        },
-        "COLOR-YELLOW": {
-          "id": "COLOR-YELLOW",
-          "text": "желтый",
-          "emoji": "🟡",
-          "type": "color",
-          "category": "CAT-COLORS",
-          "forms": {},
-          "tags": ["цвет", "обучение"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 8,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FFEB3B",
-          "sections": ["Обучение"],
-          "metadata": {}
-        },
-        "PAIN-HEAD": {
-          "id": "PAIN-HEAD",
-          "text": "голова",
-          "emoji": "🧠",
-          "type": "pain",
-          "category": "CAT-PAIN",
-          "forms": {
-            "accusative": "голову",
-            "genitive": "головы",
-            "dative": "голове",
-            "instrumental": "головой",
-            "prepositional": "голове"
-          },
-          "tags": ["боль", "тело"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 25,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FFEBEE",
-          "borderColor": "#F44336",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "PAIN-STOMACH": {
-          "id": "PAIN-STOMACH",
-          "text": "живот",
-          "emoji": "🩹",
-          "type": "pain",
-          "category": "CAT-PAIN",
-          "forms": {
-            "accusative": "живот",
-            "genitive": "живота",
-            "dative": "животу",
-            "instrumental": "животом",
-            "prepositional": "животе"
-          },
-          "tags": ["боль", "тело"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 22,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FFEBEE",
-          "borderColor": "#F44336",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "TIME-NOW": {
-          "id": "TIME-NOW",
-          "text": "сейчас",
-          "emoji": "⏱️",
-          "type": "time",
-          "category": "CAT-TIME",
-          "forms": {
-            "genitive": "сейчас",
-            "dative": "сейчас",
-            "accusative": "сейчас",
-            "instrumental": "сейчас",
-            "prepositional": "сейчас"
-          },
-          "tags": ["время", "сейчас"],
-          "difficulty": 2,
-          "status": "active",
-          "usageCount": 30,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#E3F2FD",
-          "borderColor": "#2196F3",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "GAME-CUBES": {
-          "id": "GAME-CUBES",
-          "text": "кубики",
-          "emoji": "🧊",
-          "type": "object",
-          "category": "CAT-GAMES",
-          "forms": {
-            "in": "в кубики",
-            "accusative": "кубики",
-            "genitive": "кубиков",
-            "dative": "кубикам",
-            "instrumental": "кубиками",
-            "prepositional": "кубиках"
-          },
-          "tags": ["игрушка", "игра"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 45,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FFF3E0",
-          "borderColor": "#FF9800",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "GAME-BALL": {
-          "id": "GAME-BALL",
-          "text": "мяч",
-          "emoji": "⚽",
-          "type": "object",
-          "category": "CAT-GAMES",
-          "forms": {
-            "in": "в мяч",
-            "accusative": "мяч",
-            "genitive": "мяча",
-            "dative": "мячу",
-            "instrumental": "мячом",
-            "prepositional": "мяче"
-          },
-          "tags": ["игрушка", "игра"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 40,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "user",
-          "version": 1,
-          "color": "#FFF3E0",
-          "borderColor": "#FF9800",
-          "sections": ["Главная"],
-          "metadata": {}
-        },
-        "DIALOG-HELLO": {
-          "id": "DIALOG-HELLO",
-          "text": "привет",
-          "emoji": "👋",
-          "type": "dialog",
-          "category": "CAT-DIALOG-BASIC",
-          "forms": {},
-          "tags": ["диалог", "приветствие"],
+          "tags": ["гигиена", "место", "туалет"],
           "difficulty": 1,
           "status": "active",
           "usageCount": 0,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
+          "created": "2025-12-12T10:00:00.000Z",
+          "modified": "2025-12-12T10:00:00.000Z",
           "author": "system",
           "version": 1,
-          "color": "#E3F2FD",
-          "borderColor": "#2196F3",
-          "sections": ["Диалог"],
-          "metadata": {}
-        },
-        "DIALOG-THANK": {
-          "id": "DIALOG-THANK",
-          "text": "спасибо",
-          "emoji": "🙏",
-          "type": "dialog",
-          "category": "CAT-DIALOG-BASIC",
-          "forms": {},
-          "tags": ["диалог", "благодарность"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 0,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "system",
-          "version": 1,
-          "color": "#E8F5E9",
-          "borderColor": "#4CAF50",
-          "sections": ["Диалог"],
-          "metadata": {}
-        },
-        "DIALOG-PLEASE": {
-          "id": "DIALOG-PLEASE",
-          "text": "пожалуйста",
-          "emoji": "🥺",
-          "type": "dialog",
-          "category": "CAT-DIALOG-BASIC",
-          "forms": {},
-          "tags": ["диалог", "вежливость"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 0,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "system",
-          "version": 1,
-          "color": "#FFF3E0",
-          "borderColor": "#FF9800",
-          "sections": ["Диалог"],
-          "metadata": {}
-        },
-        "DIALOG-GOODBYE": {
-          "id": "DIALOG-GOODBYE",
-          "text": "пока",
-          "emoji": "👋",
-          "type": "dialog",
-          "category": "CAT-DIALOG-BASIC",
-          "forms": {},
-          "tags": ["диалог", "прощание"],
-          "difficulty": 1,
-          "status": "active",
-          "usageCount": 0,
-          "created": "2025-11-28T11:42:07.594Z",
-          "modified": "2025-11-28T11:42:07.594Z",
-          "author": "system",
-          "version": 1,
-          "color": "#FCE4EC",
-          "borderColor": "#E91E63",
-          "sections": ["Диалог"],
+          "color": "#E0F2F1",
+          "borderColor": "#009688",
+          "sections": ["Главная"],
           "metadata": {}
         }
       }
@@ -2951,9 +2683,6 @@
           case 'history':
             this.renderHistory();
             break;
-          case 'rewards':
-            this.renderRewards();
-            break;
           case 'settings':
             this.updateSystemInfo();
             break;
@@ -3137,6 +2866,11 @@
           await this.loadCardsFromRemote();
         });
 
+        // Кнопка редактора карточек
+        document.getElementById('editorBtn').addEventListener('click', () => {
+          this.openEditor();
+        });
+
         document.getElementById('speakBtn').addEventListener('click', () => {
           this.speakPhrase();
         });
@@ -3189,24 +2923,14 @@
           this.applyFontSettings();
         });
 
+        // Изменение PIN-кода с проверкой старого
         document.getElementById('changePinBtn').addEventListener('click', () => {
-          this.changePin();
+          this.changePinWithVerification();
         });
 
         document.getElementById('voiceSelect').addEventListener('change', (e) => {
           selectedVoice = voices.find(v => v.name === e.target.value);
           localStorage.setItem('selected_voice', e.target.value || '');
-        });
-
-        document.getElementById('dailyGoalSlider').addEventListener('input', (e) => {
-          document.getElementById('dailyGoalValue').textContent = e.target.value;
-          rewardsData.dailyGoal = parseInt(e.target.value);
-        });
-
-        document.getElementById('saveRewardsBtn').addEventListener('click', () => {
-          localStorage.setItem('daily_goal', rewardsData.dailyGoal);
-          this.saveRewardsData();
-          alert('Настройки наград сохранены!');
         });
 
         // Обработчики для выбора дня в расписании
@@ -3233,6 +2957,48 @@
         document.getElementById('exportHistoryBtn').addEventListener('click', () => {
           this.exportHistory();
         });
+      }
+
+      openEditor() {
+        window.open(EDITOR_URL, '_blank');
+      }
+
+      changePinWithVerification() {
+        const currentPinInput = document.getElementById('currentPin').value;
+        const newPin = document.getElementById('newPin').value;
+        const confirmPin = document.getElementById('confirmPin').value;
+        
+        if (!currentPinInput) {
+          alert('Введите текущий PIN-код');
+          return;
+        }
+        
+        if (currentPinInput !== currentPin) {
+          alert('Текущий PIN-код неверен');
+          document.getElementById('currentPin').value = '';
+          return;
+        }
+        
+        if (newPin.length !== 4 || !/^\d+$/.test(newPin)) {
+          alert('Новый PIN-код должен состоять из 4 цифр');
+          return;
+        }
+        
+        if (newPin !== confirmPin) {
+          alert('Новый PIN-код и подтверждение не совпадают');
+          return;
+        }
+        
+        currentPin = newPin;
+        localStorage.setItem('communicator_pin', currentPin);
+        
+        // Очищаем поля
+        document.getElementById('currentPin').value = '';
+        document.getElementById('newPin').value = '';
+        document.getElementById('confirmPin').value = '';
+        
+        alert('PIN-код успешно изменен');
+        this.updateSystemInfo();
       }
 
       speakText(text) {
@@ -3269,9 +3035,6 @@
           
           // Добавляем в историю
           this.addToHistory(text);
-          
-          // Обновляем статистику наград
-          this.updateRewardsStats();
         } else {
           console.warn('Speech synthesis not supported');
         }
@@ -3345,7 +3108,17 @@
       handleActionSelection(card) {
         const oldAction = this.currentPhrase.action;
         this.currentPhrase.action = card;
-        this.showReplaceMessage(card.text);
+        
+        // Если действие является самостоятельным, очищаем все остальные элементы
+        if (this.grammar.isStandaloneAction(card)) {
+          this.currentPhrase.people = [];
+          this.currentPhrase.pets = [];
+          this.currentPhrase.places = [];
+          this.currentPhrase.objects = [];
+          this.showWarningMessage('Самостоятельное действие - другие элементы очищены');
+        } else {
+          this.showReplaceMessage(card.text);
+        }
         
         // При смене действия очищаем несовместимые объекты
         this.checkAndResetIncompatibleElements(oldAction, card);
@@ -4066,80 +3839,13 @@
         this.updateUI();
       }
 
-      // ПЕРЕПИСАННЫЙ МЕТОД: Обновление отображения фразы с учетом грамматики
+      // ИСПРАВЛЕННЫЙ МЕТОД: Обновление отображения фразы с учетом грамматики
       updatePhraseDisplay() {
         const phraseDisplay = document.getElementById('phraseDisplay');
-        const phraseParts = [];
-
-        // Особые случаи
-        if (this.currentPhrase.action && this.currentPhrase.action.id === 'ACT-HURT') {
-          if (this.currentPhrase.objects.length > 0) {
-            phraseParts.push('У меня болит', this.currentPhrase.objects[0].text);
-          } else {
-            phraseParts.push('У меня болит');
-          }
-        } else if (this.currentPhrase.action && this.currentPhrase.action.type === 'emotion') {
-          phraseParts.push('Я', this.currentPhrase.action.text);
-        } else if (this.currentPhrase.action && this.currentPhrase.action.metadata && this.currentPhrase.action.metadata.isStandalone) {
-          phraseParts.push(this.currentPhrase.action.text);
-          if (this.currentPhrase.objects.length > 0) {
-            const objectPhrases = this.currentPhrase.objects.map(object => 
-              this.grammar.getObjectPhrase(object, this.currentPhrase.action)
-            );
-            phraseParts.push(this.grammar.joinHomogeneous(objectPhrases));
-          }
-        } else {
-          // Стандартная фраза с учетом грамматики
-          if (this.currentPhrase.subject) {
-            phraseParts.push(this.currentPhrase.subject);
-          }
-          if (this.currentPhrase.desire) {
-            phraseParts.push(this.currentPhrase.desire);
-          }
-          if (this.currentPhrase.action) {
-            phraseParts.push(this.currentPhrase.action.text);
-          }
-          
-          // Люди
-          if (this.currentPhrase.people.length > 0) {
-            const peoplePhrases = this.currentPhrase.people.map(person => 
-              this.grammar.getPersonPhrase(person)
-            );
-            phraseParts.push(this.grammar.joinHomogeneous(peoplePhrases));
-          }
-          
-          // Питомцы (аналогично людям)
-          if (this.currentPhrase.pets.length > 0) {
-            const petPhrases = this.currentPhrase.pets.map(pet => 
-              this.grammar.getPersonPhrase(pet)
-            );
-            phraseParts.push(this.grammar.joinHomogeneous(petPhrases));
-          }
-          
-          // Места
-          if (this.currentPhrase.places.length > 0) {
-            const placePhrases = this.currentPhrase.places.map(place => 
-              this.grammar.getPlacePhrase(place)
-            );
-            // Обычно только одно место
-            phraseParts.push(placePhrases[0]);
-          }
-          
-          // Объекты
-          if (this.currentPhrase.objects.length > 0) {
-            const objectPhrases = this.currentPhrase.objects.map(object => 
-              this.grammar.getObjectPhrase(object, this.currentPhrase.action)
-            );
-            phraseParts.push(this.grammar.joinHomogeneous(objectPhrases));
-          }
-          
-          // Время
-          if (this.currentPhrase.time) {
-            phraseParts.push(this.grammar.getTimePhrase(this.currentPhrase.time));
-          }
-        }
-
-        phraseDisplay.textContent = phraseParts.join(' ') || 'Выберите элементы для фразы';
+        
+        // Используем улучшенную грамматическую систему
+        const phrase = this.grammar.buildPhrase(this.currentPhrase);
+        phraseDisplay.textContent = phrase || 'Выберите элементы для фразы';
       }
 
       speakPhrase() {
@@ -4262,7 +3968,7 @@
           rulesText = 'Эмоции выражают состояние. Выберите эмоцию для выражения своего состояния.';
         } else if (this.navigationStack.includes('CAT-PAIN')) {
           rulesText = 'Выберите часть тела, которая болит.';
-        } else if (this.currentPhrase.action && this.currentPhrase.action.metadata && this.currentPhrase.action.metadata.isStandalone) {
+        } else if (this.currentPhrase.action && this.grammar.isStandaloneAction(this.currentPhrase.action)) {
           rulesText = 'Это самостоятельная фраза, не требует дополнительных элементов. Можно добавить время.';
         } else if (this.currentPhrase.action) {
           const metadata = this.currentPhrase.action.metadata || {};
@@ -4376,6 +4082,7 @@
         return 'объектов';
       }
 
+      // ИЗМЕНЕННЫЙ МЕТОД: Сортировка категорий по полю order из карточек
       renderCategories() {
         const container = document.getElementById('categoriesContainer');
         container.innerHTML = '';
@@ -4386,17 +4093,14 @@
           card.sections.includes('Главная')
         );
 
-        const priorityOrder = {
-          'CAT-GAMES': 10, 'CAT-PEOPLE': 997, 'CAT-FOOD': 1, 'CAT-DRINK': 2, 'CAT-PLACES': 998, 'CAT-PETS': 6, 'CAT-HYGIENE': 3, 'CAT-EMOTIONS': 1000,
-          'CAT-CLOTHING': 7, 'CAT-PAIN': 4, 'CAT-BOOKS': 11, 'CAT-CREATIVE': 12,
-          'CAT-SPORT': 13, 'CAT-TRANSPORT': 14, 'CAT-LEARNING': 15,
-          'CAT-HELP': 16, 'CAT-REQUESTS': 17, 'CAT-TIME': 18, 'CAT-ALL': 999
-        };
-
+        // Сортируем категории по полю order (если оно есть), а затем по тексту
         categories.sort((a, b) => {
-          const aPriority = priorityOrder[a.id] || 50;
-          const bPriority = priorityOrder[b.id] || 50;
-          return aPriority - bPriority;
+          const aOrder = a.order || 50;
+          const bOrder = b.order || 50;
+          if (aOrder !== bOrder) {
+            return aOrder - bOrder;
+          }
+          return a.text.localeCompare(b.text);
         });
 
         categories.forEach(category => {
@@ -4469,8 +4173,15 @@
           return;
         }
 
-        // Сортируем категории
-        categories.sort((a, b) => a.text.localeCompare(b.text));
+        // Сортируем категории по полю order (если оно есть), а затем по тексту
+        categories.sort((a, b) => {
+          const aOrder = a.order || 50;
+          const bOrder = b.order || 50;
+          if (aOrder !== bOrder) {
+            return aOrder - bOrder;
+          }
+          return a.text.localeCompare(b.text);
+        });
 
         // Рендерим категории
         categories.forEach(category => {
@@ -4911,32 +4622,36 @@
         this.childInfo.diagnosis = document.getElementById('childDiagnosis').value;
         this.childInfo.allergies = document.getElementById('childAllergies').value;
         localStorage.setItem('childInfo', JSON.stringify(this.childInfo));
-        alert('Медицинская информация сохранена');
+        alert('Медицинская информация сохранены');
       }
 
       saveSkillsInfo() {
         this.childInfo.interests = document.getElementById('childInterests').value;
         this.childInfo.dislikes = document.getElementById('childDislikes').value;
         localStorage.setItem('childInfo', JSON.stringify(this.childInfo));
-        alert('Информация о навыках сохранена');
+        alert('Информация о навыках сохранены');
       }
 
-      // РАСПОРЯДОК
+      // РАСПОРЯДОК - УЛУЧШЕННАЯ ВЕРСИЯ
       renderSchedule() {
         const container = document.getElementById('scheduleCards');
         const schedule = this.schedule[currentDay] || [];
 
         container.innerHTML = '';
+        
+        // Обновляем общее количество занятий
+        document.getElementById('totalActivities').textContent = schedule.length;
 
         if (schedule.length === 0) {
-          container.innerHTML = '<div class="no-action-message">На этот день расписание не составлено</div>';
-          if (isEditingEnabled) {
-            container.innerHTML += `
-              <div style="text-align: center; margin-top: 20px;">
+          container.innerHTML = `
+            <div class="schedule-empty-state">
+              <h3>Расписание не составлено</h3>
+              <p>На этот день пока нет запланированных занятий.</p>
+              ${isEditingEnabled ? `
                 <button onclick="window.communicator.addScheduleItem('${currentDay}')" class="edit-btn">Добавить первое занятие</button>
-              </div>
-            `;
-          }
+              ` : ''}
+            </div>
+          `;
           return;
         }
 
@@ -4950,12 +4665,19 @@
             <div class="schedule-activity">${item.activity}</div>
             ${isEditingEnabled ? `
               <div class="schedule-actions">
-                <button onclick="window.communicator.editScheduleItem('${currentDay}', ${index})">✏️</button>
-                <button onclick="window.communicator.showEmojiPicker('${currentDay}', ${index})">😀</button>
-                <button onclick="window.communicator.deleteScheduleItem('${currentDay}', ${index})">🗑️</button>
+                <button onclick="window.communicator.editScheduleItem('${currentDay}', ${index})" title="Редактировать">✏️</button>
+                <button onclick="window.communicator.showEmojiPicker('${currentDay}', ${index})" title="Сменить эмодзи">😀</button>
+                <button onclick="window.communicator.deleteScheduleItem('${currentDay}', ${index})" title="Удалить">🗑️</button>
               </div>
             ` : ''}
           `;
+          
+          // Добавляем возможность озвучивания занятия
+          scheduleCard.addEventListener('click', (e) => {
+            if (!e.target.closest('.schedule-actions')) {
+              this.speakText(`${item.time} - ${item.activity}`);
+            }
+          });
           
           container.appendChild(scheduleCard);
         });
@@ -4964,7 +4686,14 @@
           const addButton = document.createElement('div');
           addButton.style.textAlign = 'center';
           addButton.style.marginTop = '20px';
-          addButton.innerHTML = `<button onclick="window.communicator.addScheduleItem('${currentDay}')" class="edit-btn">Добавить занятие</button>`;
+          addButton.innerHTML = `
+            <button onclick="window.communicator.addScheduleItem('${currentDay}')" class="edit-btn">
+              ➕ Добавить занятие
+            </button>
+            <button onclick="window.communicator.saveSchedule()" class="save-btn" style="margin-left: 10px;">
+              💾 Сохранить расписание
+            </button>
+          `;
           container.appendChild(addButton);
         }
       }
@@ -5006,12 +4735,33 @@
       }
 
       enableScheduleEditing() {
+        isEditingEnabled = true;
         this.renderSchedule();
+        document.getElementById('editScheduleBtn').style.display = 'none';
+        
+        // Добавляем класс для режима редактирования
+        document.getElementById('scheduleCards').classList.add('schedule-edit-mode');
       }
 
       addScheduleItem(day) {
-        const time = prompt("Введите время (например, 08:00):");
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'time-input';
+        timeDiv.innerHTML = `
+          <input type="text" id="newTimeHour" placeholder="08" maxlength="2" size="2" style="text-align: center;">
+          <span>:</span>
+          <input type="text" id="newTimeMinute" placeholder="00" maxlength="2" size="2" style="text-align: center;">
+        `;
+        
+        const time = prompt("Введите время (например, 08:00):\n\nИспользуйте формат ЧЧ:ММ", "08:00");
         if (!time) return;
+        
+        // Проверяем формат времени
+        const timeRegex = /^([0-1]?[0-9]|2[0-3]):([0-5][0-9])$/;
+        if (!timeRegex.test(time)) {
+          alert("Неверный формат времени! Используйте ЧЧ:ММ (например, 08:30)");
+          return;
+        }
+        
         const activity = prompt("Введите занятие:");
         if (!activity) return;
 
@@ -5022,12 +4772,22 @@
         this.schedule[day].push({ time, activity, emoji: '📅' });
         this.schedule[day].sort((a, b) => a.time.localeCompare(b.time));
         this.renderSchedule();
+        this.saveSchedule();
       }
 
       editScheduleItem(day, index) {
         const item = this.schedule[day][index];
-        const newTime = prompt("Измените время:", item.time);
+        
+        const newTime = prompt("Измените время (ЧЧ:ММ):", item.time);
         if (!newTime) return;
+        
+        // Проверяем формат времени
+        const timeRegex = /^([0-1]?[0-9]|2[0-3]):([0-5][0-9])$/;
+        if (!timeRegex.test(newTime)) {
+          alert("Неверный формат времени! Используйте ЧЧ:ММ (например, 08:30)");
+          return;
+        }
+        
         const newActivity = prompt("Измените занятие:", item.activity);
         if (!newActivity) return;
 
@@ -5038,21 +4798,23 @@
         };
         this.schedule[day].sort((a, b) => a.time.localeCompare(b.time));
         this.renderSchedule();
+        this.saveSchedule();
       }
 
       deleteScheduleItem(day, index) {
         if (confirm("Удалить этот пункт распорядка?")) {
           this.schedule[day].splice(index, 1);
           this.renderSchedule();
+          this.saveSchedule();
         }
       }
 
       saveSchedule() {
         localStorage.setItem('childSchedule', JSON.stringify(this.schedule));
-        alert('Распорядок сохранен');
         isEditingEnabled = false;
-        this.renderSchedule();
         document.getElementById('editScheduleBtn').style.display = 'block';
+        document.getElementById('scheduleCards').classList.remove('schedule-edit-mode');
+        alert('Распорядок сохранен');
       }
 
       // ИСТОРИЯ
@@ -5131,282 +4893,6 @@
         link.click();
       }
 
-      // НАГРАДЫ И МОТИВАЦИЯ
-      updateRewardsStats() {
-        const today = new Date().toISOString().split('T')[0];
-        
-        // Сбрасываем ежедневную статистику, если наступил новый день
-        if (rewardsData.lastActivityDate !== today) {
-          rewardsData.dailyPhrases = 0;
-          rewardsData.lastActivityDate = today;
-        }
-        
-        // Увеличиваем счетчики
-        rewardsData.totalPhrases++;
-        rewardsData.dailyPhrases++;
-        
-        // Проверяем достижения
-        this.checkAchievements();
-        
-        // Обновляем звезды
-        this.updateStars();
-        
-        // Сохраняем данные
-        this.saveRewardsData();
-        
-        // Обновляем отображение наград, если вкладка активна
-        if (this.currentTab === 'rewards') {
-          this.renderRewards();
-        }
-      }
-
-      checkAchievements() {
-        const achievements = [
-          { id: 'first_phrase', name: 'Первая фраза', description: 'Произнесена первая фраза', condition: (stats) => stats.totalPhrases >= 1, earned: false },
-          { id: 'five_phrases', name: 'Молодец!', description: 'Произнесено 5 фраз', condition: (stats) => stats.totalPhrases >= 5, earned: false },
-          { id: 'ten_phrases', name: 'Отлично!', description: 'Произнесено 10 фраз', condition: (stats) => stats.totalPhrases >= 10, earned: false },
-          { id: 'daily_goal', name: 'Цель на день', description: 'Достигнута дневная цель', condition: (stats) => stats.dailyPhrases >= rewardsData.dailyGoal, earned: false },
-          { id: 'twenty_five', name: 'Супер!', description: 'Произнесено 25 фраз', condition: (stats) => stats.totalPhrases >= 25, earned: false },
-          { id: 'fifty_phrases', name: 'Великолепно!', description: 'Произнесено 50 фраз', condition: (stats) => stats.totalPhrases >= 50, earned: false },
-          { id: 'hundred_phrases', name: 'Гений общения!', description: 'Произнесено 100 фраз', condition: (stats) => stats.totalPhrases >= 100, earned: false }
-        ];
-        
-        let newAchievements = false;
-        
-        achievements.forEach(achievement => {
-          if (!rewardsData.achievements.includes(achievement.id) && achievement.condition(rewardsData)) {
-            rewardsData.achievements.push(achievement.id);
-            newAchievements = true;
-            this.showAchievementNotification(achievement);
-          }
-        });
-        
-        return newAchievements;
-      }
-
-      showAchievementNotification(achievement) {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-          color: #2c3e50;
-          padding: 15px 20px;
-          border-radius: 10px;
-          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-          z-index: 9999;
-          border: 3px solid #ffc107;
-          animation: slideInRight 0.5s, fadeOut 3s 2s forwards;
-          max-width: 300px;
-        `;
-        
-        const style = document.createElement('style');
-        style.textContent = `
-          @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-          }
-          @keyframes fadeOut {
-            to { opacity: 0; }
-          }
-        `;
-        
-        notification.innerHTML = `
-          <div style="font-size: 2rem; margin-bottom: 10px; text-align: center;">🏆</div>
-          <div style="font-weight: bold; margin-bottom: 5px; text-align: center;">${achievement.name}</div>
-          <div style="font-size: 0.9rem; text-align: center;">${achievement.description}</div>
-        `;
-        
-        document.head.appendChild(style);
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-          if (notification.parentNode) {
-            document.body.removeChild(notification);
-          }
-          if (style.parentNode) {
-            document.head.removeChild(style);
-          }
-        }, 5000);
-      }
-
-      updateStars() {
-        const starsEarned = Math.floor(rewardsData.totalPhrases / rewardsData.dailyGoal);
-        if (starsEarned > rewardsData.stars) {
-          rewardsData.stars = starsEarned;
-          this.celebrateStars();
-        }
-      }
-
-      celebrateStars() {
-        const animation = document.getElementById('celebrationAnimation');
-        animation.style.display = 'block';
-        animation.innerHTML = '';
-        
-        // Создаем конфетти
-        for (let i = 0; i < 100; i++) {
-          const confetti = document.createElement('div');
-          confetti.className = 'confetti';
-          confetti.style.left = Math.random() * 100 + '%';
-          confetti.style.top = '-10px';
-          confetti.style.backgroundColor = this.getRandomColor();
-          confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-          confetti.style.animation = `fall ${Math.random() * 2 + 1}s linear forwards`;
-          
-          animation.appendChild(confetti);
-        }
-        
-        // Добавляем стили для анимации
-        const style = document.createElement('style');
-        style.textContent = `
-          @keyframes fall {
-            to {
-              top: 100vh;
-              transform: rotate(${Math.random() * 360}deg);
-              opacity: 0;
-            }
-          }
-        `;
-        document.head.appendChild(style);
-        
-        setTimeout(() => {
-          animation.style.display = 'none';
-          animation.innerHTML = '';
-          document.head.removeChild(style);
-        }, 3000);
-      }
-
-      getRandomColor() {
-        const colors = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE', '#B2FF59', '#EEFF41', '#FFFF00', '#FFD740', '#FFAB40', '#FF6E40'];
-        return colors[Math.floor(Math.random() * colors.length)];
-      }
-
-      renderRewards() {
-        this.renderStars();
-        this.renderRewardsCards();
-        this.renderAchievements();
-        this.updateMotivationMessage();
-      }
-
-      renderStars() {
-        const container = document.getElementById('starsContainer');
-        container.innerHTML = '';
-        
-        const totalStars = 5; // Максимальное количество звезд для отображения
-        const earnedStars = Math.min(rewardsData.stars, totalStars);
-        
-        for (let i = 0; i < totalStars; i++) {
-          const star = document.createElement('div');
-          star.className = 'star';
-          if (i < earnedStars) {
-            star.classList.add('active');
-          }
-          star.textContent = '★';
-          container.appendChild(star);
-        }
-      }
-
-      renderRewardsCards() {
-        const container = document.getElementById('rewardsContainer');
-        container.innerHTML = '';
-        
-        const rewards = [
-          {
-            id: 'daily_progress',
-            title: 'Ежедневный прогресс',
-            description: `Цель: ${rewardsData.dailyGoal} фраз в день`,
-            emoji: '📊',
-            progress: Math.min(rewardsData.dailyPhrases / rewardsData.dailyGoal, 1),
-            current: rewardsData.dailyPhrases,
-            total: rewardsData.dailyGoal
-          },
-          {
-            id: 'total_progress',
-            title: 'Общий прогресс',
-            description: 'Всего произнесено фраз',
-            emoji: '🏆',
-            progress: Math.min(rewardsData.totalPhrases / 100, 1),
-            current: rewardsData.totalPhrases,
-            total: 100
-          },
-          {
-            id: 'next_reward',
-            title: 'Следующая награда',
-            description: `Осталось до следующей звезды: ${Math.max(rewardsData.dailyGoal - (rewardsData.totalPhrases % rewardsData.dailyGoal), 0)} фраз`,
-            emoji: '⭐',
-            progress: (rewardsData.totalPhrases % rewardsData.dailyGoal) / rewardsData.dailyGoal,
-            current: rewardsData.totalPhrases % rewardsData.dailyGoal,
-            total: rewardsData.dailyGoal
-          }
-        ];
-        
-        rewards.forEach(reward => {
-          const rewardCard = document.createElement('div');
-          rewardCard.className = 'reward-card';
-          
-          rewardCard.innerHTML = `
-            <div class="reward-icon">${reward.emoji}</div>
-            <div class="reward-title">${reward.title}</div>
-            <div class="reward-description">${reward.description}</div>
-            <div class="reward-progress">
-              <div class="reward-progress-bar" style="width: ${reward.progress * 100}%"></div>
-            </div>
-            <div class="reward-stats">
-              <span>${reward.current}</span>
-              <span>${reward.total}</span>
-            </div>
-          `;
-          
-          container.appendChild(rewardCard);
-        });
-      }
-
-      renderAchievements() {
-        const container = document.getElementById('achievementsContainer');
-        container.innerHTML = '';
-        
-        const allAchievements = [
-          { id: 'first_phrase', name: 'Первая фраза', description: 'Произнесена первая фраза' },
-          { id: 'five_phrases', name: 'Молодец!', description: 'Произнесено 5 фраз' },
-          { id: 'ten_phrases', name: 'Отлично!', description: 'Произнесено 10 фраз' },
-          { id: 'daily_goal', name: 'Цель на день', description: 'Достигнута дневная цель' },
-          { id: 'twenty_five', name: 'Супер!', description: 'Произнесено 25 фраз' },
-          { id: 'fifty_phrases', name: 'Великолепно!', description: 'Произнесено 50 фраз' },
-          { id: 'hundred_phrases', name: 'Гений общения!', description: 'Произнесено 100 фраз' }
-        ];
-        
-        allAchievements.forEach(achievement => {
-          const isEarned = rewardsData.achievements.includes(achievement.id);
-          const badge = document.createElement('span');
-          badge.className = 'achievement-badge';
-          badge.style.backgroundColor = isEarned ? '#27ae60' : '#95a5a6';
-          badge.textContent = achievement.name;
-          badge.title = achievement.description;
-          container.appendChild(badge);
-        });
-      }
-
-      updateMotivationMessage() {
-        const messages = [
-          "Ты молодец! Продолжай в том же духе!",
-          "Отличная работа! Ты становишься лучше с каждой фразой!",
-          "Ура! Ты сегодня уже произнес несколько фраз!",
-          "Поздравляем с новыми достижениями!",
-          "Ты настоящий герой общения!",
-          "Каждая твоя фраза - это шаг к успеху!",
-          "Ты делаешь огромные успехи! Гордимся тобой!",
-          "Продолжай тренироваться, у тебя отлично получается!"
-        ];
-        
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        document.getElementById('motivationMessage').textContent = randomMessage;
-      }
-
-      saveRewardsData() {
-        localStorage.setItem('communicator_rewards', JSON.stringify(rewardsData));
-      }
-
       // НАСТРОЙКИ
       updateSystemInfo() {
         const container = document.getElementById('systemInfo');
@@ -5415,16 +4901,15 @@
         const dataSize = (new Blob([cardsJson]).size / 1024).toFixed(2);
         
         const info = {
-          'Версия приложения': '4.2.0',
+          'Версия приложения': '4.4.0',
           'Количество карточек': cardCount,
           'Размер данных': `${dataSize} КБ`,
           'Последнее обновление': new Date().toLocaleString(),
           'Скорость чтения': speechRate,
           'Размер шрифта': `${(fontSizeScale * 100).toFixed(0)}%`,
           'PIN-код установлен': currentPin !== DEFAULT_PIN ? 'Да' : 'Нет (по умолчанию 0000)',
-          'Всего фраз произнесено': rewardsData.totalPhrases,
-          'Фраз сегодня': rewardsData.dailyPhrases,
-          'Звезд заработано': rewardsData.stars
+          'Всего фраз в истории': history.length,
+          'Дней в расписании': Object.keys(this.schedule).filter(day => this.schedule[day].length > 0).length
         };
         
         let html = '';
@@ -5438,32 +4923,6 @@
         }
         
         container.innerHTML = html;
-        
-        // Устанавливаем значения слайдеров
-        document.getElementById('dailyGoalSlider').value = rewardsData.dailyGoal;
-        document.getElementById('dailyGoalValue').textContent = rewardsData.dailyGoal;
-      }
-
-      changePin() {
-        const newPin = document.getElementById('newPin').value;
-        const confirmPin = document.getElementById('confirmPin').value;
-        
-        if (newPin.length !== 4 || !/^\d+$/.test(newPin)) {
-          alert('PIN-код должен состоять из 4 цифр');
-          return;
-        }
-        
-        if (newPin !== confirmPin) {
-          alert('PIN-коды не совпадают');
-          return;
-        }
-        
-        currentPin = newPin;
-        localStorage.setItem('communicator_pin', currentPin);
-        document.getElementById('newPin').value = '';
-        document.getElementById('confirmPin').value = '';
-        alert('PIN-код успешно изменен');
-        this.updateSystemInfo();
       }
     }
 
