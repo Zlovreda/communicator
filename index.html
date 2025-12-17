@@ -1064,7 +1064,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Ком-Ком: Коммуникатор для детей с РАС</h1>
+    <h1>Ком-Ком: Коммуникатор для детей с РАС (Тестовая версия)</h1>
 
     <div class="tabs-container">
       <button class="tab-btn active" data-tab="main">Главная</button>
@@ -1529,6 +1529,366 @@ class SimplifiedGrammarSystem {
 
     const FALLBACK_CARDS = {
   "cards": {
+    "CAT-FOOD": {
+      "id": "CAT-FOOD",
+      "text": "Еда",
+      "emoji": "🍎",
+      "type": "category",
+      "category": null,
+      "forms": {},
+      "tags": [
+        "категория",
+        "еда",
+        "продукты"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 98,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#FFEBEE",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {
+        "isCategory": true,
+        "description": "Различные виды еды и продуктов"
+      },
+      "borderColor": "#FF5252"
+    },
+    "CAT-DRINK": {
+      "id": "CAT-DRINK",
+      "text": "Пить",
+      "emoji": "🥤",
+      "type": "category",
+      "category": null,
+      "forms": {},
+      "tags": [
+        "категория",
+        "пить",
+        "напитки"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 76,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#E0F7FA",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {
+        "isCategory": true,
+        "description": "Различные напитки и действия с ними"
+      },
+      "borderColor": "#00BCD4"
+    },
+	    "ACT-EAT": {
+      "id": "ACT-EAT",
+      "text": "кушать",
+      "emoji": "🍽️",
+      "type": "action",
+      "category": "CAT-FOOD",
+      "forms": {},
+      "tags": [
+        "действие",
+        "еда",
+        "прием пищи"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 48,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#FFF3E0",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {
+        "allowedWith": [
+          "places",
+          "objects"
+        ],
+        "allowedObjects": [
+          "FOOD-APPLE",
+          "FOOD-BANANA",
+          "FOOD-PEAR",
+          "FOOD-ORANGE",
+          "FOOD-BREAD",
+          "FOOD-SANDWICH",
+          "FOOD-PORRIDGE",
+          "FOOD-SOUP",
+          "FOOD-PASTA",
+          "FOOD-RICE",
+          "FOOD-POTATO",
+          "FOOD-CARROT",
+          "FOOD-CUCUMBER",
+          "FOOD-TOMATO",
+          "FOOD-CHEESE",
+          "FOOD-YOGURT",
+          "FOOD-CURD",
+          "FOOD-SAUSAGE",
+          "FOOD-FISH",
+          "FOOD-MEATBALL",
+          "FOOD-EGG",
+          "FOOD-OMELETTE",
+          "FOOD-PANCAKE",
+          "FOOD-COOKIE",
+          "FOOD-CANDY",
+          "FOOD-ICECREAM",
+          "FOOD-CAKE",
+          "FOOD-PIZZA",
+          "FOOD-BURGER",
+          "FOOD-FRIES"
+        ],
+        "maxPeople": 0,
+        "maxPets": 0,
+        "maxPlaces": 1,
+        "maxObjects": 2
+      }
+    },
+	    "ACT-DRINK": {
+      "id": "ACT-DRINK",
+      "text": "пить",
+      "emoji": "🥛",
+      "type": "action",
+      "category": "CAT-DRINK",
+      "forms": {},
+      "tags": [
+        "действие",
+        "пить",
+        "питье"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 42,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#E0F7FA",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {
+        "allowedWith": [
+          "places",
+          "objects"
+        ],
+        "allowedObjects": [
+          "DRINK-WATER",
+          "DRINK-MILK",
+          "DRINK-JUICE",
+          "DRINK-COMPOTE",
+          "DRINK-TEA",
+          "DRINK-COCOA",
+          "DRINK-KISSEL",
+          "DRINK-MORSE",
+          "DRINK-SMOOTHIE",
+          "DRINK-LEMONADE",
+          "DRINK-SODA",
+          "DRINK-JUICE-BOX"
+        ],
+        "maxPeople": 0,
+        "maxPets": 0,
+        "maxPlaces": 1,
+        "maxObjects": 1
+      }
+    },    "FOOD-SOUP": {
+      "id": "FOOD-SOUP",
+      "text": "суп",
+      "emoji": "🍲",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "accusative": "суп"
+      },
+      "tags": [
+        "еда",
+        "блюдо",
+        "обед"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 30,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#FFF3E0",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "FOOD-BREAD": {
+      "id": "FOOD-BREAD",
+      "text": "хлеб",
+      "emoji": "🍞",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "accusative": "хлеб"
+      },
+      "tags": [
+        "еда",
+        "продукт"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 28,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#FFF3E0",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+ 
+    "DRINK-COMPOTE": {
+      "id": "DRINK-COMPOTE",
+      "text": "компот",
+      "emoji": "🍹",
+      "type": "object",
+      "category": "CAT-DRINK",
+      "forms": {
+        "accusative": "компот"
+      },
+      "tags": [
+        "питье",
+        "напиток",
+        "фруктовый"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 28,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#FFF3E0",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "DRINK-JUICE": {
+      "id": "DRINK-JUICE",
+      "text": "сок",
+      "emoji": "🧃",
+      "type": "object",
+      "category": "CAT-DRINK",
+      "forms": {
+        "accusative": "сок"
+      },
+      "tags": [
+        "питье",
+        "напиток",
+        "фруктовый"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 32,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#FFF3E0",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "DRINK-WATER": {
+      "id": "DRINK-WATER",
+      "text": "вода",
+      "emoji": "💧",
+      "type": "object",
+      "category": "CAT-DRINK",
+      "forms": {
+        "accusative": "воду"
+      },
+      "tags": [
+        "питье",
+        "напиток",
+        "вода"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 30,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#E0F7FA",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "DRINK-TEA": {
+      "id": "DRINK-TEA",
+      "text": "чай",
+      "emoji": "🍵",
+      "type": "object",
+      "category": "CAT-DRINK",
+      "forms": {
+        "accusative": "чай"
+      },
+      "tags": [
+        "питье",
+        "напиток",
+        "горячий"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 25,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#FFF3E0",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
+    "DRINK-MILK": {
+      "id": "DRINK-MILK",
+      "text": "молоко",
+      "emoji": "🥛",
+      "type": "object",
+      "category": "CAT-DRINK",
+      "forms": {
+        "accusative": "молоко"
+      },
+      "tags": [
+        "питье",
+        "напиток",
+        "молочный"
+      ],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 22,
+      "created": "2025-11-28T11:42:07.594Z",
+      "modified": "2025-12-10T14:11:26.842Z",
+      "author": "user",
+      "version": 2,
+      "color": "#FFFDE7",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {}
+    },
       "CAT-PEOPLE": {
       "id": "CAT-PEOPLE",
       "text": "Люди",
