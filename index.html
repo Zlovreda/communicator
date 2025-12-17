@@ -1532,201 +1532,150 @@ class SimplifiedGrammarSystem {
     "CAT-FOOD": {
       "id": "CAT-FOOD",
       "text": "Еда",
-      "emoji": "🍎",
+      "emoji": "🍽️",
       "type": "category",
       "category": null,
       "forms": {},
-      "tags": [
-        "категория",
-        "еда",
-        "продукты"
-      ],
+      "tags": ["категория", "еда", "продукты", "питание"],
       "difficulty": 1,
       "status": "active",
-      "usageCount": 98,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
       "metadata": {
         "isCategory": true,
-        "description": "Различные виды еды и продуктов"
-      },
-      "borderColor": "#FF5252"
+        "description": "Продукты питания и блюда"
+      }
     },
-    "CAT-DRINK": {
-      "id": "CAT-DRINK",
-      "text": "Пить",
+
+    "CAT-DRINKS": {
+      "id": "CAT-DRINKS",
+      "text": "Напитки",
       "emoji": "🥤",
       "type": "category",
       "category": null,
       "forms": {},
-      "tags": [
-        "категория",
-        "пить",
-        "напитки"
-      ],
+      "tags": ["категория", "напитки", "питье", "жидкости"],
       "difficulty": 1,
       "status": "active",
-      "usageCount": 76,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#E0F7FA",
-      "sections": [
-        "Главная"
-      ],
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E3F2FD",
+      "borderColor": "#2196F3",
+      "sections": ["Главная"],
       "metadata": {
         "isCategory": true,
-        "description": "Различные напитки и действия с ними"
-      },
-      "borderColor": "#00BCD4"
+        "description": "Напитки и жидкости"
+      }
     },
-	    "ACT-EAT": {
+
+    "ACT-EAT": {
       "id": "ACT-EAT",
-      "text": "кушать",
-      "emoji": "🍽️",
+      "text": "есть",
+      "emoji": "🍴",
       "type": "action",
       "category": "CAT-FOOD",
-      "forms": {},
-      "tags": [
-        "действие",
-        "еда",
-        "прием пищи"
-      ],
+      "forms": {
+        "nominative": "есть",
+        "genitive": "есть",
+        "dative": "есть",
+        "accusative": "есть",
+        "instrumental": "есть",
+        "prepositional": "есть"
+      },
+      "tags": ["действие", "еда", "питание", "прием пищи"],
       "difficulty": 1,
       "status": "active",
-      "usageCount": 48,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E8F5E9",
+      "borderColor": "#4CAF50",
+      "sections": ["Главная"],
       "metadata": {
-        "allowedWith": [
-          "places",
-          "objects"
-        ],
-        "allowedObjects": [
-          "FOOD-APPLE",
-          "FOOD-BANANA",
-          "FOOD-PEAR",
-          "FOOD-ORANGE",
-          "FOOD-BREAD",
-          "FOOD-SANDWICH",
-          "FOOD-PORRIDGE",
-          "FOOD-SOUP",
-          "FOOD-PASTA",
-          "FOOD-RICE",
-          "FOOD-POTATO",
-          "FOOD-CARROT",
-          "FOOD-CUCUMBER",
-          "FOOD-TOMATO",
-          "FOOD-CHEESE",
-          "FOOD-YOGURT",
-          "FOOD-CURD",
-          "FOOD-SAUSAGE",
-          "FOOD-FISH",
-          "FOOD-MEATBALL",
-          "FOOD-EGG",
-          "FOOD-OMELETTE",
-          "FOOD-PANCAKE",
-          "FOOD-COOKIE",
-          "FOOD-CANDY",
-          "FOOD-ICECREAM",
-          "FOOD-CAKE",
-          "FOOD-PIZZA",
-          "FOOD-BURGER",
-          "FOOD-FRIES"
-        ],
-        "maxPeople": 0,
+        "allowedWith": ["people", "places", "objects", "time"],
+        "allowedObjects": ["FOOD-APPLE", "FOOD-BREAD", "FOOD-SOUP", "FOOD-PORRIDGE", "FOOD-CANDY", "FOOD-YOGURT", "FOOD-CHEESE", "FOOD-SANDWICH", "FOOD-PIZZA", "FOOD-SALAD", "FOOD-MEAT", "FOOD-FISH", "FOOD-POTATO", "FOOD-CARROT", "FOOD-ICE-CREAM", "FOOD-COOKIE", "FOOD-CAKE", "FOOD-PASTA"],
+        "maxPeople": 2,
         "maxPets": 0,
         "maxPlaces": 1,
         "maxObjects": 2
       }
     },
-	    "ACT-DRINK": {
+
+    "ACT-DRINK": {
       "id": "ACT-DRINK",
       "text": "пить",
       "emoji": "🥛",
       "type": "action",
-      "category": "CAT-DRINK",
-      "forms": {},
-      "tags": [
-        "действие",
-        "пить",
-        "питье"
-      ],
+      "category": "CAT-DRINKS",
+      "forms": {
+        "nominative": "пить",
+        "genitive": "пить",
+        "dative": "пить",
+        "accusative": "пить",
+        "instrumental": "пить",
+        "prepositional": "пить"
+      },
+      "tags": ["действие", "напитки", "питье", "жидкости"],
       "difficulty": 1,
       "status": "active",
-      "usageCount": 42,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#E0F7FA",
-      "sections": [
-        "Главная"
-      ],
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E3F2FD",
+      "borderColor": "#2196F3",
+      "sections": ["Главная"],
       "metadata": {
-        "allowedWith": [
-          "places",
-          "objects"
-        ],
-        "allowedObjects": [
-          "DRINK-WATER",
-          "DRINK-MILK",
-          "DRINK-JUICE",
-          "DRINK-COMPOTE",
-          "DRINK-TEA",
-          "DRINK-COCOA",
-          "DRINK-KISSEL",
-          "DRINK-MORSE",
-          "DRINK-SMOOTHIE",
-          "DRINK-LEMONADE",
-          "DRINK-SODA",
-          "DRINK-JUICE-BOX"
-        ],
-        "maxPeople": 0,
+        "allowedWith": ["people", "places", "objects", "time"],
+        "allowedObjects": ["DRINK-WATER", "DRINK-JUICE", "DRINK-MILK", "DRINK-TEA", "DRINK-COMPOT", "DRINK-COFFEE", "DRINK-COKE", "DRINK-LEMONADE", "DRINK-SMOOTHIE", "DRINK-KEFIR"],
+        "maxPeople": 2,
         "maxPets": 0,
         "maxPlaces": 1,
-        "maxObjects": 1
+        "maxObjects": 2
       }
-    },    "FOOD-SOUP": {
-      "id": "FOOD-SOUP",
-      "text": "суп",
-      "emoji": "🍲",
+    },
+
+    "FOOD-APPLE": {
+      "id": "FOOD-APPLE",
+      "text": "яблоко",
+      "emoji": "🍎",
       "type": "object",
       "category": "CAT-FOOD",
       "forms": {
-        "accusative": "суп"
+        "nominative": "яблоко",
+        "genitive": "яблока",
+        "dative": "яблоку",
+        "accusative": "яблоко",
+        "instrumental": "яблоком",
+        "prepositional": "яблоке",
+        "с": "яблоко"
       },
-      "tags": [
-        "еда",
-        "блюдо",
-        "обед"
-      ],
+      "tags": ["еда", "фрукт", "яблоко", "здоровое"],
       "difficulty": 1,
       "status": "active",
-      "usageCount": 30,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFEBEE",
+      "borderColor": "#F44336",
+      "sections": ["Главная"],
       "metadata": {}
     },
+
     "FOOD-BREAD": {
       "id": "FOOD-BREAD",
       "text": "хлеб",
@@ -1734,132 +1683,779 @@ class SimplifiedGrammarSystem {
       "type": "object",
       "category": "CAT-FOOD",
       "forms": {
-        "accusative": "хлеб"
+        "nominative": "хлеб",
+        "genitive": "хлеба",
+        "dative": "хлебу",
+        "accusative": "хлеб",
+        "instrumental": "хлебом",
+        "prepositional": "хлебе",
+        "с": "хлеб"
       },
-      "tags": [
-        "еда",
-        "продукт"
-      ],
+      "tags": ["еда", "хлеб", "выпечка", "основное"],
       "difficulty": 1,
       "status": "active",
-      "usageCount": 28,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
       "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
       "metadata": {}
     },
- 
-    "DRINK-COMPOTE": {
-      "id": "DRINK-COMPOTE",
-      "text": "компот",
-      "emoji": "🍹",
+
+    "FOOD-SOUP": {
+      "id": "FOOD-SOUP",
+      "text": "суп",
+      "emoji": "🍲",
       "type": "object",
-      "category": "CAT-DRINK",
+      "category": "CAT-FOOD",
       "forms": {
-        "accusative": "компот"
+        "nominative": "суп",
+        "genitive": "супа",
+        "dative": "супу",
+        "accusative": "суп",
+        "instrumental": "супом",
+        "prepositional": "супе",
+        "с": "суп"
       },
-      "tags": [
-        "питье",
-        "напиток",
-        "фруктовый"
-      ],
+      "tags": ["еда", "суп", "горячее", "обед"],
       "difficulty": 1,
       "status": "active",
-      "usageCount": 28,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
       "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
       "metadata": {}
     },
+
+    "FOOD-PORRIDGE": {
+      "id": "FOOD-PORRIDGE",
+      "text": "каша",
+      "emoji": "🥣",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "каша",
+        "genitive": "каши",
+        "dative": "каше",
+        "accusative": "кашу",
+        "instrumental": "кашей",
+        "prepositional": "каше",
+        "с": "кашу"
+      },
+      "tags": ["еда", "каша", "завтрак", "здоровое"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-CANDY": {
+      "id": "FOOD-CANDY",
+      "text": "конфета",
+      "emoji": "🍬",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "конфета",
+        "genitive": "конфеты",
+        "dative": "конфете",
+        "accusative": "конфету",
+        "instrumental": "конфетой",
+        "prepositional": "конфете",
+        "с": "конфету"
+      },
+      "tags": ["еда", "сладкое", "конфета", "десерт"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FCE4EC",
+      "borderColor": "#E91E63",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-YOGURT": {
+      "id": "FOOD-YOGURT",
+      "text": "йогурт",
+      "emoji": "🥛",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "йогурт",
+        "genitive": "йогурта",
+        "dative": "йогурту",
+        "accusative": "йогурт",
+        "instrumental": "йогуртом",
+        "prepositional": "йогурте",
+        "с": "йогурт"
+      },
+      "tags": ["еда", "молочное", "йогурт", "перекус"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#F3E5F5",
+      "borderColor": "#9C27B0",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-CHEESE": {
+      "id": "FOOD-CHEESE",
+      "text": "сыр",
+      "emoji": "🧀",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "сыр",
+        "genitive": "сыра",
+        "dative": "сыру",
+        "accusative": "сыр",
+        "instrumental": "сыром",
+        "prepositional": "сыре",
+        "с": "сыр"
+      },
+      "tags": ["еда", "молочное", "сыр", "закуска"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-SANDWICH": {
+      "id": "FOOD-SANDWICH",
+      "text": "бутерброд",
+      "emoji": "🥪",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "бутерброд",
+        "genitive": "бутерброда",
+        "dative": "бутерброду",
+        "accusative": "бутерброд",
+        "instrumental": "бутербродом",
+        "prepositional": "бутерброде",
+        "с": "бутерброд"
+      },
+      "tags": ["еда", "бутерброд", "перекус", "быстро"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-PIZZA": {
+      "id": "FOOD-PIZZA",
+      "text": "пицца",
+      "emoji": "🍕",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "пицца",
+        "genitive": "пиццы",
+        "dative": "пицце",
+        "accusative": "пиццу",
+        "instrumental": "пиццей",
+        "prepositional": "пицце",
+        "с": "пиццу"
+      },
+      "tags": ["еда", "пицца", "ужин", "любимое"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFEBEE",
+      "borderColor": "#F44336",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-SALAD": {
+      "id": "FOOD-SALAD",
+      "text": "салат",
+      "emoji": "🥗",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "салат",
+        "genitive": "салата",
+        "dative": "салату",
+        "accusative": "салат",
+        "instrumental": "салатом",
+        "prepositional": "салате",
+        "с": "салат"
+      },
+      "tags": ["еда", "салат", "овощи", "здоровое"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E8F5E9",
+      "borderColor": "#4CAF50",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-MEAT": {
+      "id": "FOOD-MEAT",
+      "text": "мясо",
+      "emoji": "🍖",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "мясо",
+        "genitive": "мяса",
+        "dative": "мясу",
+        "accusative": "мясо",
+        "instrumental": "мясом",
+        "prepositional": "мясе",
+        "с": "мясо"
+      },
+      "tags": ["еда", "мясо", "белок", "основное"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFEBEE",
+      "borderColor": "#F44336",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-FISH": {
+      "id": "FOOD-FISH",
+      "text": "рыба",
+      "emoji": "🐟",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "рыба",
+        "genitive": "рыбы",
+        "dative": "рыбе",
+        "accusative": "рыбу",
+        "instrumental": "рыбой",
+        "prepositional": "рыбе",
+        "с": "рыбу"
+      },
+      "tags": ["еда", "рыба", "белок", "здоровое"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E3F2FD",
+      "borderColor": "#2196F3",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-POTATO": {
+      "id": "FOOD-POTATO",
+      "text": "картошка",
+      "emoji": "🥔",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "картошка",
+        "genitive": "картошки",
+        "dative": "картошке",
+        "accusative": "картошку",
+        "instrumental": "картошкой",
+        "prepositional": "картошке",
+        "с": "картошку"
+      },
+      "tags": ["еда", "овощи", "картошка", "гарнир"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-CARROT": {
+      "id": "FOOD-CARROT",
+      "text": "морковь",
+      "emoji": "🥕",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "морковь",
+        "genitive": "моркови",
+        "dative": "моркови",
+        "accusative": "морковь",
+        "instrumental": "морковью",
+        "prepositional": "моркови",
+        "с": "морковь"
+      },
+      "tags": ["еда", "овощи", "морковь", "здоровое"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-ICE-CREAM": {
+      "id": "FOOD-ICE-CREAM",
+      "text": "мороженое",
+      "emoji": "🍨",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "мороженое",
+        "genitive": "мороженого",
+        "dative": "мороженому",
+        "accusative": "мороженое",
+        "instrumental": "мороженым",
+        "prepositional": "мороженом",
+        "с": "мороженое"
+      },
+      "tags": ["еда", "сладкое", "мороженое", "десерт"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#F3E5F5",
+      "borderColor": "#9C27B0",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-COOKIE": {
+      "id": "FOOD-COOKIE",
+      "text": "печенье",
+      "emoji": "🍪",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "печенье",
+        "genitive": "печенья",
+        "dative": "печенью",
+        "accusative": "печенье",
+        "instrumental": "печеньем",
+        "prepositional": "печенье",
+        "с": "печенье"
+      },
+      "tags": ["еда", "сладкое", "печенье", "десерт"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-CAKE": {
+      "id": "FOOD-CAKE",
+      "text": "торт",
+      "emoji": "🎂",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "торт",
+        "genitive": "торта",
+        "dative": "торту",
+        "accusative": "торт",
+        "instrumental": "тортом",
+        "prepositional": "торте",
+        "с": "торт"
+      },
+      "tags": ["еда", "сладкое", "торт", "десерт", "праздник"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FCE4EC",
+      "borderColor": "#E91E63",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "FOOD-PASTA": {
+      "id": "FOOD-PASTA",
+      "text": "паста",
+      "emoji": "🍝",
+      "type": "object",
+      "category": "CAT-FOOD",
+      "forms": {
+        "nominative": "паста",
+        "genitive": "пасты",
+        "dative": "пасте",
+        "accusative": "пасту",
+        "instrumental": "пастой",
+        "prepositional": "пасте",
+        "с": "пасту"
+      },
+      "tags": ["еда", "паста", "макароны", "ужин"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "DRINK-WATER": {
+      "id": "DRINK-WATER",
+      "text": "вода",
+      "emoji": "💧",
+      "type": "object",
+      "category": "CAT-DRINKS",
+      "forms": {
+        "nominative": "вода",
+        "genitive": "воды",
+        "dative": "воде",
+        "accusative": "воду",
+        "instrumental": "водой",
+        "prepositional": "воде",
+        "с": "воду"
+      },
+      "tags": ["напиток", "вода", "жидкость", "здоровое"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E3F2FD",
+      "borderColor": "#2196F3",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
     "DRINK-JUICE": {
       "id": "DRINK-JUICE",
       "text": "сок",
       "emoji": "🧃",
       "type": "object",
-      "category": "CAT-DRINK",
+      "category": "CAT-DRINKS",
       "forms": {
-        "accusative": "сок"
+        "nominative": "сок",
+        "genitive": "сока",
+        "dative": "соку",
+        "accusative": "сок",
+        "instrumental": "соком",
+        "prepositional": "соке",
+        "с": "сок"
       },
-      "tags": [
-        "питье",
-        "напиток",
-        "фруктовый"
-      ],
+      "tags": ["напиток", "сок", "фрукты", "витамины"],
       "difficulty": 1,
       "status": "active",
-      "usageCount": 32,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
       "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
       "metadata": {}
     },
-    "DRINK-TEA": {
-      "id": "DRINK-TEA",
-      "text": "чай",
-      "emoji": "🍵",
-      "type": "object",
-      "category": "CAT-DRINK",
-      "forms": {
-        "accusative": "чай"
-      },
-      "tags": [
-        "питье",
-        "напиток",
-        "горячий"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 25,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFF3E0",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
+
     "DRINK-MILK": {
       "id": "DRINK-MILK",
       "text": "молоко",
       "emoji": "🥛",
       "type": "object",
-      "category": "CAT-DRINK",
+      "category": "CAT-DRINKS",
       "forms": {
-        "accusative": "молоко"
+        "nominative": "молоко",
+        "genitive": "молока",
+        "dative": "молоку",
+        "accusative": "молоко",
+        "instrumental": "молоком",
+        "prepositional": "молоке",
+        "с": "молоко"
       },
-      "tags": [
-        "питье",
-        "напиток",
-        "молочный"
-      ],
+      "tags": ["напиток", "молоко", "молочное", "кальций"],
       "difficulty": 1,
       "status": "active",
-      "usageCount": 22,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFFDE7",
-      "sections": [
-        "Главная"
-      ],
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "DRINK-TEA": {
+      "id": "DRINK-TEA",
+      "text": "чай",
+      "emoji": "🍵",
+      "type": "object",
+      "category": "CAT-DRINKS",
+      "forms": {
+        "nominative": "чай",
+        "genitive": "чая",
+        "dative": "чаю",
+        "accusative": "чай",
+        "instrumental": "чаем",
+        "prepositional": "чае",
+        "с": "чай"
+      },
+      "tags": ["напиток", "чай", "горячее", "утро"],
+      "difficulty": 1,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E8F5E9",
+      "borderColor": "#4CAF50",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "DRINK-COMPOT": {
+      "id": "DRINK-COMPOT",
+      "text": "компот",
+      "emoji": "🍓",
+      "type": "object",
+      "category": "CAT-DRINKS",
+      "forms": {
+        "nominative": "компот",
+        "genitive": "компота",
+        "dative": "компоту",
+        "accusative": "компот",
+        "instrumental": "компотом",
+        "prepositional": "компоте",
+        "с": "компот"
+      },
+      "tags": ["напиток", "компот", "фруктовое", "домашнее"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FCE4EC",
+      "borderColor": "#E91E63",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "DRINK-COFFEE": {
+      "id": "DRINK-COFFEE",
+      "text": "кофе",
+      "emoji": "☕",
+      "type": "object",
+      "category": "CAT-DRINKS",
+      "forms": {
+        "nominative": "кофе",
+        "genitive": "кофе",
+        "dative": "кофе",
+        "accusative": "кофе",
+        "instrumental": "кофе",
+        "prepositional": "кофе",
+        "с": "кофе"
+      },
+      "tags": ["напиток", "кофе", "утро", "бодрящее"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "DRINK-COKE": {
+      "id": "DRINK-COKE",
+      "text": "кола",
+      "emoji": "🥤",
+      "type": "object",
+      "category": "CAT-DRINKS",
+      "forms": {
+        "nominative": "кола",
+        "genitive": "колы",
+        "dative": "коле",
+        "accusative": "колу",
+        "instrumental": "колой",
+        "prepositional": "коле",
+        "с": "колу"
+      },
+      "tags": ["напиток", "газировка", "сладкое", "праздник"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#ECEFF1",
+      "borderColor": "#607D8B",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "DRINK-LEMONADE": {
+      "id": "DRINK-LEMONADE",
+      "text": "лимонад",
+      "emoji": "🍋",
+      "type": "object",
+      "category": "CAT-DRINKS",
+      "forms": {
+        "nominative": "лимонад",
+        "genitive": "лимонада",
+        "dative": "лимонаду",
+        "accusative": "лимонад",
+        "instrumental": "лимонадом",
+        "prepositional": "лимонаде",
+        "с": "лимонад"
+      },
+      "tags": ["напиток", "лимонад", "летнее", "освежающее"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "DRINK-SMOOTHIE": {
+      "id": "DRINK-SMOOTHIE",
+      "text": "смузи",
+      "emoji": "🥤",
+      "type": "object",
+      "category": "CAT-DRINKS",
+      "forms": {
+        "nominative": "смузи",
+        "genitive": "смузи",
+        "dative": "смузи",
+        "accusative": "смузи",
+        "instrumental": "смузи",
+        "prepositional": "смузи",
+        "с": "смузи"
+      },
+      "tags": ["напиток", "смузи", "фрукты", "здоровое"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#E8F5E9",
+      "borderColor": "#4CAF50",
+      "sections": ["Главная"],
+      "metadata": {}
+    },
+
+    "DRINK-KEFIR": {
+      "id": "DRINK-KEFIR",
+      "text": "кефир",
+      "emoji": "🥛",
+      "type": "object",
+      "category": "CAT-DRINKS",
+      "forms": {
+        "nominative": "кефир",
+        "genitive": "кефира",
+        "dative": "кефиру",
+        "accusative": "кефир",
+        "instrumental": "кефиром",
+        "prepositional": "кефире",
+        "с": "кефир"
+      },
+      "tags": ["напиток", "кефир", "молочное", "здоровое"],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-10T10:00:00.000Z",
+      "modified": "2025-12-10T10:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#FFF3E0",
+      "borderColor": "#FF9800",
+      "sections": ["Главная"],
       "metadata": {}
     },
       "CAT-PEOPLE": {
