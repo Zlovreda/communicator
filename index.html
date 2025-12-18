@@ -1493,60 +1493,89 @@ class AdvancedGrammarSystem {
         preposition: null, 
         case: 'adverbial', 
         standalone: true 
+      },
+      'pain': {
+        storeIn: 'objects',
+        preposition: null,
+        case: 'nominative',
+        directObject: false,
+        forPain: true
+      },
+      'learning': {
+        storeIn: null,
+        standalone: true
+      },
+      'dialog': {
+        storeIn: null,
+        standalone: true
+      },
+      'emotion': {
+        storeIn: null,
+        standalone: true
       }
     };
     
     // Специальные правила для определенных действий
     this.actionRules = {
+      // Стандартные действия
       'ACT-EAT': { 
         type: 'consumption', 
         directObject: true,
         allowedStores: ['objects', 'people', 'places', 'time'],
-        requiresDesire: true
+        requiresDesire: true,
+        requiresSubject: true
       },
       'ACT-DRINK': { 
         type: 'consumption', 
         directObject: true,
         allowedStores: ['objects', 'people', 'places', 'time'],
-        requiresDesire: true
+        requiresDesire: true,
+        requiresSubject: true
       },
       'ACT-RIDE': { 
         type: 'movement', 
         transportPreposition: 'на',
         allowedStores: ['objects', 'people', 'places', 'time'],
-        requiresDesire: true
+        requiresDesire: true,
+        requiresSubject: true
       },
       'ACT-WEAR': { 
         type: 'dressing', 
         clothingPreposition: 'в',
         allowedStores: ['objects', 'places', 'time'],
-        requiresDesire: true
+        requiresDesire: true,
+        requiresSubject: true
       },
       'ACT-UNDRESS': { 
         type: 'dressing', 
         allowedStores: ['objects', 'places', 'time'],
-        requiresDesire: true
+        requiresDesire: true,
+        requiresSubject: true
       },
       'ACT-PLAY': { 
         type: 'activity', 
         allowedStores: ['objects', 'people', 'places', 'time'],
-        requiresDesire: true
+        requiresDesire: true,
+        requiresSubject: true
       },
       'ACT-PET': { 
         type: 'interaction', 
         directObject: true,
         allowedStores: ['pets', 'places', 'time'],
-        requiresDesire: true
+        requiresDesire: true,
+        requiresSubject: true
       },
       'ACT-WASH-HANDS': { 
         type: 'hygiene', 
         allowedStores: ['objects', 'places', 'time'],
-        requiresDesire: true
+        requiresDesire: true,
+        requiresSubject: true
       },
       'ACT-BRUSH-TEETH': { 
         type: 'hygiene', 
         allowedStores: ['objects', 'places', 'time'],
-        requiresDesire: true
+        requiresDesire: true,
+        requiresSubject: true
       },
       'ACT-PEE': { 
         type: 'toilet', 
@@ -1567,9 +1596,30 @@ class AdvancedGrammarSystem {
         type: 'emergency', 
         standalone: true
       },
+      
+      // Правила для боли
       'ACT-HURT': {
         type: 'medical',
-        standalone: true
+        requiresSubject: true,
+        requiresPainObject: true,
+        maxObjects: 1,
+        allowedStores: ['objects'],
+        directObject: false,
+        painConstruction: true
+      },
+      'ACT-HURTS-A-LOT': {
+        type: 'medical',
+        requiresSubject: true,
+        requiresPainObject: true,
+        maxObjects: 1,
+        allowedStores: ['objects'],
+        directObject: false,
+        painConstruction: true
+      },
+      'ACT-HELP-PAIN': {
+        type: 'medical',
+        standalone: true,
+        requiresSubject: false
       }
     };
     
@@ -1583,6 +1633,60 @@ class AdvancedGrammarSystem {
       'кафе': 'в кафе',
       'туалет': 'в туалете',
       'ванная': 'в ванной'
+    };
+    
+    // Формы для построения фраз с болью
+    this.painPatterns = {
+      'голова': 'голова',
+      'зуб': 'зуб',
+      'зубы': 'зубы',
+      'живот': 'живот',
+      'ухо': 'ухо',
+      'уши': 'уши',
+      'горло': 'горло',
+      'нога': 'нога',
+      'ноги': 'ноги',
+      'рука': 'рука',
+      'руки': 'руки',
+      'спина': 'спина',
+      'глаз': 'глаз',
+      'глаза': 'глаза',
+      'нос': 'нос',
+      'палец ноги': 'палец на ноге',
+      'пальцы ног': 'пальцы на ногах',
+      'палец руки': 'палец на руке',
+      'пальцы рук': 'пальцы на руках',
+      'грудь': 'грудь',
+      'сердце': 'сердце',
+      'шея': 'шея',
+      'колено': 'колено',
+      'колени': 'колени',
+      'локоть': 'локоть',
+      'локти': 'локти',
+      'плечо': 'плечо',
+      'плечи': 'плечи',
+      'лодыжка': 'лодыжка',
+      'лодыжки': 'лодыжки',
+      'запястье': 'запястье',
+      'запястья': 'запястья',
+      'везде': 'везде',
+      'всё': 'всё'
+    };
+    
+    // Неправильные формы множественного числа
+    this.pluralForms = {
+      'зуб': 'зубы',
+      'ухо': 'уши',
+      'нога': 'ноги',
+      'рука': 'руки',
+      'глаз': 'глаза',
+      'колено': 'колени',
+      'локоть': 'локти',
+      'плечо': 'плечи',
+      'лодыжка': 'лодыжки',
+      'запястье': 'запястья',
+      'палец ноги': 'пальцы ног',
+      'палец руки': 'пальцы рук'
     };
   }
 
@@ -1599,6 +1703,17 @@ class AdvancedGrammarSystem {
     // Для мест - используем специальные формы
     if (type === 'place' && this.specialPlaceForms[text]) {
       return this.specialPlaceForms[text];
+    }
+    
+    // Для боли - возвращаем только часть тела без глагола
+    if (type === 'pain') {
+      // Для painConstruction возвращаем только часть тела
+      if (context.painConstruction) {
+        return this.painPatterns[text] || text;
+      }
+      
+      // Для стандартного контекста возвращаем текст карточки
+      return text;
     }
     
     // Если есть готовая форма для контекста
@@ -1666,7 +1781,7 @@ class AdvancedGrammarSystem {
     return `${elements.join(', ')} ${conjunction} ${last}`;
   }
 
-  // Основной метод построения фразы - УПРОЩЕННЫЙ И ИСПРАВЛЕННЫЙ
+  // Основной метод построения фразы с поддержкой боли
   buildPhrase(phrase) {
     if (!phrase.action) return 'Выберите действие';
     
@@ -1679,11 +1794,27 @@ class AdvancedGrammarSystem {
     const requiresDesire = actionRule.requiresDesire || metadata.requiresDesire;
     const isStandalone = actionRule.standalone || metadata.isStandalone;
     const isDirectObject = actionRule.directObject || metadata.directObject;
+    const requiresSubject = actionRule.requiresSubject !== false;
+    const isPainConstruction = actionRule.painConstruction || metadata.painConstruction;
+    const requiresPainObject = actionRule.requiresPainObject;
     
-    // Части фразы
+    // Для боли - специальная обработка
+    if (isPainConstruction) {
+      return this.buildPainPhrase(phrase);
+    }
+    
+    // Для самостоятельных фраз (эмоции, обучение, диалог)
+    if (isStandalone) {
+      if (phrase.subject && requiresSubject) {
+        return `${phrase.subject} ${phrase.action.text}`;
+      }
+      return phrase.action.text;
+    }
+    
+    // Стандартное построение фразы
     const parts = [];
-    const subject = phrase.subject || 'Я';
-    parts.push(subject);
+    const subject = phrase.subject || (requiresSubject ? 'Я' : '');
+    if (subject) parts.push(subject);
     
     // Добавляем желание
     if (phrase.desire) {
@@ -1809,6 +1940,99 @@ class AdvancedGrammarSystem {
     }
     
     return parts.join(' ');
+  }
+
+  // Специальный метод для построения фраз о боли (ИСПРАВЛЕННЫЙ)
+  buildPainPhrase(phrase) {
+    const parts = [];
+    
+    // Добавляем подлежащее
+    if (phrase.subject) {
+      parts.push(phrase.subject);
+    } else {
+      parts.push('У меня');
+    }
+    
+    // Определяем глагол в зависимости от действия
+    let verb = phrase.action ? phrase.action.text : 'болит';
+    
+    // Если есть объект боли, определяем правильную форму глагола
+    if (phrase.objects && phrase.objects.length > 0) {
+      const painObject = phrase.objects[0];
+      const isPlural = this.isPluralPain(painObject.text);
+      
+      // Меняем глагол на "болят" для множественного числа
+      if (isPlural && verb === 'болит') {
+        verb = 'болят';
+      } else if (isPlural && verb === 'сильно болит') {
+        verb = 'сильно болят';
+      }
+    }
+    
+    parts.push(verb);
+    
+    // Добавляем часть тела (только часть тела, без глагола)
+    if (phrase.objects && phrase.objects.length > 0) {
+      const painObject = phrase.objects[0];
+      // Используем painConstruction: true, чтобы получить только часть тела
+      const painWord = this.getWordForm(painObject, { painConstruction: true });
+      parts.push(painWord);
+    } else {
+      parts.push('что-то');
+    }
+    
+    // Добавляем время, если есть
+    if (phrase.time) {
+      parts.push(this.getWordForm(phrase.time));
+    }
+    
+    return parts.join(' ');
+  }
+
+  // Метод для проверки совместимости объектов с действием
+  isObjectCompatible(action, object) {
+    if (!action || !object) return false;
+    
+    const actionRule = this.actionRules[action.id] || {};
+    
+    // Для боли - только карточки типа pain
+    if (actionRule.painConstruction) {
+      return object.type === 'pain';
+    }
+    
+    // Проверяем разрешенные типы объектов
+    const allowedStores = actionRule.allowedStores || [];
+    const objectRule = this.rules[object.type] || {};
+    const storeIn = objectRule.storeIn;
+    
+    if (allowedStores.length > 0 && storeIn) {
+      return allowedStores.includes(storeIn);
+    }
+    
+    return true;
+  }
+
+  // Метод для получения правильных форм для множественного числа боли
+  getPainPattern(painText, isPlural = false) {
+    if (isPlural) {
+      const pluralForm = this.pluralForms[painText];
+      if (pluralForm) {
+        return this.painPatterns[pluralForm] || pluralForm;
+      }
+      return painText;
+    }
+    return this.painPatterns[painText] || painText;
+  }
+
+  // Метод для автоматического определения множественного числа
+  isPluralPain(painText) {
+    // Проверяем по тексту
+    const pluralForms = [
+      'зубы', 'уши', 'ноги', 'руки', 'глаза', 'колени', 'локти', 'плечи', 'лодыжки', 'запястья',
+      'пальцы ног', 'пальцы рук'
+    ];
+    
+    return pluralForms.includes(painText);
   }
 }
 
@@ -2692,18 +2916,31 @@ handlePetSelection(card) {
         this.currentPhrase.time = card;
       }
 
-      handlePainSelection(card) {
-        if (card.type === 'pain') {
-          this.currentPhrase.subject = 'У меня';
-          this.currentPhrase.desire = null;
-          this.currentPhrase.action = { id: 'ACT-HURT', text: 'болит', type: 'action' };
-          this.currentPhrase.people = [];
-          this.currentPhrase.pets = [];
-          this.currentPhrase.places = [];
-          this.currentPhrase.objects = [card];
-          this.currentPhrase.time = null;
-        }
-      }
+handlePainSelection(card) {
+  if (card.type === 'pain') {
+    // Автоматически выбираем действие "болит", если еще не выбрано
+    if (!this.currentPhrase.action || 
+        (this.currentPhrase.action.id !== 'ACT-HURT' && 
+         this.currentPhrase.action.id !== 'ACT-HURTS-A-LOT')) {
+      this.currentPhrase.action = this.cards['ACT-HURT'];
+    }
+    
+    this.currentPhrase.subject = 'У меня';
+    this.currentPhrase.desire = null;
+    
+    // Проверяем, можно ли добавить этот объект к текущему действию
+    if (this.currentPhrase.action && this.grammar.isObjectCompatible(this.currentPhrase.action, card)) {
+      // Для боли - максимум один объект
+      this.currentPhrase.objects = [card];
+    }
+    
+    this.currentPhrase.people = [];
+    this.currentPhrase.pets = [];
+    this.currentPhrase.places = [];
+    this.currentPhrase.time = null;
+    this.updateUI();
+  }
+}
 
       showWarningMessage(text) {
         const message = document.createElement('div');
@@ -3003,11 +3240,10 @@ handlePetSelection(card) {
         }
       }
 
-      isObjectAllowed(card) {
-        if (!this.currentPhrase.action || !this.currentPhrase.action.metadata) return true;
-        const allowedObjects = this.currentPhrase.action.metadata.allowedObjects || [];
-        return allowedObjects.length === 0 || allowedObjects.includes(card.id);
-      }
+isObjectAllowed(card) {
+  if (!this.currentPhrase.action) return true;
+   return this.grammar.isObjectCompatible(this.currentPhrase.action, card);
+}
 
       checkAndResetIncompatibleElements(oldAction, newAction) {
         if (!oldAction || !newAction) return;
@@ -3246,6 +3482,18 @@ handlePetSelection(card) {
         const rulesElement = document.getElementById('rulesInfo');
         let rulesText = '';
 
+		  if (this.currentPhrase.action && 
+      (this.currentPhrase.action.id === 'ACT-HURT' || 
+       this.currentPhrase.action.id === 'ACT-HURTS-A-LOT')) {
+    rulesText = 'Выберите часть тела, которая болит. Можно выбрать только одну часть тела.';
+  }
+  else if (this.currentPhrase.action && this.currentPhrase.action.type === 'emotion') {
+    rulesText = 'Эмоции выражают состояние. Выберите эмоцию для выражения своего состояния.';
+  }
+  else if (this.navigationStack.includes('CAT-PAIN')) {
+    rulesText = 'Выберите часть тела, которая болит.';
+  }
+		
         if (this.currentPhrase.action && this.currentPhrase.action.type === 'emotion') {
           rulesText = 'Эмоции выражают состояние. Выберите эмоцию для выражения своего состояния.';
         } else if (this.navigationStack.includes('CAT-PAIN')) {
