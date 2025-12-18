@@ -3590,6 +3590,282 @@
         "maxPlaces": 0,
         "maxObjects": 0
       }
+    },
+	      "CAT-PAIN": {
+      "id": "CAT-PAIN",
+      "type": "category",
+      "text": "Болит",
+      "emoji": "🤕",
+      "color": "#FFEBEE",
+      "borderColor": "#FFCDD2",
+      "category": null,
+      "sections": ["Главная"],
+      "order": 9
+    },
+    "pain-head": {
+      "id": "pain-head",
+      "type": "pain",
+      "text": "голова",
+      "emoji": "🤕",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "голова",
+        "genitive": "головы"
+      }
+    },
+    "pain-tooth": {
+      "id": "pain-tooth",
+      "type": "pain",
+      "text": "зуб",
+      "emoji": "🦷",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "зуб",
+        "genitive": "зуба"
+      }
+    },
+    "pain-stomach": {
+      "id": "pain-stomach",
+      "type": "pain",
+      "text": "живот",
+      "emoji": "🤢",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "живот",
+        "genitive": "живота"
+      }
+    },
+    "pain-ear": {
+      "id": "pain-ear",
+      "type": "pain",
+      "text": "ухо",
+      "emoji": "👂",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "ухо",
+        "genitive": "уха"
+      }
+    },
+    "pain-throat": {
+      "id": "pain-throat",
+      "type": "pain",
+      "text": "горло",
+      "emoji": "🤭",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "горло",
+        "genitive": "горла"
+      }
+    },
+    "pain-leg": {
+      "id": "pain-leg",
+      "type": "pain",
+      "text": "нога",
+      "emoji": "🦵",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "нога",
+        "genitive": "ноги"
+      }
+    },
+    "pain-arm": {
+      "id": "pain-arm",
+      "type": "pain",
+      "text": "рука",
+      "emoji": "💪",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "рука",
+        "genitive": "руки"
+      }
+    },
+    "pain-back": {
+      "id": "pain-back",
+      "type": "pain",
+      "text": "спина",
+      "emoji": "🧑‍🦽",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "спина",
+        "genitive": "спины"
+      }
+    },
+    "pain-eye": {
+      "id": "pain-eye",
+      "type": "pain",
+      "text": "глаз",
+      "emoji": "👁️",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "глаз",
+        "genitive": "глаза"
+      }
+    },
+    "pain-nose": {
+      "id": "pain-nose",
+      "type": "pain",
+      "text": "нос",
+      "emoji": "👃",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "нос",
+        "genitive": "носа"
+      }
+    },
+    "pain-toe": {
+      "id": "pain-toe",
+      "type": "pain",
+      "text": "палец ноги",
+      "emoji": "🦶",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "палец ноги",
+        "genitive": "пальца ноги"
+      }
+    },
+    "pain-finger": {
+      "id": "pain-finger",
+      "type": "pain",
+      "text": "палец руки",
+      "emoji": "👆",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "палец руки",
+        "genitive": "пальца руки"
+      }
+    },
+    "pain-chest": {
+      "id": "pain-chest",
+      "type": "pain",
+      "text": "грудь",
+      "emoji": "❤️",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "грудь",
+        "genitive": "груди"
+      }
+    },
+    "pain-heart": {
+      "id": "pain-heart",
+      "type": "pain",
+      "text": "сердце",
+      "emoji": "💓",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "сердце",
+        "genitive": "сердца"
+      }
+    },
+    "pain-neck": {
+      "id": "pain-neck",
+      "type": "pain",
+      "text": "шея",
+      "emoji": "👤",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "шея",
+        "genitive": "шеи"
+      }
+    },
+    "pain-knee": {
+      "id": "pain-knee",
+      "type": "pain",
+      "text": "колено",
+      "emoji": "🦵",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "колено",
+        "genitive": "колена"
+      }
+    },
+    "pain-elbow": {
+      "id": "pain-elbow",
+      "type": "pain",
+      "text": "локоть",
+      "emoji": "🤲",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "локоть",
+        "genitive": "локтя"
+      }
+    },
+    "pain-shoulder": {
+      "id": "pain-shoulder",
+      "type": "pain",
+      "text": "плечо",
+      "emoji": "💪",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "плечо",
+        "genitive": "плеча"
+      }
+    },
+    "pain-ankle": {
+      "id": "pain-ankle",
+      "type": "pain",
+      "text": "лодыжка",
+      "emoji": "🦶",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "лодыжка",
+        "genitive": "лодыжки"
+      }
+    },
+    "pain-wrist": {
+      "id": "pain-wrist",
+      "type": "pain",
+      "text": "запястье",
+      "emoji": "🤲",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "запястье",
+        "genitive": "запястья"
+      }
+    },
+    "pain-everywhere": {
+      "id": "pain-everywhere",
+      "type": "pain",
+      "text": "везде",
+      "emoji": "😫",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "forms": {
+        "direct": "везде",
+        "genitive": "везде"
+      }
+    },
+    "ACT-HURT": {
+      "id": "ACT-HURT",
+      "type": "action",
+      "text": "болит",
+      "emoji": "🤕",
+      "color": "#FFEBEE",
+      "category": "CAT-PAIN",
+      "sections": ["Главная"],
+      "metadata": {
+        "isStandalone": true,
+        "requiresDesire": false
+      }
     }
   }
 }
