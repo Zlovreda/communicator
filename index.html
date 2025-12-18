@@ -1417,110 +1417,388 @@
     let selectedVoice = null;
     let history = JSON.parse(localStorage.getItem('communicator_history') || '[]');
     
-class SimplifiedGrammarSystem {
+class AdvancedGrammarSystem {
   constructor() {
-    this.prepositions = {
-      'people': 'с',
-      'pets': 'с',
-      'places': 'в',
-      'objects': 'с'
+    this.rules = {
+      // Правила для разных типов карточек
+      'person': { 
+        storeIn: 'people',
+        preposition: 'с', 
+        case: 'instrumental', 
+        joinPreposition: true 
+      },
+      'pet': { 
+        storeIn: 'pets',
+        preposition: null, 
+        case: 'accusative', 
+        directObject: true 
+      },
+      'place': { 
+        storeIn: 'places',
+        preposition: null, 
+        case: 'locative', 
+        specialForm: true 
+      },
+      'object': { 
+        storeIn: 'objects',
+        preposition: 'с', 
+        case: 'instrumental', 
+        joinPreposition: true 
+      },
+      'clothing': { 
+        storeIn: 'objects',
+        preposition: 'в', 
+        case: 'accusative', 
+        joinPreposition: false,
+        directObject: true 
+      },
+      'time': { 
+        storeIn: 'time',
+        preposition: null, 
+        case: 'adverbial' 
+      },
+      'food': { 
+        storeIn: 'objects',
+        preposition: null, 
+        case: 'accusative', 
+        directObject: true 
+      },
+      'drink': { 
+        storeIn: 'objects',
+        preposition: null, 
+        case: 'accusative', 
+        directObject: true 
+      },
+      'hygiene-tool': { 
+        storeIn: 'objects',
+        preposition: 'с', 
+        case: 'instrumental', 
+        joinPreposition: true 
+      },
+      'transport': { 
+        storeIn: 'objects',
+        preposition: 'на', 
+        case: 'locative', 
+        joinPreposition: false 
+      },
+      'toilet': { 
+        storeIn: 'objects',
+        preposition: null, 
+        case: 'adverbial', 
+        standalone: true 
+      }
+    };
+    
+    // Специальные правила для определенных действий
+    this.actionRules = {
+      'ACT-EAT': { 
+        type: 'consumption', 
+        directObject: true,
+        allowedStores: ['objects', 'people', 'places', 'time'],
+        requiresDesire: true
+      },
+      'ACT-DRINK': { 
+        type: 'consumption', 
+        directObject: true,
+        allowedStores: ['objects', 'people', 'places', 'time'],
+        requiresDesire: true
+      },
+      'ACT-RIDE': { 
+        type: 'movement', 
+        transportPreposition: 'на',
+        allowedStores: ['objects', 'people', 'places', 'time'],
+        requiresDesire: true
+      },
+      'ACT-WEAR': { 
+        type: 'dressing', 
+        clothingPreposition: 'в',
+        allowedStores: ['objects', 'places', 'time'],
+        requiresDesire: true
+      },
+      'ACT-UNDRESS': { 
+        type: 'dressing', 
+        allowedStores: ['objects', 'places', 'time'],
+        requiresDesire: true
+      },
+      'ACT-PLAY': { 
+        type: 'activity', 
+        allowedStores: ['objects', 'people', 'places', 'time'],
+        requiresDesire: true
+      },
+      'ACT-PET': { 
+        type: 'interaction', 
+        directObject: true,
+        allowedStores: ['pets', 'places', 'time'],
+        requiresDesire: true
+      },
+      'ACT-WASH-HANDS': { 
+        type: 'hygiene', 
+        allowedStores: ['objects', 'places', 'time'],
+        requiresDesire: true
+      },
+      'ACT-BRUSH-TEETH': { 
+        type: 'hygiene', 
+        allowedStores: ['objects', 'places', 'time'],
+        requiresDesire: true
+      },
+      'ACT-PEE': { 
+        type: 'toilet', 
+        standalone: true,
+        allowedStores: ['places', 'time']
+      },
+      'ACT-POO': { 
+        type: 'toilet', 
+        standalone: true,
+        allowedStores: ['places', 'time']
+      },
+      'ACT-SHOWER': { 
+        type: 'hygiene', 
+        standalone: true,
+        allowedStores: ['places', 'time']
+      },
+      'ACT-HELP': { 
+        type: 'emergency', 
+        standalone: true
+      },
+      'ACT-HURT': {
+        type: 'medical',
+        standalone: true
+      }
+    };
+    
+    // Специальные формы для мест
+    this.specialPlaceForms = {
+      'дом': 'дома',
+      'площадка': 'на площадке',
+      'парк': 'в парке',
+      'школа': 'в школе',
+      'магазин': 'в магазине',
+      'кафе': 'в кафе',
+      'туалет': 'в туалете',
+      'ванная': 'в ванной'
     };
   }
 
   getWordForm(card, context = {}) {
-    if (!card || !card.forms) return card?.text || '';
+    if (!card) return '';
     
-    const { preposition, case: requiredCase } = context;
+    const { type, text, forms } = card;
     
-    // Если есть форма для предлога (уже содержит предлог)
-    if (preposition && card.forms[preposition]) {
-      return card.forms[preposition];
+    // Для времени - возвращаем как есть
+    if (type === 'time') {
+      return text;
     }
     
-    // Если указан падеж
-    if (requiredCase && card.forms[requiredCase]) {
-      return card.forms[requiredCase];
+    // Для мест - используем специальные формы
+    if (type === 'place' && this.specialPlaceForms[text]) {
+      return this.specialPlaceForms[text];
     }
     
-    return card.text;
+    // Если есть готовая форма для контекста
+    if (context.preposition && forms && forms[context.preposition]) {
+      return forms[context.preposition];
+    }
+    
+    // Для прямых дополнений
+    if (context.directObject) {
+      if (forms && forms.direct) {
+        return forms.direct;
+      }
+      return text;
+    }
+    
+    return text || '';
   }
 
-  joinElements(elements, conjunction = 'и', separator = ', ') {
+  // Улучшенный метод для соединения элементов
+  joinElements(elements, conjunction = 'и') {
     if (!elements || elements.length === 0) return '';
     if (elements.length === 1) return elements[0];
-    if (elements.length === 2) return `${elements[0]} ${conjunction} ${elements[1]}`;
+    
+    // Проверяем, все ли элементы начинаются с одинакового предлога
+    const firstElement = elements[0];
+    let commonPreposition = '';
+    
+    if (firstElement.startsWith('с ')) commonPreposition = 'с ';
+    else if (firstElement.startsWith('в ')) commonPreposition = 'в ';
+    else if (firstElement.startsWith('на ')) commonPreposition = 'на ';
+    
+    // Если все элементы имеют одинаковый предлог, объединяем правильно
+    const allSamePreposition = commonPreposition && 
+      elements.every(el => el.startsWith(commonPreposition));
+    
+    if (allSamePreposition && commonPreposition) {
+      // Убираем предлоги у всех элементов
+      const withoutPrepositions = elements.map(el => 
+        el.substring(commonPreposition.length)
+      );
+      
+      if (withoutPrepositions.length === 2) {
+        return `${commonPreposition}${withoutPrepositions[0]} ${conjunction} ${withoutPrepositions[1]}`;
+      }
+      
+      const last = withoutPrepositions.pop();
+      return `${commonPreposition}${withoutPrepositions.join(', ')} ${conjunction} ${last}`;
+    }
+    
+    // Если это прямые дополнения без предлогов
+    if (!elements.some(el => el.startsWith('с ') || el.startsWith('в ') || el.startsWith('на '))) {
+      if (elements.length === 2) {
+        return `${elements[0]} ${conjunction} ${elements[1]}`;
+      }
+      const last = elements.pop();
+      return `${elements.join(', ')} ${conjunction} ${last}`;
+    }
+    
+    // Смешанные элементы
+    if (elements.length === 2) {
+      return `${elements[0]} ${conjunction} ${elements[1]}`;
+    }
     
     const last = elements.pop();
-    return `${elements.join(separator)} ${conjunction} ${last}`;
+    return `${elements.join(', ')} ${conjunction} ${last}`;
   }
 
+  // Основной метод построения фразы - УПРОЩЕННЫЙ И ИСПРАВЛЕННЫЙ
   buildPhrase(phrase) {
     if (!phrase.action) return 'Выберите действие';
     
-    if (phrase.action.type === 'emotion') {
-      const subject = phrase.subject || 'Я';
-      return `${subject} ${phrase.action.text}`;
-    }
+    const action = phrase.action;
+    const actionId = action.id;
+    const actionRule = this.actionRules[actionId] || {};
+    const metadata = action.metadata || {};
     
-    if (phrase.action.type === 'pain') {
-      const bodyPart = phrase.objects[0];
-      if (!bodyPart) return 'Выберите часть тела';
-      return `У меня болит ${this.getWordForm(bodyPart, { case: 'nominative' })}`;
-    }
+    // Проверяем, требует ли действие желание
+    const requiresDesire = actionRule.requiresDesire || metadata.requiresDesire;
+    const isStandalone = actionRule.standalone || metadata.isStandalone;
+    const isDirectObject = actionRule.directObject || metadata.directObject;
     
+    // Части фразы
     const parts = [];
-    
     const subject = phrase.subject || 'Я';
     parts.push(subject);
     
+    // Добавляем желание
     if (phrase.desire) {
       parts.push(phrase.desire);
+    } else if (requiresDesire && !isStandalone) {
+      parts.push('хочу');
     }
     
-    parts.push(phrase.action.text);
+    parts.push(action.text);
     
-    const additionalParts = [];
-    
-    // Обрабатываем людей
-    if (phrase.people && phrase.people.length > 0) {
-      const peopleForms = phrase.people.map(person => 
-        this.getWordForm(person, { preposition: 'с' })
-      );
-      additionalParts.push(this.joinElements(peopleForms));
+    // Обработка в зависимости от типа действия
+    if (actionId === 'ACT-PET') {
+      // Для "гладить" - прямое дополнение из pets
+      if (phrase.pets && phrase.pets.length > 0) {
+        const pets = phrase.pets.map(pet => 
+          this.getWordForm(pet, { directObject: true })
+        );
+        parts.push(this.joinElements(pets));
+      }
+    }
+    else if (actionId === 'ACT-WEAR') {
+      // Для "одеваться" - предлог "в" + винительный падеж
+      if (phrase.objects && phrase.objects.length > 0) {
+        const clothing = phrase.objects.map(item => {
+          if (item.forms && item.forms['в']) {
+            return `в ${item.forms['в']}`;
+          }
+          return `в ${item.text}`;
+        });
+        parts.push(this.joinElements(clothing));
+      }
+    }
+    else if (actionId === 'ACT-UNDRESS') {
+      // Для "снять" - прямое дополнение
+      if (phrase.objects && phrase.objects.length > 0) {
+        const clothing = phrase.objects.map(item => {
+          if (item.forms && item.forms['direct']) {
+            return item.forms['direct'];
+          }
+          return item.text;
+        });
+        parts.push(this.joinElements(clothing));
+      }
+    }
+    else if (actionId === 'ACT-RIDE') {
+      // Для "кататься" - предлог "на" + предложный падеж
+      if (phrase.objects && phrase.objects.length > 0) {
+        const transport = phrase.objects.map(item => {
+          if (item.forms && item.forms['на']) {
+            return `на ${item.forms['на']}`;
+          }
+          return `на ${item.text}`;
+        });
+        parts.push(this.joinElements(transport));
+      }
+    }
+    else if (actionId === 'ACT-EAT' || actionId === 'ACT-DRINK') {
+      // Для "есть" и "пить" - прямое дополнение
+      if (phrase.objects && phrase.objects.length > 0) {
+        const items = phrase.objects.map(item => 
+          this.getWordForm(item, { directObject: true })
+        );
+        parts.push(this.joinElements(items));
+      }
+    }
+    else if (actionId === 'ACT-PLAY') {
+      // Для "играть" - предлог "с" + творительный падеж
+      if (phrase.objects && phrase.objects.length > 0) {
+        const toys = phrase.objects.map(toy => {
+          if (toy.forms && toy.forms['с']) {
+            return `с ${toy.forms['с']}`;
+          }
+          return `с ${toy.text}`;
+        });
+        parts.push(this.joinElements(toys));
+      }
+    }
+    else if (actionId === 'ACT-WASH-HANDS' || actionId === 'ACT-BRUSH-TEETH') {
+      // Для гигиены - предлог "с" + творительный падеж
+      if (phrase.objects && phrase.objects.length > 0) {
+        const tools = phrase.objects.map(tool => {
+          if (tool.forms && tool.forms['с']) {
+            return `с ${tool.forms['с']}`;
+          }
+          return `с ${tool.text}`;
+        });
+        parts.push(this.joinElements(tools));
+      }
+    }
+    else if (isStandalone) {
+      // Для standalone действий ничего не добавляем кроме времени
     }
     
-    // Обрабатываем питомцев
-    if (phrase.pets && phrase.pets.length > 0) {
-      const petForms = phrase.pets.map(pet => 
-        this.getWordForm(pet, { preposition: 'с' })
-      );
-      additionalParts.push(this.joinElements(petForms));
+    // Люди с предлогом "с"
+    if (!isStandalone && phrase.people && phrase.people.length > 0) {
+      const people = phrase.people.map(person => {
+        if (person.forms && person.forms['с']) {
+          return `с ${person.forms['с']}`;
+        }
+        return `с ${person.text}`;
+      });
+      
+      // Проверяем, есть ли уже элементы с предлогом "с"
+      const lastPart = parts[parts.length - 1];
+      if (lastPart && lastPart.startsWith('с ')) {
+        const combined = this.joinElements([lastPart, ...people]);
+        parts[parts.length - 1] = combined;
+      } else {
+        parts.push(this.joinElements(people));
+      }
     }
     
-    // Обрабатываем места
-    if (phrase.places && phrase.places.length > 0) {
-      const placeForms = phrase.places.map(place => 
-        this.getWordForm(place, { preposition: 'в' })
-      );
-      additionalParts.push(this.joinElements(placeForms));
+    // Места
+    if (!isStandalone && phrase.places && phrase.places.length > 0) {
+      const place = phrase.places[0];
+      const placeForm = this.getWordForm(place);
+      parts.push(placeForm);
     }
     
-    // Обрабатываем объекты
-    if (phrase.objects && phrase.objects.length > 0) {
-      const objectForms = phrase.objects.map(obj => 
-        this.getWordForm(obj, { preposition: 'с' })
-      );
-      additionalParts.push(this.joinElements(objectForms));
-    }
-    
-    // Обрабатываем время
+    // Время
     if (phrase.time) {
-      const timeForm = this.getWordForm(phrase.time, { case: 'accusative' });
-      additionalParts.push(timeForm);
-    }
-    
-    if (additionalParts.length > 0) {
-      parts.push(additionalParts.join(' '));
+      parts.push(this.getWordForm(phrase.time));
     }
     
     return parts.join(' ');
@@ -1529,5289 +1807,7 @@ class SimplifiedGrammarSystem {
 
     const FALLBACK_CARDS = {
   "cards": {
-    "CAT-FOOD": {
-      "id": "CAT-FOOD",
-      "text": "Еда",
-      "emoji": "🍽️",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": ["категория", "еда", "продукты", "питание"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {
-        "isCategory": true,
-        "description": "Продукты питания и блюда"
-      }
-    },
-
-    "CAT-DRINKS": {
-      "id": "CAT-DRINKS",
-      "text": "Напитки",
-      "emoji": "🥤",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": ["категория", "напитки", "питье", "жидкости"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": ["Главная"],
-      "metadata": {
-        "isCategory": true,
-        "description": "Напитки и жидкости"
-      }
-    },
-
-    "ACT-EAT": {
-      "id": "ACT-EAT",
-      "text": "есть",
-      "emoji": "🍴",
-      "type": "action",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "есть",
-        "genitive": "есть",
-        "dative": "есть",
-        "accusative": "есть",
-        "instrumental": "есть",
-        "prepositional": "есть"
-      },
-      "tags": ["действие", "еда", "питание", "прием пищи"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": ["Главная"],
-      "metadata": {
-        "allowedWith": ["people", "places", "objects", "time"],
-        "allowedObjects": ["FOOD-APPLE", "FOOD-BREAD", "FOOD-SOUP", "FOOD-PORRIDGE", "FOOD-CANDY", "FOOD-YOGURT", "FOOD-CHEESE", "FOOD-SANDWICH", "FOOD-PIZZA", "FOOD-SALAD", "FOOD-MEAT", "FOOD-FISH", "FOOD-POTATO", "FOOD-CARROT", "FOOD-ICE-CREAM", "FOOD-COOKIE", "FOOD-CAKE", "FOOD-PASTA"],
-        "maxPeople": 2,
-        "maxPets": 0,
-        "maxPlaces": 1,
-        "maxObjects": 2
-      }
-    },
-
-    "ACT-DRINK": {
-      "id": "ACT-DRINK",
-      "text": "пить",
-      "emoji": "🥛",
-      "type": "action",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "пить",
-        "genitive": "пить",
-        "dative": "пить",
-        "accusative": "пить",
-        "instrumental": "пить",
-        "prepositional": "пить"
-      },
-      "tags": ["действие", "напитки", "питье", "жидкости"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": ["Главная"],
-      "metadata": {
-        "allowedWith": ["people", "places", "objects", "time"],
-        "allowedObjects": ["DRINK-WATER", "DRINK-JUICE", "DRINK-MILK", "DRINK-TEA", "DRINK-COMPOT", "DRINK-COFFEE", "DRINK-COKE", "DRINK-LEMONADE", "DRINK-SMOOTHIE", "DRINK-KEFIR"],
-        "maxPeople": 2,
-        "maxPets": 0,
-        "maxPlaces": 1,
-        "maxObjects": 2
-      }
-    },
-
-    "FOOD-APPLE": {
-      "id": "FOOD-APPLE",
-      "text": "яблоко",
-      "emoji": "🍎",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "яблоко",
-        "genitive": "яблока",
-        "dative": "яблоку",
-        "accusative": "яблоко",
-        "instrumental": "яблоком",
-        "prepositional": "яблоке",
-        "с": "яблоко"
-      },
-      "tags": ["еда", "фрукт", "яблоко", "здоровое"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#F44336",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-BREAD": {
-      "id": "FOOD-BREAD",
-      "text": "хлеб",
-      "emoji": "🍞",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "хлеб",
-        "genitive": "хлеба",
-        "dative": "хлебу",
-        "accusative": "хлеб",
-        "instrumental": "хлебом",
-        "prepositional": "хлебе",
-        "с": "хлеб"
-      },
-      "tags": ["еда", "хлеб", "выпечка", "основное"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-SOUP": {
-      "id": "FOOD-SOUP",
-      "text": "суп",
-      "emoji": "🍲",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "суп",
-        "genitive": "супа",
-        "dative": "супу",
-        "accusative": "суп",
-        "instrumental": "супом",
-        "prepositional": "супе",
-        "с": "суп"
-      },
-      "tags": ["еда", "суп", "горячее", "обед"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-PORRIDGE": {
-      "id": "FOOD-PORRIDGE",
-      "text": "каша",
-      "emoji": "🥣",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "каша",
-        "genitive": "каши",
-        "dative": "каше",
-        "accusative": "кашу",
-        "instrumental": "кашей",
-        "prepositional": "каше",
-        "с": "кашу"
-      },
-      "tags": ["еда", "каша", "завтрак", "здоровое"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-CANDY": {
-      "id": "FOOD-CANDY",
-      "text": "конфета",
-      "emoji": "🍬",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "конфета",
-        "genitive": "конфеты",
-        "dative": "конфете",
-        "accusative": "конфету",
-        "instrumental": "конфетой",
-        "prepositional": "конфете",
-        "с": "конфету"
-      },
-      "tags": ["еда", "сладкое", "конфета", "десерт"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FCE4EC",
-      "borderColor": "#E91E63",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-YOGURT": {
-      "id": "FOOD-YOGURT",
-      "text": "йогурт",
-      "emoji": "🥛",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "йогурт",
-        "genitive": "йогурта",
-        "dative": "йогурту",
-        "accusative": "йогурт",
-        "instrumental": "йогуртом",
-        "prepositional": "йогурте",
-        "с": "йогурт"
-      },
-      "tags": ["еда", "молочное", "йогурт", "перекус"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#F3E5F5",
-      "borderColor": "#9C27B0",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-CHEESE": {
-      "id": "FOOD-CHEESE",
-      "text": "сыр",
-      "emoji": "🧀",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "сыр",
-        "genitive": "сыра",
-        "dative": "сыру",
-        "accusative": "сыр",
-        "instrumental": "сыром",
-        "prepositional": "сыре",
-        "с": "сыр"
-      },
-      "tags": ["еда", "молочное", "сыр", "закуска"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-SANDWICH": {
-      "id": "FOOD-SANDWICH",
-      "text": "бутерброд",
-      "emoji": "🥪",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "бутерброд",
-        "genitive": "бутерброда",
-        "dative": "бутерброду",
-        "accusative": "бутерброд",
-        "instrumental": "бутербродом",
-        "prepositional": "бутерброде",
-        "с": "бутерброд"
-      },
-      "tags": ["еда", "бутерброд", "перекус", "быстро"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-PIZZA": {
-      "id": "FOOD-PIZZA",
-      "text": "пицца",
-      "emoji": "🍕",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "пицца",
-        "genitive": "пиццы",
-        "dative": "пицце",
-        "accusative": "пиццу",
-        "instrumental": "пиццей",
-        "prepositional": "пицце",
-        "с": "пиццу"
-      },
-      "tags": ["еда", "пицца", "ужин", "любимое"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#F44336",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-SALAD": {
-      "id": "FOOD-SALAD",
-      "text": "салат",
-      "emoji": "🥗",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "салат",
-        "genitive": "салата",
-        "dative": "салату",
-        "accusative": "салат",
-        "instrumental": "салатом",
-        "prepositional": "салате",
-        "с": "салат"
-      },
-      "tags": ["еда", "салат", "овощи", "здоровое"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-MEAT": {
-      "id": "FOOD-MEAT",
-      "text": "мясо",
-      "emoji": "🍖",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "мясо",
-        "genitive": "мяса",
-        "dative": "мясу",
-        "accusative": "мясо",
-        "instrumental": "мясом",
-        "prepositional": "мясе",
-        "с": "мясо"
-      },
-      "tags": ["еда", "мясо", "белок", "основное"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#F44336",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-FISH": {
-      "id": "FOOD-FISH",
-      "text": "рыба",
-      "emoji": "🐟",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "рыба",
-        "genitive": "рыбы",
-        "dative": "рыбе",
-        "accusative": "рыбу",
-        "instrumental": "рыбой",
-        "prepositional": "рыбе",
-        "с": "рыбу"
-      },
-      "tags": ["еда", "рыба", "белок", "здоровое"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-POTATO": {
-      "id": "FOOD-POTATO",
-      "text": "картошка",
-      "emoji": "🥔",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "картошка",
-        "genitive": "картошки",
-        "dative": "картошке",
-        "accusative": "картошку",
-        "instrumental": "картошкой",
-        "prepositional": "картошке",
-        "с": "картошку"
-      },
-      "tags": ["еда", "овощи", "картошка", "гарнир"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-CARROT": {
-      "id": "FOOD-CARROT",
-      "text": "морковь",
-      "emoji": "🥕",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "морковь",
-        "genitive": "моркови",
-        "dative": "моркови",
-        "accusative": "морковь",
-        "instrumental": "морковью",
-        "prepositional": "моркови",
-        "с": "морковь"
-      },
-      "tags": ["еда", "овощи", "морковь", "здоровое"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-ICE-CREAM": {
-      "id": "FOOD-ICE-CREAM",
-      "text": "мороженое",
-      "emoji": "🍨",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "мороженое",
-        "genitive": "мороженого",
-        "dative": "мороженому",
-        "accusative": "мороженое",
-        "instrumental": "мороженым",
-        "prepositional": "мороженом",
-        "с": "мороженое"
-      },
-      "tags": ["еда", "сладкое", "мороженое", "десерт"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#F3E5F5",
-      "borderColor": "#9C27B0",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-COOKIE": {
-      "id": "FOOD-COOKIE",
-      "text": "печенье",
-      "emoji": "🍪",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "печенье",
-        "genitive": "печенья",
-        "dative": "печенью",
-        "accusative": "печенье",
-        "instrumental": "печеньем",
-        "prepositional": "печенье",
-        "с": "печенье"
-      },
-      "tags": ["еда", "сладкое", "печенье", "десерт"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-CAKE": {
-      "id": "FOOD-CAKE",
-      "text": "торт",
-      "emoji": "🎂",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "торт",
-        "genitive": "торта",
-        "dative": "торту",
-        "accusative": "торт",
-        "instrumental": "тортом",
-        "prepositional": "торте",
-        "с": "торт"
-      },
-      "tags": ["еда", "сладкое", "торт", "десерт", "праздник"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FCE4EC",
-      "borderColor": "#E91E63",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "FOOD-PASTA": {
-      "id": "FOOD-PASTA",
-      "text": "паста",
-      "emoji": "🍝",
-      "type": "object",
-      "category": "CAT-FOOD",
-      "forms": {
-        "nominative": "паста",
-        "genitive": "пасты",
-        "dative": "пасте",
-        "accusative": "пасту",
-        "instrumental": "пастой",
-        "prepositional": "пасте",
-        "с": "пасту"
-      },
-      "tags": ["еда", "паста", "макароны", "ужин"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "DRINK-WATER": {
-      "id": "DRINK-WATER",
-      "text": "вода",
-      "emoji": "💧",
-      "type": "object",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "вода",
-        "genitive": "воды",
-        "dative": "воде",
-        "accusative": "воду",
-        "instrumental": "водой",
-        "prepositional": "воде",
-        "с": "воду"
-      },
-      "tags": ["напиток", "вода", "жидкость", "здоровое"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "DRINK-JUICE": {
-      "id": "DRINK-JUICE",
-      "text": "сок",
-      "emoji": "🧃",
-      "type": "object",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "сок",
-        "genitive": "сока",
-        "dative": "соку",
-        "accusative": "сок",
-        "instrumental": "соком",
-        "prepositional": "соке",
-        "с": "сок"
-      },
-      "tags": ["напиток", "сок", "фрукты", "витамины"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "DRINK-MILK": {
-      "id": "DRINK-MILK",
-      "text": "молоко",
-      "emoji": "🥛",
-      "type": "object",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "молоко",
-        "genitive": "молока",
-        "dative": "молоку",
-        "accusative": "молоко",
-        "instrumental": "молоком",
-        "prepositional": "молоке",
-        "с": "молоко"
-      },
-      "tags": ["напиток", "молоко", "молочное", "кальций"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "DRINK-TEA": {
-      "id": "DRINK-TEA",
-      "text": "чай",
-      "emoji": "🍵",
-      "type": "object",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "чай",
-        "genitive": "чая",
-        "dative": "чаю",
-        "accusative": "чай",
-        "instrumental": "чаем",
-        "prepositional": "чае",
-        "с": "чай"
-      },
-      "tags": ["напиток", "чай", "горячее", "утро"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "DRINK-COMPOT": {
-      "id": "DRINK-COMPOT",
-      "text": "компот",
-      "emoji": "🍓",
-      "type": "object",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "компот",
-        "genitive": "компота",
-        "dative": "компоту",
-        "accusative": "компот",
-        "instrumental": "компотом",
-        "prepositional": "компоте",
-        "с": "компот"
-      },
-      "tags": ["напиток", "компот", "фруктовое", "домашнее"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FCE4EC",
-      "borderColor": "#E91E63",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "DRINK-COFFEE": {
-      "id": "DRINK-COFFEE",
-      "text": "кофе",
-      "emoji": "☕",
-      "type": "object",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "кофе",
-        "genitive": "кофе",
-        "dative": "кофе",
-        "accusative": "кофе",
-        "instrumental": "кофе",
-        "prepositional": "кофе",
-        "с": "кофе"
-      },
-      "tags": ["напиток", "кофе", "утро", "бодрящее"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "DRINK-COKE": {
-      "id": "DRINK-COKE",
-      "text": "кола",
-      "emoji": "🥤",
-      "type": "object",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "кола",
-        "genitive": "колы",
-        "dative": "коле",
-        "accusative": "колу",
-        "instrumental": "колой",
-        "prepositional": "коле",
-        "с": "колу"
-      },
-      "tags": ["напиток", "газировка", "сладкое", "праздник"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#ECEFF1",
-      "borderColor": "#607D8B",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "DRINK-LEMONADE": {
-      "id": "DRINK-LEMONADE",
-      "text": "лимонад",
-      "emoji": "🍋",
-      "type": "object",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "лимонад",
-        "genitive": "лимонада",
-        "dative": "лимонаду",
-        "accusative": "лимонад",
-        "instrumental": "лимонадом",
-        "prepositional": "лимонаде",
-        "с": "лимонад"
-      },
-      "tags": ["напиток", "лимонад", "летнее", "освежающее"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "DRINK-SMOOTHIE": {
-      "id": "DRINK-SMOOTHIE",
-      "text": "смузи",
-      "emoji": "🥤",
-      "type": "object",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "смузи",
-        "genitive": "смузи",
-        "dative": "смузи",
-        "accusative": "смузи",
-        "instrumental": "смузи",
-        "prepositional": "смузи",
-        "с": "смузи"
-      },
-      "tags": ["напиток", "смузи", "фрукты", "здоровое"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-
-    "DRINK-KEFIR": {
-      "id": "DRINK-KEFIR",
-      "text": "кефир",
-      "emoji": "🥛",
-      "type": "object",
-      "category": "CAT-DRINKS",
-      "forms": {
-        "nominative": "кефир",
-        "genitive": "кефира",
-        "dative": "кефиру",
-        "accusative": "кефир",
-        "instrumental": "кефиром",
-        "prepositional": "кефире",
-        "с": "кефир"
-      },
-      "tags": ["напиток", "кефир", "молочное", "здоровое"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T10:00:00.000Z",
-      "modified": "2025-12-10T10:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {}
-    },
-      "CAT-PEOPLE": {
-      "id": "CAT-PEOPLE",
-      "text": "Люди",
-      "emoji": "👥",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": ["категория", "люди", "семья"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 156,
-      "created": "2025-11-28T08:30:00.000Z",
-      "modified": "2025-11-28T08:30:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": ["Главная"],
-      "metadata": {
-        "isCategory": true,
-        "description": "Члены семьи и близкие люди"
-      },
-      "order": 99
-    },
-    "CAT-PLACES": {
-      "id": "CAT-PLACES",
-      "text": "Места",
-      "emoji": "🗺️",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": ["категория", "места", "локации"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 92,
-      "created": "2025-11-28T10:20:00.000Z",
-      "modified": "2025-11-28T10:20:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {
-        "isCategory": true,
-        "description": "Места и локации"
-      },
-      "order": 100
-    },
-    "CAT-TIME": {
-      "id": "CAT-TIME",
-      "text": "Время",
-      "emoji": "⏰",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": ["категория", "время", "расписание"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 67,
-      "created": "2025-11-28T14:30:00.000Z",
-      "modified": "2025-11-28T14:30:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF8E1",
-      "borderColor": "#FFC107",
-      "sections": ["Главная"],
-      "metadata": {
-        "isCategory": true,
-        "description": "Время суток и дни"
-      },
-      "order": 101
-    },
-    "CAT-ALL": {
-      "id": "CAT-ALL",
-      "text": "Все карточки",
-      "emoji": "📋",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": ["категория", "все"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 203,
-      "created": "2025-11-28T22:00:00.000Z",
-      "modified": "2025-11-28T22:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#ECEFF1",
-      "borderColor": "#607D8B",
-      "sections": ["Главная"],
-      "metadata": {
-        "isCategory": true,
-        "description": "Все доступные карточки"
-      },
-      "order": 25
-    },
-
-    "PERSON-MOM": {
-      "id": "PERSON-MOM",
-      "text": "Мама",
-      "emoji": "👩",
-      "type": "person",
-      "category": "CAT-PEOPLE",
-      "forms": {
-        "nominative": "мама",
-        "genitive": "мамы",
-        "dative": "маме",
-        "accusative": "маму",
-        "instrumental": "мамой",
-        "prepositional": "маме",
-        "с": "с мамой"
-      },
-      "tags": ["семья", "близкие", "женщина"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 189,
-      "created": "2025-11-28T08:30:01.000Z",
-      "modified": "2025-11-28T08:30:01.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FCE4EC",
-      "borderColor": "#E91E63",
-      "sections": ["Главная"],
-      "metadata": {
-        "gender": "female",
-        "relation": "parent"
-      }
-    },
-
-    "PERSON-DAD": {
-      "id": "PERSON-DAD",
-      "text": "Папа",
-      "emoji": "👨",
-      "type": "person",
-      "category": "CAT-PEOPLE",
-      "forms": {
-        "nominative": "папа",
-        "genitive": "папы",
-        "dative": "папе",
-        "accusative": "папу",
-        "instrumental": "папой",
-        "prepositional": "папе",
-        "с": "с папой"
-      },
-      "tags": ["семья", "близкие", "мужчина"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 167,
-      "created": "2025-11-28T08:30:02.000Z",
-      "modified": "2025-11-28T08:30:02.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": ["Главная"],
-      "metadata": {
-        "gender": "male",
-        "relation": "parent"
-      }
-    },
-
-    "PERSON-BROTHER": {
-      "id": "PERSON-BROTHER",
-      "text": "Брат",
-      "emoji": "👦",
-      "type": "person",
-      "category": "CAT-PEOPLE",
-      "forms": {
-        "nominative": "брат",
-        "genitive": "брата",
-        "dative": "брату",
-        "accusative": "брата",
-        "instrumental": "братом",
-        "prepositional": "брате",
-        "с": "с братом"
-      },
-      "tags": ["семья", "дети", "мужчина"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 98,
-      "created": "2025-11-28T08:30:03.000Z",
-      "modified": "2025-11-28T08:30:03.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": ["Главная"],
-      "metadata": {
-        "gender": "male",
-        "relation": "sibling"
-      }
-    },
-
-    "PERSON-SISTER": {
-      "id": "PERSON-SISTER",
-      "text": "Сестра",
-      "emoji": "👧",
-      "type": "person",
-      "category": "CAT-PEOPLE",
-      "forms": {
-        "nominative": "сестра",
-        "genitive": "сестры",
-        "dative": "сестре",
-        "accusative": "сестру",
-        "instrumental": "сестрой",
-        "prepositional": "сестре",
-        "с": "с сестрой"
-      },
-      "tags": ["семья", "дети", "женщина"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 87,
-      "created": "2025-11-28T08:30:04.000Z",
-      "modified": "2025-11-28T08:30:04.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FCE4EC",
-      "borderColor": "#E91E63",
-      "sections": ["Главная"],
-      "metadata": {
-        "gender": "female",
-        "relation": "sibling"
-      }
-    },
-
-    "PERSON-GRANDMA": {
-      "id": "PERSON-GRANDMA",
-      "text": "Бабушка",
-      "emoji": "👵",
-      "type": "person",
-      "category": "CAT-PEOPLE",
-      "forms": {
-        "nominative": "бабушка",
-        "genitive": "бабушки",
-        "dative": "бабушке",
-        "accusative": "бабушку",
-        "instrumental": "бабушкой",
-        "prepositional": "бабушке",
-        "с": "с бабушкой"
-      },
-      "tags": ["семья", "родственники", "женщина"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 76,
-      "created": "2025-11-28T08:30:05.000Z",
-      "modified": "2025-11-28T08:30:05.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FCE4EC",
-      "borderColor": "#E91E63",
-      "sections": ["Главная"],
-      "metadata": {
-        "gender": "female",
-        "relation": "grandparent"
-      }
-    },
-
-    "PERSON-GRANDPA": {
-      "id": "PERSON-GRANDPA",
-      "text": "Дедушка",
-      "emoji": "👴",
-      "type": "person",
-      "category": "CAT-PEOPLE",
-      "forms": {
-        "nominative": "дедушка",
-        "genitive": "дедушки",
-        "dative": "дедушке",
-        "accusative": "дедушку",
-        "instrumental": "дедушкой",
-        "prepositional": "дедушке",
-        "с": "с дедушкой"
-      },
-      "tags": ["семья", "родственники", "мужчина"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 65,
-      "created": "2025-11-28T08:30:06.000Z",
-      "modified": "2025-11-28T08:30:06.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": ["Главная"],
-      "metadata": {
-        "gender": "male",
-        "relation": "grandparent"
-      }
-    },
-
-    "PERSON-TEACHER": {
-      "id": "PERSON-TEACHER",
-      "text": "Учитель",
-      "emoji": "👨‍🏫",
-      "type": "person",
-      "category": "CAT-PEOPLE",
-      "forms": {
-        "nominative": "учитель",
-        "genitive": "учителя",
-        "dative": "учителю",
-        "accusative": "учителя",
-        "instrumental": "учителем",
-        "prepositional": "учителе",
-        "с": "с учителем"
-      },
-      "tags": ["образование", "работа", "мужчина"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 54,
-      "created": "2025-11-28T08:30:07.000Z",
-      "modified": "2025-11-28T08:30:07.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {
-        "gender": "male",
-        "relation": "teacher"
-      }
-    },
-
-    "PERSON-DOCTOR": {
-      "id": "PERSON-DOCTOR",
-      "text": "Доктор",
-      "emoji": "👨‍⚕️",
-      "type": "person",
-      "category": "CAT-PEOPLE",
-      "forms": {
-        "nominative": "доктор",
-        "genitive": "доктора",
-        "dative": "доктору",
-        "accusative": "доктора",
-        "instrumental": "доктором",
-        "prepositional": "докторе",
-        "с": "с доктором"
-      },
-      "tags": ["здоровье", "работа", "мужчина"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 43,
-      "created": "2025-11-28T08:30:08.000Z",
-      "modified": "2025-11-28T08:30:08.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#F44336",
-      "sections": ["Главная"],
-      "metadata": {
-        "gender": "male",
-        "relation": "doctor"
-      }
-    },
-
-    "PERSON-FRIEND": {
-      "id": "PERSON-FRIEND",
-      "text": "Друг",
-      "emoji": "🤝",
-      "type": "person",
-      "category": "CAT-PEOPLE",
-      "forms": {
-        "nominative": "друг",
-        "genitive": "друга",
-        "dative": "другу",
-        "accusative": "друга",
-        "instrumental": "другом",
-        "prepositional": "друге",
-        "с": "с другом"
-      },
-      "tags": ["друзья", "общение"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 92,
-      "created": "2025-11-28T08:30:09.000Z",
-      "modified": "2025-11-28T08:30:09.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": ["Главная"],
-      "metadata": {
-        "relation": "friend"
-      }
-    },
-
-     "PLACE-HOME": {
-      "id": "PLACE-HOME",
-      "text": "дом",
-      "emoji": "🏠",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "дом",
-        "genitive": "дома",
-        "dative": "дому",
-        "accusative": "дом",
-        "instrumental": "домом",
-        "prepositional": "доме",
-        "в": "в доме",
-        "на": "на доме"
-      },
-      "tags": ["место", "дом", "жилье"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 156,
-      "created": "2025-11-28T10:20:01.000Z",
-      "modified": "2025-11-28T10:20:01.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "home"
-      }
-    },
-
-    "PLACE-PARK": {
-      "id": "PLACE-PARK",
-      "text": "парк",
-      "emoji": "🌳",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "парк",
-        "genitive": "парка",
-        "dative": "парку",
-        "accusative": "парк",
-        "instrumental": "парком",
-        "prepositional": "парке",
-        "в": "в парке"
-      },
-      "tags": ["место", "парк", "отдых"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 98,
-      "created": "2025-11-28T10:20:02.000Z",
-      "modified": "2025-11-28T10:20:02.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "outdoor"
-      }
-    },
-
-    "PLACE-SCHOOL": {
-      "id": "PLACE-SCHOOL",
-      "text": "школа",
-      "emoji": "🏫",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "школа",
-        "genitive": "школы",
-        "dative": "школе",
-        "accusative": "школу",
-        "instrumental": "школой",
-        "prepositional": "школе",
-        "в": "в школе"
-      },
-      "tags": ["место", "школа", "обучение"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 87,
-      "created": "2025-11-28T10:20:03.000Z",
-      "modified": "2025-11-28T10:20:03.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF8E1",
-      "borderColor": "#FFC107",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "education"
-      }
-    },
-
-    "PLACE-STORE": {
-      "id": "PLACE-STORE",
-      "text": "магазин",
-      "emoji": "🏪",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "магазин",
-        "genitive": "магазина",
-        "dative": "магазину",
-        "accusative": "магазин",
-        "instrumental": "магазином",
-        "prepositional": "магазине",
-        "в": "в магазине"
-      },
-      "tags": ["место", "магазин", "покупки"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 76,
-      "created": "2025-11-28T10:20:04.000Z",
-      "modified": "2025-11-28T10:20:04.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "commercial"
-      }
-    },
-
-    "PLACE-PLAYGROUND": {
-      "id": "PLACE-PLAYGROUND",
-      "text": "детская площадка",
-      "emoji": "🛝",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "детская площадка",
-        "genitive": "детской площадки",
-        "dative": "детской площадке",
-        "accusative": "детскую площадку",
-        "instrumental": "детской площадкой",
-        "prepositional": "детской площадке",
-        "на": "на детской площадке"
-      },
-      "tags": ["место", "игры", "дети"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 92,
-      "created": "2025-11-28T10:20:05.000Z",
-      "modified": "2025-11-28T10:20:05.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "play"
-      }
-    },
-
-    "PLACE-GRANDMA": {
-      "id": "PLACE-GRANDMA",
-      "text": "у бабушки",
-      "emoji": "👵",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "у бабушки",
-        "genitive": "у бабушки",
-        "dative": "к бабушке",
-        "accusative": "к бабушке",
-        "instrumental": "с бабушкой",
-        "prepositional": "у бабушки"
-      },
-      "tags": ["место", "бабушка", "семья"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 65,
-      "created": "2025-11-28T10:20:06.000Z",
-      "modified": "2025-11-28T10:20:06.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FCE4EC",
-      "borderColor": "#E91E63",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "family"
-      }
-    },
-
-    "PLACE-BATHROOM": {
-      "id": "PLACE-BATHROOM",
-      "text": "ванная",
-      "emoji": "🚿",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "ванная",
-        "genitive": "ванной",
-        "dative": "ванной",
-        "accusative": "ванную",
-        "instrumental": "ванной",
-        "prepositional": "ванной",
-        "в": "в ванной"
-      },
-      "tags": ["место", "ванная", "гигиена"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 87,
-      "created": "2025-11-28T10:20:07.000Z",
-      "modified": "2025-11-28T10:20:07.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E0F7FA",
-      "borderColor": "#00BCD4",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "home"
-      }
-    },
-
-    "PLACE-KITCHEN": {
-      "id": "PLACE-KITCHEN",
-      "text": "кухня",
-      "emoji": "🍳",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "кухня",
-        "genitive": "кухни",
-        "dative": "кухне",
-        "accusative": "кухню",
-        "instrumental": "кухней",
-        "prepositional": "кухне",
-        "на": "на кухне"
-      },
-      "tags": ["место", "кухня", "еда"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 76,
-      "created": "2025-11-28T10:20:08.000Z",
-      "modified": "2025-11-28T10:20:08.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#FF5252",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "home"
-      }
-    },
-
-    "PLACE-BEDROOM": {
-      "id": "PLACE-BEDROOM",
-      "text": "спальня",
-      "emoji": "🛏️",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "спальня",
-        "genitive": "спальни",
-        "dative": "спальне",
-        "accusative": "спальню",
-        "instrumental": "спальней",
-        "prepositional": "спальне",
-        "в": "в спальне"
-      },
-      "tags": ["место", "спальня", "сон"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 65,
-      "created": "2025-11-28T10:20:09.000Z",
-      "modified": "2025-11-28T10:20:09.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#F3E5F5",
-      "borderColor": "#9C27B0",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "home"
-      }
-    },
-
-    "PLACE-HOSPITAL": {
-      "id": "PLACE-HOSPITAL",
-      "text": "больница",
-      "emoji": "🏥",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "больница",
-        "genitive": "больницы",
-        "dative": "больнице",
-        "accusative": "больницу",
-        "instrumental": "больницей",
-        "prepositional": "больнице",
-        "в": "в больнице"
-      },
-      "tags": ["место", "больница", "здоровье"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 43,
-      "created": "2025-11-28T10:20:10.000Z",
-      "modified": "2025-11-28T10:20:10.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#F44336",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "medical"
-      }
-    },
-
-    "PLACE-CAFE": {
-      "id": "PLACE-CAFE",
-      "text": "кафе",
-      "emoji": "☕",
-      "type": "place",
-      "category": "CAT-PLACES",
-      "forms": {
-        "nominative": "кафе",
-        "genitive": "кафе",
-        "dative": "кафе",
-        "accusative": "кафе",
-        "instrumental": "кафе",
-        "prepositional": "кафе",
-        "в": "в кафе"
-      },
-      "tags": ["место", "кафе", "еда"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 54,
-      "created": "2025-11-28T10:20:11.000Z",
-      "modified": "2025-11-28T10:20:11.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": ["Главная"],
-      "metadata": {
-        "locationType": "commercial"
-      }
-    },
-
- 
-    "TIME-NOW": {
-      "id": "TIME-NOW",
-      "text": "сейчас",
-      "emoji": "⏱️",
-      "type": "time",
-      "category": "CAT-TIME",
-      "forms": {
-        "nominative": "сейчас",
-        "genitive": "сейчас",
-        "dative": "сейчас",
-        "accusative": "сейчас",
-        "instrumental": "сейчас",
-        "prepositional": "сейчас"
-      },
-      "tags": ["время", "сейчас", "немедленно"],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 92,
-      "created": "2025-11-28T14:30:05.000Z",
-      "modified": "2025-11-28T14:30:05.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF8E1",
-      "borderColor": "#FFC107",
-      "sections": ["Главная"],
-      "metadata": {
-        "timeOfDay": "immediate"
-      }
-    },
-
-    "TIME-LATER": {
-      "id": "TIME-LATER",
-      "text": "потом",
-      "emoji": "⏳",
-      "type": "time",
-      "category": "CAT-TIME",
-      "forms": {
-        "nominative": "потом",
-        "genitive": "потом",
-        "dative": "потом",
-        "accusative": "потом",
-        "instrumental": "потом",
-        "prepositional": "потом"
-      },
-      "tags": ["время", "потом", "будущее"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 65,
-      "created": "2025-11-28T14:30:06.000Z",
-      "modified": "2025-11-28T14:30:06.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF8E1",
-      "borderColor": "#FFC107",
-      "sections": ["Главная"],
-      "metadata": {
-        "timeOfDay": "future"
-      }
-    },
-
-    "TIME-SOON": {
-      "id": "TIME-SOON",
-      "text": "скоро",
-      "emoji": "🚀",
-      "type": "time",
-      "category": "CAT-TIME",
-      "forms": {
-        "nominative": "скоро",
-        "genitive": "скоро",
-        "dative": "скоро",
-        "accusative": "скоро",
-        "instrumental": "скоро",
-        "prepositional": "скоро"
-      },
-      "tags": ["время", "скоро", "ближайшее время"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 54,
-      "created": "2025-11-28T14:30:07.000Z",
-      "modified": "2025-11-28T14:30:07.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF8E1",
-      "borderColor": "#FFC107",
-      "sections": ["Главная"],
-      "metadata": {
-        "timeOfDay": "future"
-      }
-    },
-
-    "TIME-ALWAYS": {
-      "id": "TIME-ALWAYS",
-      "text": "всегда",
-      "emoji": "♾️",
-      "type": "time",
-      "category": "CAT-TIME",
-      "forms": {
-        "nominative": "всегда",
-        "genitive": "всегда",
-        "dative": "всегда",
-        "accusative": "всегда",
-        "instrumental": "всегда",
-        "prepositional": "всегда"
-      },
-      "tags": ["время", "всегда", "постоянно"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 43,
-      "created": "2025-11-28T14:30:08.000Z",
-      "modified": "2025-11-28T14:30:08.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF8E1",
-      "borderColor": "#FFC107",
-      "sections": ["Главная"],
-      "metadata": {
-        "timeOfDay": "permanent"
-      }
-    },
-
-    "TIME-NEVER": {
-      "id": "TIME-NEVER",
-      "text": "никогда",
-      "emoji": "🚫",
-      "type": "time",
-      "category": "CAT-TIME",
-      "forms": {
-        "nominative": "никогда",
-        "genitive": "никогда",
-        "dative": "никогда",
-        "accusative": "никогда",
-        "instrumental": "никогда",
-        "prepositional": "никогда"
-      },
-      "tags": ["время", "никогда", "отрицание"],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 32,
-      "created": "2025-11-28T14:30:09.000Z",
-      "modified": "2025-11-28T14:30:09.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#ECEFF1",
-      "borderColor": "#607D8B",
-      "sections": ["Главная"],
-      "metadata": {
-        "timeOfDay": "negative"
-      }
-    },
-
- 
-      "CAT-DIALOG-BASIC": {
-      "id": "CAT-DIALOG-BASIC",
-      "text": "Основное",
-      "emoji": "💬",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": [
-        "категория",
-        "диалог",
-        "основное"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {
-        "isCategory": true,
-        "description": "Основные фразы для диалога"
-      }
-    },
-    "DIALOG-HELLO": {
-      "id": "DIALOG-HELLO",
-      "text": "привет",
-      "emoji": "👋",
-      "type": "dialog",
-      "category": "CAT-DIALOG-BASIC",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "приветствие"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DIALOG-THANK": {
-      "id": "DIALOG-THANK",
-      "text": "спасибо",
-      "emoji": "🙏",
-      "type": "dialog",
-      "category": "CAT-DIALOG-BASIC",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "благодарность"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DIALOG-PLEASE": {
-      "id": "DIALOG-PLEASE",
-      "text": "пожалуйста",
-      "emoji": "🥺",
-      "type": "dialog",
-      "category": "CAT-DIALOG-BASIC",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "вежливость"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DIALOG-GOODBYE": {
-      "id": "DIALOG-GOODBYE",
-      "text": "пока",
-      "emoji": "👋",
-      "type": "dialog",
-      "category": "CAT-DIALOG-BASIC",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "прощание"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FCE4EC",
-      "borderColor": "#E91E63",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-	    "CAT-DIALOG": {
-      "id": "CAT-DIALOG",
-      "text": "Разговор",
-      "emoji": "💬",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": [
-        "категория",
-        "диалог",
-        "общение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {
-        "isCategory": true,
-        "description": "Основные фразы для общения и разговора"
-      }
-    },
-    "DLG-HELLO": {
-      "id": "DLG-HELLO",
-      "text": "привет",
-      "emoji": "👋",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "приветствие"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-BYE": {
-      "id": "DLG-BYE",
-      "text": "пока",
-      "emoji": "👋",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "прощание"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FCE4EC",
-      "borderColor": "#E91E63",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-THANK": {
-      "id": "DLG-THANK",
-      "text": "спасибо",
-      "emoji": "😊",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "благодарность"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-PLEASE": {
-      "id": "DLG-PLEASE",
-      "text": "пожалуйста",
-      "emoji": "🙋",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "вежливость",
-        "просьба"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-YES": {
-      "id": "DLG-YES",
-      "text": "да",
-      "emoji": "👍",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "согласие"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-NO": {
-      "id": "DLG-NO",
-      "text": "нет",
-      "emoji": "👎",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "отказ",
-        "несогласие"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#F44336",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-HELP": {
-      "id": "DLG-HELP",
-      "text": "помоги",
-      "emoji": "🆘",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "помощь",
-        "срочно"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FCE4EC",
-      "borderColor": "#E91E63",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-WAIT": {
-      "id": "DLG-WAIT",
-      "text": "подожди",
-      "emoji": "✋",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "ожидание",
-        "пауза"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-STOP": {
-      "id": "DLG-STOP",
-      "text": "стоп",
-      "emoji": "🛑",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "остановка",
-        "прекрати"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#F44336",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-SORRY": {
-      "id": "DLG-SORRY",
-      "text": "извини",
-      "emoji": "😔",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "извинение"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-AGAIN": {
-      "id": "DLG-AGAIN",
-      "text": "ещё раз",
-      "emoji": "🔁",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "повтор"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-GOOD": {
-      "id": "DLG-GOOD",
-      "text": "хорошо",
-      "emoji": "✅",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "одобрение",
-        "ладно"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E8F5E9",
-      "borderColor": "#4CAF50",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-BAD": {
-      "id": "DLG-BAD",
-      "text": "плохо",
-      "emoji": "❌",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "неодобрение",
-        "неправильно"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#F44336",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-WANT": {
-      "id": "DLG-WANT",
-      "text": "хочу",
-      "emoji": "👉",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "желание",
-        "просьба"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFF3E0",
-      "borderColor": "#FF9800",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-NEED": {
-      "id": "DLG-NEED",
-      "text": "нужно",
-      "emoji": "❗",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "потребность",
-        "необходимо"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#F44336",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-DONT-WANT": {
-      "id": "DLG-DONT-WANT",
-      "text": "не хочу",
-      "emoji": "🙅",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "отказ",
-        "нежелание"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#FFEBEE",
-      "borderColor": "#F44336",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-HERE": {
-      "id": "DLG-HERE",
-      "text": "вот",
-      "emoji": "👇",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "указание",
-        "здесь"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-LOOK": {
-      "id": "DLG-LOOK",
-      "text": "смотри",
-      "emoji": "👀",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "внимание",
-        "показ"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-    "DLG-LISTEN": {
-      "id": "DLG-LISTEN",
-      "text": "слушай",
-      "emoji": "👂",
-      "type": "dialog",
-      "category": "CAT-DIALOG",
-      "forms": {},
-      "tags": [
-        "диалог",
-        "внимание",
-        "слух"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T15:00:00.000Z",
-      "modified": "2025-12-10T15:00:00.000Z",
-      "author": "system",
-      "version": 1,
-      "color": "#E3F2FD",
-      "borderColor": "#2196F3",
-      "sections": [
-        "Диалог"
-      ],
-      "metadata": {}
-    },
-	"CAT-SHAPES": {
-      "id": "CAT-SHAPES",
-      "text": "Формы",
-      "emoji": "🔺",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": [
-        "категория",
-        "обучение",
-        "формы"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFD6E7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {
-        "isCategory": true,
-        "description": "Геометрические формы"
-      }
-    },
-    "CAT-NUMBERS": {
-      "id": "CAT-NUMBERS",
-      "text": "Цифры",
-      "emoji": "🔢",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": [
-        "категория",
-        "обучение",
-        "цифры",
-        "счет"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {
-        "isCategory": true,
-        "description": "Цифры и счет"
-      }
-    },
-    "CAT-LETTERS": {
-      "id": "CAT-LETTERS",
-      "text": "Буквы",
-      "emoji": "🔠",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": [
-        "категория",
-        "обучение",
-        "буквы",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {
-        "isCategory": true,
-        "description": "Русский алфавит"
-      }
-    },
-    "CAT-ANIMALS": {
-      "id": "CAT-ANIMALS",
-      "text": "Животные",
-      "emoji": "🐾",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": [
-        "категория",
-        "обучение",
-        "животные"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {
-        "isCategory": true,
-        "description": "Дикие и домашние животные"
-      }
-    },
-    "CAT-FRUITS": {
-      "id": "CAT-FRUITS",
-      "text": "Фрукты",
-      "emoji": "🍎",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": [
-        "категория",
-        "обучение",
-        "фрукты"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF0D6",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {
-        "isCategory": true,
-        "description": "Фрукты и ягоды"
-      }
-    },
-    "CAT-VEGETABLES": {
-      "id": "CAT-VEGETABLES",
-      "text": "Овощи",
-      "emoji": "🥕",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": [
-        "категория",
-        "обучение",
-        "овощи"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7FFD6",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {
-        "isCategory": true,
-        "description": "Овощи"
-      }
-    },
-    "SHAPE-CIRCLE": {
-      "id": "SHAPE-CIRCLE",
-      "text": "круг",
-      "emoji": "⭕",
-      "type": "shape",
-      "category": "CAT-SHAPES",
-      "forms": {},
-      "tags": [
-        "форма",
-        "обучение",
-        "геометрия"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFD6E7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "SHAPE-SQUARE": {
-      "id": "SHAPE-SQUARE",
-      "text": "квадрат",
-      "emoji": "⬜",
-      "type": "shape",
-      "category": "CAT-SHAPES",
-      "forms": {},
-      "tags": [
-        "форма",
-        "обучение",
-        "геометрия"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFD6E7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "SHAPE-TRIANGLE": {
-      "id": "SHAPE-TRIANGLE",
-      "text": "треугольник",
-      "emoji": "🔺",
-      "type": "shape",
-      "category": "CAT-SHAPES",
-      "forms": {},
-      "tags": [
-        "форма",
-        "обучение",
-        "геометрия"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFD6E7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "SHAPE-RECTANGLE": {
-      "id": "SHAPE-RECTANGLE",
-      "text": "прямоугольник",
-      "emoji": "📏",
-      "type": "shape",
-      "category": "CAT-SHAPES",
-      "forms": {},
-      "tags": [
-        "форма",
-        "обучение",
-        "геометрия"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFD6E7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "SHAPE-OVAL": {
-      "id": "SHAPE-OVAL",
-      "text": "овал",
-      "emoji": "🥚",
-      "type": "shape",
-      "category": "CAT-SHAPES",
-      "forms": {},
-      "tags": [
-        "форма",
-        "обучение",
-        "геометрия"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFD6E7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "SHAPE-STAR": {
-      "id": "SHAPE-STAR",
-      "text": "звезда",
-      "emoji": "⭐",
-      "type": "shape",
-      "category": "CAT-SHAPES",
-      "forms": {},
-      "tags": [
-        "форма",
-        "обучение",
-        "геометрия"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFD6E7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "SHAPE-HEART": {
-      "id": "SHAPE-HEART",
-      "text": "сердце",
-      "emoji": "❤️",
-      "type": "shape",
-      "category": "CAT-SHAPES",
-      "forms": {},
-      "tags": [
-        "форма",
-        "обучение",
-        "геометрия"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFD6E7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "NUMBER-1": {
-      "id": "NUMBER-1",
-      "text": "один",
-      "emoji": "1️⃣",
-      "type": "number",
-      "category": "CAT-NUMBERS",
-      "forms": {},
-      "tags": [
-        "число",
-        "обучение",
-        "счет"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "NUMBER-2": {
-      "id": "NUMBER-2",
-      "text": "два",
-      "emoji": "2️⃣",
-      "type": "number",
-      "category": "CAT-NUMBERS",
-      "forms": {},
-      "tags": [
-        "число",
-        "обучение",
-        "счет"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "NUMBER-3": {
-      "id": "NUMBER-3",
-      "text": "три",
-      "emoji": "3️⃣",
-      "type": "number",
-      "category": "CAT-NUMBERS",
-      "forms": {},
-      "tags": [
-        "число",
-        "обучение",
-        "счет"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "NUMBER-4": {
-      "id": "NUMBER-4",
-      "text": "четыре",
-      "emoji": "4️⃣",
-      "type": "number",
-      "category": "CAT-NUMBERS",
-      "forms": {},
-      "tags": [
-        "число",
-        "обучение",
-        "счет"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "NUMBER-5": {
-      "id": "NUMBER-5",
-      "text": "пять",
-      "emoji": "5️⃣",
-      "type": "number",
-      "category": "CAT-NUMBERS",
-      "forms": {},
-      "tags": [
-        "число",
-        "обучение",
-        "счет"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "NUMBER-6": {
-      "id": "NUMBER-6",
-      "text": "шесть",
-      "emoji": "6️⃣",
-      "type": "number",
-      "category": "CAT-NUMBERS",
-      "forms": {},
-      "tags": [
-        "число",
-        "обучение",
-        "счет"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "NUMBER-7": {
-      "id": "NUMBER-7",
-      "text": "семь",
-      "emoji": "7️⃣",
-      "type": "number",
-      "category": "CAT-NUMBERS",
-      "forms": {},
-      "tags": [
-        "число",
-        "обучение",
-        "счет"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "NUMBER-8": {
-      "id": "NUMBER-8",
-      "text": "восемь",
-      "emoji": "8️⃣",
-      "type": "number",
-      "category": "CAT-NUMBERS",
-      "forms": {},
-      "tags": [
-        "число",
-        "обучение",
-        "счет"
-      ],
-      "difficulty": 3,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "NUMBER-9": {
-      "id": "NUMBER-9",
-      "text": "девять",
-      "emoji": "9️⃣",
-      "type": "number",
-      "category": "CAT-NUMBERS",
-      "forms": {},
-      "tags": [
-        "число",
-        "обучение",
-        "счет"
-      ],
-      "difficulty": 3,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "NUMBER-10": {
-      "id": "NUMBER-10",
-      "text": "десять",
-      "emoji": "🔟",
-      "type": "number",
-      "category": "CAT-NUMBERS",
-      "forms": {},
-      "tags": [
-        "число",
-        "обучение",
-        "счет"
-      ],
-      "difficulty": 3,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#D6E7FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-A": {
-      "id": "LETTER-A",
-      "text": "А - Аист",
-      "emoji": "🦢",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-B": {
-      "id": "LETTER-B",
-      "text": "Б - Бабочка",
-      "emoji": "🦋",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-V": {
-      "id": "LETTER-V",
-      "text": "В - Воробей",
-      "emoji": "🐦",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-G": {
-      "id": "LETTER-G",
-      "text": "Г - Гриб",
-      "emoji": "🍄",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-D": {
-      "id": "LETTER-D",
-      "text": "Д - Дом",
-      "emoji": "🏠",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-E": {
-      "id": "LETTER-E",
-      "text": "Е - Енот",
-      "emoji": "🦝",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-YO": {
-      "id": "LETTER-YO",
-      "text": "Ё - Ёлка",
-      "emoji": "🎄",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-ZH": {
-      "id": "LETTER-ZH",
-      "text": "Ж - Жук",
-      "emoji": "🐞",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-Z": {
-      "id": "LETTER-Z",
-      "text": "З - Заяц",
-      "emoji": "🐇",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-I": {
-      "id": "LETTER-I",
-      "text": "И - Игрушка",
-      "emoji": "🧸",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-K": {
-      "id": "LETTER-K",
-      "text": "К - Кот",
-      "emoji": "🐱",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-L": {
-      "id": "LETTER-L",
-      "text": "Л - Лев",
-      "emoji": "🦁",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-M": {
-      "id": "LETTER-M",
-      "text": "М - Медведь",
-      "emoji": "🐻",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-N": {
-      "id": "LETTER-N",
-      "text": "Н - Носорог",
-      "emoji": "🦏",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-O": {
-      "id": "LETTER-O",
-      "text": "О - Обезьяна",
-      "emoji": "🐵",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-P": {
-      "id": "LETTER-P",
-      "text": "П - Пингвин",
-      "emoji": "🐧",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-R": {
-      "id": "LETTER-R",
-      "text": "Р - Рыба",
-      "emoji": "🐠",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-S": {
-      "id": "LETTER-S",
-      "text": "С - Слон",
-      "emoji": "🐘",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-T": {
-      "id": "LETTER-T",
-      "text": "Т - Тигр",
-      "emoji": "🐯",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-U": {
-      "id": "LETTER-U",
-      "text": "У - Улитка",
-      "emoji": "🐌",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-F": {
-      "id": "LETTER-F",
-      "text": "Ф - Филин",
-      "emoji": "🦉",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-H": {
-      "id": "LETTER-H",
-      "text": "Х - Хомяк",
-      "emoji": "🐹",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-TS": {
-      "id": "LETTER-TS",
-      "text": "Ц - Цапля",
-      "emoji": "🦩",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-CH": {
-      "id": "LETTER-CH",
-      "text": "Ч - Черепаха",
-      "emoji": "🐢",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-SH": {
-      "id": "LETTER-SH",
-      "text": "Ш - Шарик",
-      "emoji": "🎈",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-SHCH": {
-      "id": "LETTER-SHCH",
-      "text": "Щ - Щенок",
-      "emoji": "🐶",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-HARD": {
-      "id": "LETTER-HARD",
-      "text": "Ъ - Твердый знак",
-      "emoji": "🪨",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 3,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-	  "LETTER-Y1": {
-    "id": "LETTER-Y",
-    "text": "Ы - Ыкать",
-    "emoji": "👄",
-    "type": "letter",
-    "category": "CAT-LETTERS",
-    "forms": {},
-    "tags": ["буква", "обучение", "алфавит", "звук"],
-    "difficulty": 2,
-    "status": "active",
-    "usageCount": 0,
-    "created": "2025-12-18T12:00:00.000Z",
-    "modified": "2025-12-18T12:00:00.000Z",
-    "author": "system",
-    "version": 1,
-    "color": "#D6FFE7",
-    "borderColor": "#4CAF50",
-    "sections": ["Обучение"],
-    "metadata": {
-      "description": "Буква Ы - гласный звук"
-    }
-  },
-    "LETTER-Y": {
-      "id": "LETTER-Y",
-      "text": "Й - Йогурт",
-      "emoji": "🥛",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-SOFT": {
-      "id": "LETTER-SOFT",
-      "text": "Ь - Мягкий знак",
-      "emoji": "☁️",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 3,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-E2": {
-      "id": "LETTER-E2",
-      "text": "Э - Экскаватор",
-      "emoji": "🚜",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-YU": {
-      "id": "LETTER-YU",
-      "text": "Ю - Юла",
-      "emoji": "🪀",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "LETTER-YA": {
-      "id": "LETTER-YA",
-      "text": "Я - Яблоко",
-      "emoji": "🍎",
-      "type": "letter",
-      "category": "CAT-LETTERS",
-      "forms": {},
-      "tags": [
-        "буква",
-        "обучение",
-        "алфавит"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:47:57.989Z",
-      "author": "user",
-      "version": 2,
-      "color": "#D6FFE7",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "ANIMAL-CAT": {
-      "id": "ANIMAL-CAT",
-      "text": "кошка",
-      "emoji": "🐱",
-      "type": "animal",
-      "category": "CAT-ANIMALS",
-      "forms": {},
-      "tags": [
-        "животное",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "ANIMAL-DOG": {
-      "id": "ANIMAL-DOG",
-      "text": "собака",
-      "emoji": "🐶",
-      "type": "animal",
-      "category": "CAT-ANIMALS",
-      "forms": {},
-      "tags": [
-        "животное",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "ANIMAL-COW": {
-      "id": "ANIMAL-COW",
-      "text": "корова",
-      "emoji": "🐮",
-      "type": "animal",
-      "category": "CAT-ANIMALS",
-      "forms": {},
-      "tags": [
-        "животное",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "ANIMAL-LION": {
-      "id": "ANIMAL-LION",
-      "text": "лев",
-      "emoji": "🦁",
-      "type": "animal",
-      "category": "CAT-ANIMALS",
-      "forms": {},
-      "tags": [
-        "животное",
-        "обучение"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "ANIMAL-ELEPHANT": {
-      "id": "ANIMAL-ELEPHANT",
-      "text": "слон",
-      "emoji": "🐘",
-      "type": "animal",
-      "category": "CAT-ANIMALS",
-      "forms": {},
-      "tags": [
-        "животное",
-        "обучение"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "ANIMAL-BIRD": {
-      "id": "ANIMAL-BIRD",
-      "text": "птица",
-      "emoji": "🐦",
-      "type": "animal",
-      "category": "CAT-ANIMALS",
-      "forms": {},
-      "tags": [
-        "животное",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "FRUIT-APPLE": {
-      "id": "FRUIT-APPLE",
-      "text": "яблоко",
-      "emoji": "🍎",
-      "type": "fruit",
-      "category": "CAT-FRUITS",
-      "forms": {},
-      "tags": [
-        "фрукт",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF0D6",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "FRUIT-BANANA": {
-      "id": "FRUIT-BANANA",
-      "text": "банан",
-      "emoji": "🍌",
-      "type": "fruit",
-      "category": "CAT-FRUITS",
-      "forms": {},
-      "tags": [
-        "фрукт",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF0D6",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "FRUIT-ORANGE": {
-      "id": "FRUIT-ORANGE",
-      "text": "апельсин",
-      "emoji": "🍊",
-      "type": "fruit",
-      "category": "CAT-FRUITS",
-      "forms": {},
-      "tags": [
-        "фрукт",
-        "обучение"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF0D6",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "FRUIT-STRAWBERRY": {
-      "id": "FRUIT-STRAWBERRY",
-      "text": "клубника",
-      "emoji": "🍓",
-      "type": "fruit",
-      "category": "CAT-FRUITS",
-      "forms": {},
-      "tags": [
-        "фрукт",
-        "обучение"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFF0D6",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "VEGETABLE-CARROT": {
-      "id": "VEGETABLE-CARROT",
-      "text": "морковь",
-      "emoji": "🥕",
-      "type": "vegetable",
-      "category": "CAT-VEGETABLES",
-      "forms": {},
-      "tags": [
-        "овощ",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7FFD6",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "VEGETABLE-TOMATO": {
-      "id": "VEGETABLE-TOMATO",
-      "text": "помидор",
-      "emoji": "🍅",
-      "type": "vegetable",
-      "category": "CAT-VEGETABLES",
-      "forms": {},
-      "tags": [
-        "овощ",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7FFD6",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "VEGETABLE-POTATO": {
-      "id": "VEGETABLE-POTATO",
-      "text": "картошка",
-      "emoji": "🥔",
-      "type": "vegetable",
-      "category": "CAT-VEGETABLES",
-      "forms": {},
-      "tags": [
-        "овощ",
-        "обучение"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7FFD6",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "VEGETABLE-CUCUMBER": {
-      "id": "VEGETABLE-CUCUMBER",
-      "text": "огурец",
-      "emoji": "🥒",
-      "type": "vegetable",
-      "category": "CAT-VEGETABLES",
-      "forms": {},
-      "tags": [
-        "овощ",
-        "обучение"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7FFD6",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-
-    "COLOR-RED": {
-      "id": "COLOR-RED",
-      "text": "красный",
-      "emoji": "🔴",
-      "type": "color",
-      "category": "CAT-COLORS",
-      "forms": {},
-      "tags": [
-        "цвет",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 15,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FF0000",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "COLOR-BLACK": {
-      "id": "COLOR-BLACK",
-      "text": "черный",
-      "emoji": "⚫",
-      "type": "color",
-      "category": "CAT-COLORS",
-      "forms": {},
-      "tags": [
-        "цвет",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#000000",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "COLOR-PINK": {
-      "id": "COLOR-PINK",
-      "text": "розовый",
-      "emoji": "💗",
-      "type": "color",
-      "category": "CAT-COLORS",
-      "forms": {},
-      "tags": [
-        "цвет",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFC0CB",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "COLOR-BROWN": {
-      "id": "COLOR-BROWN",
-      "text": "коричневый",
-      "emoji": "🟤",
-      "type": "color",
-      "category": "CAT-COLORS",
-      "forms": {},
-      "tags": [
-        "цвет",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#8B4513",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "COLOR-BLUE": {
-      "id": "COLOR-BLUE",
-      "text": "синий",
-      "emoji": "🔵",
-      "type": "color",
-      "category": "CAT-COLORS",
-      "forms": {},
-      "tags": [
-        "цвет",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 14,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#0000FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "COLOR-GREEN": {
-      "id": "COLOR-GREEN",
-      "text": "зеленый",
-      "emoji": "🟢",
-      "type": "color",
-      "category": "CAT-COLORS",
-      "forms": {},
-      "tags": [
-        "цвет",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 13,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#00FF00",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "COLOR-YELLOW": {
-      "id": "COLOR-YELLOW",
-      "text": "желтый",
-      "emoji": "🟡",
-      "type": "color",
-      "category": "CAT-COLORS",
-      "forms": {},
-      "tags": [
-        "цвет",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 12,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFFF00",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "COLOR-PURPLE": {
-      "id": "COLOR-PURPLE",
-      "text": "фиолетовый",
-      "emoji": "🟣",
-      "type": "color",
-      "category": "CAT-COLORS",
-      "forms": {},
-      "tags": [
-        "цвет",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 11,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#800080",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "COLOR-ORANGE": {
-      "id": "COLOR-ORANGE",
-      "text": "оранжевый",
-      "emoji": "🟠",
-      "type": "color",
-      "category": "CAT-COLORS",
-      "forms": {},
-      "tags": [
-        "цвет",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 10,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFA500",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "ANIMAL-RABBIT": {
-      "id": "ANIMAL-RABBIT",
-      "text": "заяц",
-      "emoji": "🐇",
-      "type": "animal",
-      "category": "CAT-ANIMALS",
-      "forms": {},
-      "tags": [
-        "животное",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "ANIMAL-BEAR": {
-      "id": "ANIMAL-BEAR",
-      "text": "медведь",
-      "emoji": "🐻",
-      "type": "animal",
-      "category": "CAT-ANIMALS",
-      "forms": {},
-      "tags": [
-        "животное",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "ANIMAL-FISH": {
-      "id": "ANIMAL-FISH",
-      "text": "рыба",
-      "emoji": "🐠",
-      "type": "animal",
-      "category": "CAT-ANIMALS",
-      "forms": {},
-      "tags": [
-        "животное",
-        "обучение"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "ANIMAL-BUTTERFLY": {
-      "id": "ANIMAL-BUTTERFLY",
-      "text": "бабочка",
-      "emoji": "🦋",
-      "type": "animal",
-      "category": "CAT-ANIMALS",
-      "forms": {},
-      "tags": [
-        "животное",
-        "обучение"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#E7D6FF",
-      "sections": [
-        "Обучение"
-      ],
-      "metadata": {}
-    },
-    "EMOTION-HAPPY": {
-      "id": "EMOTION-HAPPY",
-      "text": "радостный",
-      "emoji": "😊",
-      "type": "emotion",
-      "category": "CAT-EMOTIONS",
-      "forms": {},
-      "tags": [
-        "эмоция",
-        "положительная"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 40,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FCE4EC",
-      "sections": [
-        "Главная",
-        "Эмоции"
-      ],
-      "metadata": {
-        "allowedWith": [],
-        "allowedObjects": [],
-        "maxPeople": 0,
-        "maxPets": 0,
-        "maxPlaces": 0,
-        "maxObjects": 0
-      }
-    },
-    "EMOTION-SAD": {
-      "id": "EMOTION-SAD",
-      "text": "грустный",
-      "emoji": "😢",
-      "type": "emotion",
-      "category": "CAT-EMOTIONS",
-      "forms": {},
-      "tags": [
-        "эмоция",
-        "отрицательная"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 35,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FCE4EC",
-      "sections": [
-        "Главная",
-        "Эмоции"
-      ],
-      "metadata": {
-        "allowedWith": [],
-        "allowedObjects": [],
-        "maxPeople": 0,
-        "maxPets": 0,
-        "maxPlaces": 0,
-        "maxObjects": 0
-      }
-    },
-    "EMOTION-ANGRY": {
-      "id": "EMOTION-ANGRY",
-      "text": "злой",
-      "emoji": "😠",
-      "type": "emotion",
-      "category": "CAT-EMOTIONS",
-      "forms": {},
-      "tags": [
-        "эмоция",
-        "отрицательная"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 28,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FCE4EC",
-      "sections": [
-        "Главная",
-        "Эмоции"
-      ],
-      "metadata": {
-        "allowedWith": [],
-        "allowedObjects": [],
-        "maxPeople": 0,
-        "maxPets": 0,
-        "maxPlaces": 0,
-        "maxObjects": 0
-      }
-    },
-    "EMOTION-TIRED": {
-      "id": "EMOTION-TIRED",
-      "text": "устал",
-      "emoji": "😴",
-      "type": "emotion",
-      "category": "CAT-EMOTIONS",
-      "forms": {},
-      "tags": [
-        "эмоция",
-        "состояние"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 32,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FCE4EC",
-      "sections": [
-        "Главная",
-        "Эмоции"
-      ],
-      "metadata": {
-        "allowedWith": [],
-        "allowedObjects": [],
-        "maxPeople": 0,
-        "maxPets": 0,
-        "maxPlaces": 0,
-        "maxObjects": 0
-      }
-    },
-    "EMOTION-SCARED": {
-      "id": "EMOTION-SCARED",
-      "text": "испуганный",
-      "emoji": "😨",
-      "type": "emotion",
-      "category": "CAT-EMOTIONS",
-      "forms": {},
-      "tags": [
-        "эмоция",
-        "отрицательная"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 18,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FCE4EC",
-      "sections": [
-        "Главная",
-        "Эмоции"
-      ],
-      "metadata": {
-        "allowedWith": [],
-        "allowedObjects": [],
-        "maxPeople": 0,
-        "maxPets": 0,
-        "maxPlaces": 0,
-        "maxObjects": 0
-      }
-    },
-    "EMOTION-BORED": {
-      "id": "EMOTION-BORED",
-      "text": "скучаю",
-      "emoji": "😒",
-      "type": "emotion",
-      "category": "CAT-EMOTIONS",
-      "forms": {},
-      "tags": [
-        "эмоция",
-        "состояние"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 22,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-11-28T11:42:07.594Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FCE4EC",
-      "sections": [
-        "Главная",
-        "Эмоции"
-      ],
-      "metadata": {
-        "allowedWith": [],
-        "allowedObjects": [],
-        "maxPeople": 0,
-        "maxPets": 0,
-        "maxPlaces": 0,
-        "maxObjects": 0
-      }
-    },
-	  "CAT-PAIN": {
-      "id": "CAT-PAIN",
-      "text": "Болит",
-      "emoji": "🤕",
-      "type": "category",
-      "category": null,
-      "forms": {},
-      "tags": [
-        "категория",
-        "боль",
-        "тело"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 40,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {
-        "isCategory": true,
-        "description": "Части тела, которые могут болеть"
-      },
-      "borderColor": "#F44336"
-    },
-    "PAIN-EAR": {
-      "id": "PAIN-EAR",
-      "text": "ухо",
-      "emoji": "👂",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит ухо"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "ухо"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-NOSE": {
-      "id": "PAIN-NOSE",
-      "text": "нос",
-      "emoji": "👃",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит нос"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "нос"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-THROAT": {
-      "id": "PAIN-THROAT",
-      "text": "горло",
-      "emoji": "👄",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит горло"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "горло"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-EYE": {
-      "id": "PAIN-EYE",
-      "text": "глаз",
-      "emoji": "👁️",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит глаз"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "глаз"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-BACK": {
-      "id": "PAIN-BACK",
-      "text": "спина",
-      "emoji": "🔙",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит спина"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "спина"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-NECK": {
-      "id": "PAIN-NECK",
-      "text": "шея",
-      "emoji": "🦒",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит шея"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "шея"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-CHEST": {
-      "id": "PAIN-CHEST",
-      "text": "грудь",
-      "emoji": "👕",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит грудь"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "грудь"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-HEART": {
-      "id": "PAIN-HEART",
-      "text": "сердце",
-      "emoji": "❤️",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит сердце"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "орган",
-        "сердце"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-LUNGS": {
-      "id": "PAIN-LUNGS",
-      "text": "легкие",
-      "emoji": "🫁",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болят легкие"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "орган",
-        "легкие"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-KIDNEY": {
-      "id": "PAIN-KIDNEY",
-      "text": "почка",
-      "emoji": "🫘",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болят почки"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "орган",
-        "почки"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-FINGER": {
-      "id": "PAIN-FINGER",
-      "text": "палец",
-      "emoji": "👆",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит палец"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "палец"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-KNEE": {
-      "id": "PAIN-KNEE",
-      "text": "колено",
-      "emoji": "🦵",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит колено"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "колено"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-ELBOW": {
-      "id": "PAIN-ELBOW",
-      "text": "локоть",
-      "emoji": "🤏",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит локоть"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "локоть"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-SHOULDER": {
-      "id": "PAIN-SHOULDER",
-      "text": "плечо",
-      "emoji": "💪",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит плечо"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "плечо"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-        "PAIN-HEAD": {
-      "id": "PAIN-HEAD",
-      "text": "голова",
-      "emoji": "👤",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит голова"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "голова"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 25,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-STOMACH": {
-      "id": "PAIN-STOMACH",
-      "text": "живот",
-      "emoji": "🩹",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит живот"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "живот"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 22,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-ARM": {
-      "id": "PAIN-ARM",
-      "text": "рука",
-      "emoji": "💪",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит рука"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "рука"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 18,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-LEG": {
-      "id": "PAIN-LEG",
-      "text": "нога",
-      "emoji": "🦵",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит нога"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "нога"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 16,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-    "PAIN-TOOTH": {
-      "id": "PAIN-TOOTH",
-      "text": "зуб",
-      "emoji": "🦷",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит зуб"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "зуб"
-      ],
-      "difficulty": 1,
-      "status": "active",
-      "usageCount": 15,
-      "created": "2025-11-28T11:42:07.594Z",
-      "modified": "2025-12-10T14:11:26.842Z",
-      "author": "user",
-      "version": 2,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    },
-	"PAIN-ANKLE": {
-      "id": "PAIN-ANKLE",
-      "text": "лодыжка",
-      "emoji": "🦶",
-      "type": "pain",
-      "category": "CAT-PAIN",
-      "forms": {
-        "phrase": "У меня болит лодыжка"
-      },
-      "tags": [
-        "боль",
-        "тело",
-        "лодыжка"
-      ],
-      "difficulty": 2,
-      "status": "active",
-      "usageCount": 0,
-      "created": "2025-12-10T07:45:00.000Z",
-      "modified": "2025-12-10T07:45:00.000Z",
-      "author": "user",
-      "version": 1,
-      "color": "#FFEBEE",
-      "sections": [
-        "Главная"
-      ],
-      "metadata": {}
-    }
-  }
+}
 };
 
     class Communicator {
@@ -6836,7 +1832,7 @@ class SimplifiedGrammarSystem {
         this.currentTab = 'main';
         this.isQuickNavMode = false;
         this.currentReplacement = null;
-        this.grammar = new SimplifiedGrammarSystem();
+        this.grammar = new AdvancedGrammarSystem();
         
         this.nextReplacementIndex = {
           people: 0,
@@ -7155,6 +2151,14 @@ class SimplifiedGrammarSystem {
         this.renderSchedule();
         this.renderEmotionsTab();
       }
+
+	    addGrammarRule(cardType, rule) {
+    this.grammar.addRule(cardType, rule);
+  }
+  
+  addActionGrammarRule(actionId, rule) {
+    this.grammar.addActionRule(actionId, rule);
+  }
 
       saveCards() {
         const dataToSave = { cards: this.cards };
@@ -7599,29 +2603,29 @@ class SimplifiedGrammarSystem {
         }
       }
 
-      handlePetSelection(card) {
-        if (!this.currentPhrase.action || !this.currentPhrase.action.metadata) return;
-        
-        const metadata = this.currentPhrase.action.metadata;
-        const allowedWith = metadata.allowedWith || [];
-        const maxPets = metadata.maxPets || 0;
-        
-        if (!allowedWith.includes('pets')) return;
-        
-        const existingIndex = this.currentPhrase.pets.findIndex(p => p.id === card.id);
-        if (existingIndex !== -1) {
-          this.currentPhrase.pets.splice(existingIndex, 1);
-          this.updateUI();
-          return;
-        }
-        
-        if (maxPets === 0 || this.currentPhrase.pets.length < maxPets) {
-          this.currentPhrase.pets.push(card);
-        } else if (maxPets > 0) {
-          const replaceIndex = 0;
-          this.currentPhrase.pets[replaceIndex] = card;
-        }
-      }
+handlePetSelection(card) {
+  if (!this.currentPhrase.action || !this.currentPhrase.action.metadata) return;
+  
+  const metadata = this.currentPhrase.action.metadata;
+  const allowedWith = metadata.allowedWith || [];
+  
+  // Проверяем, можно ли добавлять питомцев к этому действию
+  if (!allowedWith.includes('pets')) return;
+  
+  // Проверяем, есть ли уже этот питомец
+  const existingIndex = this.currentPhrase.pets.findIndex(p => p.id === card.id);
+  if (existingIndex !== -1) {
+    this.currentPhrase.pets.splice(existingIndex, 1);
+  } else {
+    // Проверяем максимальное количество
+    const maxPets = metadata.maxPets || 0;
+    if (maxPets === 0 || this.currentPhrase.pets.length < maxPets) {
+      this.currentPhrase.pets.push(card);
+    }
+  }
+  
+  this.updateUI();
+}
 
       handlePlaceSelection(card) {
         if (!this.currentPhrase.action || !this.currentPhrase.action.metadata) return;
@@ -9153,6 +4157,281 @@ class SimplifiedGrammarSystem {
       }
     }
 
+// Инициализация расширенных грамматических правил
+function setupExtendedGrammarRules() {
+  const communicator = window.communicator;
+  
+  if (!communicator || !communicator.grammar) return;
+  
+  // Добавляем правила для новых категорий
+  communicator.addGrammarRule('transport', { 
+    preposition: 'на', 
+    case: 'prepositional' 
+  });
+  
+  communicator.addGrammarRule('weather', { 
+    preposition: null, 
+    case: 'nominative' 
+  });
+  
+  communicator.addGrammarRule('clothing', { 
+    preposition: 'в', 
+    case: 'prepositional' 
+  });
+  
+  // Добавляем правила для конкретных действий
+  communicator.addActionGrammarRule('ACT-RIDE', {
+    type: 'movement',
+    pattern: 'подлежащее + действие + на + транспорт'
+  });
+  
+  communicator.addActionGrammarRule('ACT-WEAR', {
+    type: 'dressing',
+    pattern: 'подлежащее + действие + одежду'
+  });
+  
+  // Правила для обучения
+  communicator.addActionGrammarRule('ACT-LEARN', {
+    type: 'education',
+    pattern: 'подлежащее + действие + тему'
+  });
+  
+  communicator.addActionGrammarRule('ACT-DRAW', {
+    type: 'creative',
+    pattern: 'подлежащее + действие + картину'
+  });
+  
+  console.log('Расширенные грамматические правила загружены');
+  
+  // Добавляем кнопки в интерфейс
+  addGrammarTestButton();
+  addGrammarManagementButtons();
+}
+
+// Добавление кнопки для тестирования грамматики
+function addGrammarTestButton() {
+  setTimeout(() => {
+    const settingsGrid = document.querySelector('.settings-grid');
+    if (!settingsGrid) return;
+    
+    // Проверяем, не добавлена ли уже кнопка
+    if (document.getElementById('grammarTestInput')) return;
+    
+    const grammarTestCard = document.createElement('div');
+    grammarTestCard.className = 'settings-card';
+    grammarTestCard.innerHTML = `
+      <h3>Тестирование грамматики</h3>
+      <div class="form-group">
+        <label>Тестовая фраза:</label>
+        <input type="text" id="grammarTestInput" placeholder="Я хочу играть с мамой" class="view-only" readonly style="background: #f5f5f5;">
+      </div>
+      <div class="form-group">
+        <label>Результат:</label>
+        <div id="grammarTestResult" style="padding: 10px; background: #f5f5f5; border-radius: 5px; min-height: 40px;"></div>
+      </div>
+      <button class="save-btn" id="testGrammarBtn">Проверить грамматику</button>
+    `;
+    
+    settingsGrid.appendChild(grammarTestCard);
+    
+    document.getElementById('testGrammarBtn')?.addEventListener('click', testGrammar);
+  }, 2000);
+}
+
+// Функция тестирования грамматики
+function testGrammar() {
+  const resultDiv = document.getElementById('grammarTestResult');
+  
+  if (!resultDiv) return;
+  
+  const communicator = window.communicator;
+  if (!communicator) {
+    resultDiv.textContent = 'Коммуникатор не инициализирован';
+    return;
+  }
+  
+  // Создаем тестовую фразу
+  const testPhrase = {
+    subject: 'Я',
+    desire: 'хочу',
+    action: { text: 'играть', type: 'action', id: 'ACT-PLAY' },
+    people: [{ text: 'мама', type: 'person', forms: { 'с': 'с мамой' } }],
+    objects: [{ text: 'мяч', type: 'object', forms: { 'с': 'с мячом' } }],
+    time: { text: 'сейчас', type: 'time' }
+  };
+  
+  const result = communicator.grammar.buildPhrase(testPhrase);
+  resultDiv.textContent = `Результат: ${result}`;
+  
+  // Произносим результат
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(result);
+    utterance.lang = 'ru-RU';
+    speechSynthesis.speak(utterance);
+  }
+}
+
+// Экспорт грамматических правил
+function exportGrammarRules() {
+  const communicator = window.communicator;
+  if (!communicator) return;
+  
+  const rules = {
+    rules: communicator.grammar.rules,
+    actionRules: communicator.grammar.actionRules,
+    caseEndings: communicator.grammar.caseEndings,
+    prepositions: communicator.grammar.prepositions
+  };
+  
+  const dataStr = JSON.stringify(rules, null, 2);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(dataBlob);
+  link.download = 'kom_kom_grammar_rules_' + new Date().toISOString().slice(0, 10) + '.json';
+  link.click();
+}
+
+// Импорт грамматических правил
+function importGrammarRules(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const importedRules = JSON.parse(e.target.result);
+      const communicator = window.communicator;
+      
+      if (communicator && communicator.grammar) {
+        if (importedRules.rules) {
+          Object.assign(communicator.grammar.rules, importedRules.rules);
+        }
+        
+        if (importedRules.actionRules) {
+          Object.assign(communicator.grammar.actionRules, importedRules.actionRules);
+        }
+        
+        if (importedRules.caseEndings) {
+          Object.assign(communicator.grammar.caseEndings, importedRules.caseEndings);
+        }
+        
+        if (importedRules.prepositions) {
+          Object.assign(communicator.grammar.prepositions, importedRules.prepositions);
+        }
+        
+        alert('Грамматические правила успешно импортированы!');
+      }
+    } catch (error) {
+      alert('Ошибка при импорте грамматических правил: ' + error.message);
+    }
+  };
+  
+  reader.readAsText(file);
+}
+
+// Добавление кнопок экспорта/импорта грамматических правил в интерфейс
+function addGrammarManagementButtons() {
+  setTimeout(() => {
+    const settingsCards = document.querySelectorAll('.settings-card');
+    if (!settingsCards.length) return;
+    
+    // Находим карточку "Управление данными"
+    let dataCard = null;
+    settingsCards.forEach(card => {
+      if (card.querySelector('h3')?.textContent === 'Управление данными') {
+        dataCard = card;
+      }
+    });
+    
+    if (!dataCard) return;
+    
+    const settingsControls = dataCard.querySelector('.settings-controls');
+    if (!settingsControls) return;
+    
+    // Проверяем, не добавлены ли уже кнопки грамматики
+    if (document.getElementById('exportGrammarBtn')) return;
+    
+    // СОХРАНЯЕМ существующие кнопки
+    const existingButtons = settingsControls.innerHTML;
+    
+    // Добавляем новые кнопки ПОСЛЕ существующих
+    settingsControls.innerHTML = existingButtons + `
+      <button class="control-btn" id="exportGrammarBtn" style="background: #9b59b6;">Экспорт грамматики</button>
+      <button class="control-btn import" id="importGrammarBtn" style="background: #3498db;">Импорт грамматики</button>
+      <input type="file" id="grammarFileInput" class="file-input" accept=".json" style="display: none;">
+    `;
+    
+    // Навешиваем обработчики на НОВЫЕ кнопки
+    document.getElementById('exportGrammarBtn')?.addEventListener('click', exportGrammarRules);
+    document.getElementById('importGrammarBtn')?.addEventListener('click', () => {
+      document.getElementById('grammarFileInput').click();
+    });
+    
+    document.getElementById('grammarFileInput')?.addEventListener('change', importGrammarRules);
+    
+    // ВОССТАНАВЛИВАЕМ обработчики на СТАРЫЕ кнопки
+    restoreDataButtonsHandlers();
+    
+    console.log('Кнопки управления грамматикой добавлены');
+  }, 3000);
+}
+
+// Восстановление обработчиков старых кнопок управления данными
+function restoreDataButtonsHandlers() {
+  const communicator = window.communicator;
+  if (!communicator) return;
+  
+  // Восстанавливаем обработчики оригинальных кнопок
+  const importBtn = document.getElementById('importBtn');
+  const exportBtn = document.getElementById('exportBtn');
+  const remoteLoadBtn = document.getElementById('remoteLoadBtn');
+  const editorBtn = document.getElementById('editorBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const fileInput = document.getElementById('fileInput');
+  
+  if (importBtn && !importBtn.hasAttribute('data-handler-restored')) {
+    importBtn.setAttribute('data-handler-restored', 'true');
+    importBtn.addEventListener('click', () => {
+      fileInput.click();
+    });
+  }
+  
+  if (exportBtn && !exportBtn.hasAttribute('data-handler-restored')) {
+    exportBtn.setAttribute('data-handler-restored', 'true');
+    exportBtn.addEventListener('click', () => {
+      communicator.exportCards();
+    });
+  }
+  
+  if (remoteLoadBtn && !remoteLoadBtn.hasAttribute('data-handler-restored')) {
+    remoteLoadBtn.setAttribute('data-handler-restored', 'true');
+    remoteLoadBtn.addEventListener('click', async () => {
+      await communicator.loadCardsFromRemote();
+    });
+  }
+  
+  if (editorBtn && !editorBtn.hasAttribute('data-handler-restored')) {
+    editorBtn.setAttribute('data-handler-restored', 'true');
+    editorBtn.addEventListener('click', () => {
+      window.open(communicator.EDITOR_URL, '_blank');
+    });
+  }
+  
+  if (resetBtn && !resetBtn.hasAttribute('data-handler-restored')) {
+    resetBtn.setAttribute('data-handler-restored', 'true');
+    resetBtn.addEventListener('click', () => {
+      communicator.resetCards();
+    });
+  }
+  
+  if (fileInput && !fileInput.hasAttribute('data-handler-restored')) {
+    fileInput.setAttribute('data-handler-restored', 'true');
+    fileInput.addEventListener('change', (e) => {
+      communicator.importCards(e);
+    });
+  }
+}
+	
     function loadVoices() {
       voices = speechSynthesis.getVoices();
       const voiceSelect = document.getElementById('voiceSelect');
@@ -9174,17 +4453,63 @@ class SimplifiedGrammarSystem {
       }
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      const communicator = new Communicator();
-      window.communicator = communicator;
-      
-      document.getElementById('speedSlider').value = speechRate;
-      document.getElementById('speedValue').textContent = speechRate;
-      document.getElementById('fontSizeSlider').value = fontSizeScale * 100;
-      document.getElementById('fontSizeValue').textContent = (fontSizeScale * 100).toFixed(0) + '%';
-      
-      loadVoices();
+document.addEventListener('DOMContentLoaded', async () => {
+  const communicator = new Communicator();
+  window.communicator = communicator;
+  
+  // Инициализация расширенных грамматических правил
+  setTimeout(() => {
+    if (window.communicator && window.communicator.grammar) {
+      setupExtendedGrammarRules();
+    }
+  }, 100);
+  
+  document.getElementById('speedSlider').value = speechRate;
+  document.getElementById('speedValue').textContent = speechRate;
+  document.getElementById('fontSizeSlider').value = fontSizeScale * 100;
+  document.getElementById('fontSizeValue').textContent = (fontSizeScale * 100).toFixed(0) + '%';
+  
+  // Инициализируем голоса
+  loadVoices();
+  
+  // Добавляем кнопку быстрого теста грамматики для отладки
+  setTimeout(() => {
+    const testButton = document.createElement('button');
+    testButton.textContent = 'Тест грамматики';
+    testButton.style.cssText = `
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      z-index: 9999;
+      background: #9b59b6;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      opacity: 0.7;
+    `;
+    testButton.title = 'Быстрая проверка грамматической системы';
+    testButton.addEventListener('click', () => {
+      if (window.communicator) {
+        const testPhrase = {
+          subject: 'Я',
+          desire: 'хочу',
+          action: { text: 'играть', type: 'action', id: 'ACT-PLAY' },
+          people: [{ text: 'друг', type: 'person' }],
+          objects: [{ text: 'мяч', type: 'object' }],
+          places: [{ text: 'парк', type: 'place' }]
+        };
+        
+        const result = window.communicator.grammar.buildPhrase(testPhrase);
+        alert('Тест грамматики:\n\n' + result);
+        window.communicator.speakText(result);
+      }
     });
+    document.body.appendChild(testButton);
+  }, 2000);
+});
   </script>
 </body>
 </html>
