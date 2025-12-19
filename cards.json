@@ -6,7 +6,9 @@
       "text": "Играть",
       "emoji": "🎮",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 10,
       "color": "#4CAF50"
     },
@@ -16,13 +18,26 @@
       "text": "играть",
       "emoji": "🎮",
       "category": "CAT-PLAY",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "metadata": {
-        "allowedWith": ["people", "places", "objects", "time"],
+        "allowedWith": [
+          "people",
+          "places",
+          "objects",
+          "time"
+        ],
         "maxPeople": 3,
         "maxPlaces": 1,
         "maxObjects": 2,
-        "allowedObjects": ["OBJ-BALL", "OBJ-DOLL", "OBJ-CAR", "OBJ-LEGO", "OBJ-PUZZLE"]
+        "allowedObjects": [
+          "OBJ-BALL",
+          "OBJ-DOLL",
+          "OBJ-CAR",
+          "OBJ-LEGO",
+          "OBJ-PUZZLE"
+        ]
       }
     },
     "OBJ-BALL": {
@@ -35,7 +50,9 @@
       },
       "emoji": "⚽",
       "category": "CAT-PLAY",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "color": "#FF5722"
     },
     "OBJ-DOLL": {
@@ -48,16 +65,19 @@
       },
       "emoji": "👸",
       "category": "CAT-PLAY",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
-
     "CAT-EAT": {
       "id": "CAT-EAT",
       "type": "category",
       "text": "Есть",
       "emoji": "🍽️",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 20,
       "color": "#FF9800"
     },
@@ -67,13 +87,26 @@
       "text": "есть",
       "emoji": "🍽️",
       "category": "CAT-EAT",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "metadata": {
-        "allowedWith": ["people", "places", "objects", "time"],
+        "allowedWith": [
+          "people",
+          "places",
+          "objects",
+          "time"
+        ],
         "maxPeople": 4,
         "maxPlaces": 1,
         "maxObjects": 2,
-        "allowedObjects": ["OBJ-APPLE", "OBJ-BANANA", "OBJ-BREAD", "OBJ-SOUP", "OBJ-PORRIDGE"],
+        "allowedObjects": [
+          "OBJ-APPLE",
+          "OBJ-BANANA",
+          "OBJ-BREAD",
+          "OBJ-SOUP",
+          "OBJ-PORRIDGE"
+        ],
         "directObject": true
       }
     },
@@ -86,7 +119,9 @@
       },
       "emoji": "🍎",
       "category": "CAT-EAT",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
     "OBJ-BANANA": {
       "id": "OBJ-BANANA",
@@ -97,16 +132,19 @@
       },
       "emoji": "🍌",
       "category": "CAT-EAT",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
-
     "CAT-DRINK": {
       "id": "CAT-DRINK",
       "type": "category",
       "text": "Пить",
       "emoji": "🥤",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 30,
       "color": "#03A9F4"
     },
@@ -116,13 +154,26 @@
       "text": "пить",
       "emoji": "🥤",
       "category": "CAT-DRINK",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "metadata": {
-        "allowedWith": ["people", "places", "objects", "time"],
+        "allowedWith": [
+          "people",
+          "places",
+          "objects",
+          "time"
+        ],
         "maxPeople": 2,
         "maxPlaces": 1,
         "maxObjects": 1,
-        "allowedObjects": ["OBJ-WATER", "OBJ-JUICE", "OBJ-MILK", "OBJ-TEA", "OBJ-COMPOT"],
+        "allowedObjects": [
+          "OBJ-WATER",
+          "OBJ-JUICE",
+          "OBJ-MILK",
+          "OBJ-TEA",
+          "OBJ-COMPOT"
+        ],
         "directObject": true
       }
     },
@@ -135,7 +186,9 @@
       },
       "emoji": "💧",
       "category": "CAT-DRINK",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
     "OBJ-MILK": {
       "id": "OBJ-MILK",
@@ -146,16 +199,19 @@
       },
       "emoji": "🥛",
       "category": "CAT-DRINK",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
-
     "CAT-HYGIENE": {
       "id": "CAT-HYGIENE",
       "type": "category",
       "text": "Гигиена",
       "emoji": "🧼",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 40,
       "color": "#00BCD4"
     },
@@ -165,13 +221,20 @@
       "text": "мыть руки",
       "emoji": "🧼",
       "category": "CAT-HYGIENE",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "metadata": {
-        "allowedWith": ["objects", "places", "time"],
+        "allowedWith": [
+          "objects",
+          "places",
+          "time"
+        ],
         "maxObjects": 2,
-        "maxPlaces": 1,
-        "allowedObjects": ["OBJ-SOAP", "OBJ-TOWEL"],
-        "isHygiene": true
+        "allowedObjects": [
+          "OBJ-SOAP",
+          "OBJ-TOWEL"
+        ]
       }
     },
     "ACT-BRUSH-TEETH": {
@@ -180,13 +243,19 @@
       "text": "чистить зубы",
       "emoji": "🦷",
       "category": "CAT-HYGIENE",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "metadata": {
-        "allowedWith": ["objects", "places", "time"],
+        "allowedWith": [
+          "objects",
+          "places",
+          "time"
+        ],
         "maxObjects": 1,
-        "maxPlaces": 1,
-        "allowedObjects": ["OBJ-TOOTHBRUSH"],
-        "isHygiene": true
+        "allowedObjects": [
+          "OBJ-TOOTHBRUSH"
+        ]
       }
     },
     "OBJ-SOAP": {
@@ -198,7 +267,9 @@
       },
       "emoji": "🧼",
       "category": "CAT-HYGIENE",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
     "OBJ-TOOTHBRUSH": {
       "id": "OBJ-TOOTHBRUSH",
@@ -209,16 +280,19 @@
       },
       "emoji": "🪥",
       "category": "CAT-HYGIENE",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
-
     "CAT-CLOTHING": {
       "id": "CAT-CLOTHING",
       "type": "category",
       "text": "Одежда",
       "emoji": "👕",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 70,
       "color": "#FF4081"
     },
@@ -228,135 +302,32 @@
       "text": "одеваться",
       "emoji": "👕",
       "category": "CAT-CLOTHING",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "metadata": {
-        "allowedWith": ["objects", "places", "time"],
-        "maxObjects": 3,
-        "maxPlaces": 1,
-        "allowedObjects": ["OBJ-TSHIRT", "OBJ-PANTS", "OBJ-DRESS", "OBJ-JACKET", "OBJ-SHOES"],
-        "directObject": true
-      }
-    },
-"OBJ-TSHIRT": {
-  "id": "OBJ-TSHIRT",
-  "type": "clothing",
-  "text": "футболка",
-  "forms": {
-    "в": "футболку"
-  },
-  "emoji": "👕",
-  "category": "CAT-CLOTHING",
-  "sections": ["Главная"]
-},
-    "OBJ-PANTS": {
-      "id": "OBJ-PANTS",
-      "type": "clothing",
-      "text": "штаны",
-      "forms": {
-        "direct": "штаны"
-      },
-      "emoji": "👖",
-      "category": "CAT-CLOTHING",
-      "sections": ["Главная"]
-    },
-
-    "CAT-PETS": {
-      "id": "CAT-PETS",
-      "type": "category",
-      "text": "Питомцы",
-      "emoji": "🐾",
-      "category": null,
-      "sections": ["Главная"],
-      "order": 80,
-      "color": "#795548"
-    },
-"ACT-PET": {
-  "id": "ACT-PET",
-  "type": "action",
-  "text": "гладить",
-  "emoji": "🐾",
-  "category": "CAT-PETS",
-  "sections": ["Главная"],
-  "metadata": {
-    "directObject": true,
-    "allowedWith": ["pets", "places", "time"],
-    "maxPets": 2
-  }
-},
-"OBJ-CAT": {
-  "id": "OBJ-CAT",
-  "type": "pet",
-  "text": "кошка",
-  "forms": {
-    "direct": "кошку",
-    "с": "кошкой"
-  },
-  "emoji": "🐱",
-  "category": "CAT-PETS",
-  "sections": ["Главная"]
-},
-"OBJ-DOG": {
-  "id": "OBJ-DOG",
-  "type": "pet",
-  "text": "собака",
-  "forms": {
-    "direct": "собаку",
-    "с": "собакой"
-  },
-  "emoji": "🐶",
-  "category": "CAT-PETS",
-  "sections": ["Главная"]
-},
-
-    "CAT-CLOTHING": {
-      "id": "CAT-CLOTHING",
-      "type": "category",
-      "text": "Одежда",
-      "emoji": "👕",
-      "category": null,
-      "sections": ["Главная"],
-      "order": 70,
-      "color": "#FF4081"
-    },
-    "ACT-WEAR": {
-      "id": "ACT-WEAR",
-      "type": "action",
-      "text": "одеваться",
-      "emoji": "👕",
-      "category": "CAT-CLOTHING",
-      "sections": ["Главная"],
-      "metadata": {
-        "allowedWith": ["objects", "places", "time"],
+        "allowedWith": [
+          "objects",
+          "places",
+          "time"
+        ],
         "maxObjects": 3,
         "clothingPreposition": "в"
       }
     },
-    "ACT-UNDRESS": {
-      "id": "ACT-UNDRESS",
-      "type": "action",
-      "text": "снять",
-      "emoji": "👚",
-      "category": "CAT-CLOTHING",
-      "sections": ["Главная"],
-      "metadata": {
-        "allowedWith": ["objects", "places", "time"],
-        "maxObjects": 3,
-        "removePreposition": "с"
-      }
-    },
     "OBJ-TSHIRT": {
       "id": "OBJ-TSHIRT",
-      "type": "clothing",
-      "text": "футболка",
-      "forms": {
-        "в": "футболку",
-        "снять": "футболку"
-      },
-      "emoji": "👕",
-      "category": "CAT-CLOTHING",
-      "sections": ["Главная"]
-    },
-    "OBJ-PANTS": {
+"type": "clothing",
+  "emoji": "👕",
+  "text": "футболка",
+  "forms": {
+    "direct": "футболку",
+    "в": "футболке"
+  },
+  "category": "CAT-CLOTHING",
+  "sections": ["Главная"]
+},
+	  "OBJ-PANTS": {
       "id": "OBJ-PANTS",
       "type": "clothing",
       "text": "штаны",
@@ -366,7 +337,87 @@
       },
       "emoji": "👖",
       "category": "CAT-CLOTHING",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
+    },
+    "CAT-PETS": {
+      "id": "CAT-PETS",
+      "type": "category",
+      "text": "Питомцы",
+      "emoji": "🐾",
+      "category": null,
+      "sections": [
+        "Главная"
+      ],
+      "order": 80,
+      "color": "#795548"
+    },
+    "ACT-PET": {
+      "id": "ACT-PET",
+      "type": "action",
+      "text": "гладить",
+      "emoji": "🐾",
+      "category": "CAT-PETS",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {
+        "directObject": true,
+        "allowedWith": [
+          "pets",
+          "places",
+          "time"
+        ],
+        "maxPets": 2
+      }
+    },
+    "OBJ-CAT": {
+      "id": "OBJ-CAT",
+      "type": "pet",
+      "text": "кошка",
+      "forms": {
+        "direct": "кошку",
+        "с": "кошкой"
+      },
+      "emoji": "🐱",
+      "category": "CAT-PETS",
+      "sections": [
+        "Главная"
+      ]
+    },
+    "OBJ-DOG": {
+      "id": "OBJ-DOG",
+      "type": "pet",
+      "text": "собака",
+      "forms": {
+        "direct": "собаку",
+        "с": "собакой"
+      },
+      "emoji": "🐶",
+      "category": "CAT-PETS",
+      "sections": [
+        "Главная"
+      ]
+    },
+    "ACT-UNDRESS": {
+      "id": "ACT-UNDRESS",
+      "type": "action",
+      "text": "снять",
+      "emoji": "👚",
+      "category": "CAT-CLOTHING",
+      "sections": [
+        "Главная"
+      ],
+      "metadata": {
+        "allowedWith": [
+          "objects",
+          "places",
+          "time"
+        ],
+        "maxObjects": 3,
+        "removePreposition": "с"
+      }
     },
     "OBJ-JACKET": {
       "id": "OBJ-JACKET",
@@ -378,41 +429,46 @@
       },
       "emoji": "🧥",
       "category": "CAT-CLOTHING",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
-
     "CAT-TOILET": {
       "id": "CAT-TOILET",
       "type": "category",
       "text": "Туалет",
       "emoji": "🚽",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 85,
       "color": "#8BC34A"
     },
     "ACT-PEE": {
       "id": "ACT-PEE",
       "type": "action",
+      "emoji": "🚽",
       "text": "писать",
-      "emoji": "💦",
       "category": "CAT-TOILET",
       "sections": ["Главная"],
       "metadata": {
-        "isStandalone": true,
-        "allowedWith": ["places", "time"]
+        "allowedWith": ["places", "time"],
+        "requiresDesire": true,
+        "requiresSubject": true
       }
     },
     "ACT-POO": {
       "id": "ACT-POO",
       "type": "action",
-      "text": "какать",
       "emoji": "💩",
+      "text": "какать",
       "category": "CAT-TOILET",
       "sections": ["Главная"],
       "metadata": {
-        "isStandalone": true,
-        "allowedWith": ["places", "time"]
+        "allowedWith": ["places", "time"],
+        "requiresDesire": true,
+        "requiresSubject": true
       }
     },
     "PLACE-TOILET": {
@@ -424,44 +480,9 @@
       },
       "emoji": "🚽",
       "category": "CAT-PLACES",
-      "sections": ["Главная"]
-    },
-
-    "CAT-HYGIENE": {
-      "id": "CAT-HYGIENE",
-      "type": "category",
-      "text": "Гигиена",
-      "emoji": "🧼",
-      "category": null,
-      "sections": ["Главная"],
-      "order": 40,
-      "color": "#00BCD4"
-    },
-    "ACT-WASH-HANDS": {
-      "id": "ACT-WASH-HANDS",
-      "type": "action",
-      "text": "мыть руки",
-      "emoji": "🧼",
-      "category": "CAT-HYGIENE",
-      "sections": ["Главная"],
-      "metadata": {
-        "allowedWith": ["objects", "places", "time"],
-        "maxObjects": 2,
-        "allowedObjects": ["OBJ-SOAP", "OBJ-TOWEL"]
-      }
-    },
-    "ACT-BRUSH-TEETH": {
-      "id": "ACT-BRUSH-TEETH",
-      "type": "action",
-      "text": "чистить зубы",
-      "emoji": "🦷",
-      "category": "CAT-HYGIENE",
-      "sections": ["Главная"],
-      "metadata": {
-        "allowedWith": ["objects", "places", "time"],
-        "maxObjects": 1,
-        "allowedObjects": ["OBJ-TOOTHBRUSH"]
-      }
+      "sections": [
+        "Главная"
+      ]
     },
     "ACT-SHOWER": {
       "id": "ACT-SHOWER",
@@ -469,42 +490,26 @@
       "text": "принимать душ",
       "emoji": "🚿",
       "category": "CAT-HYGIENE",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "metadata": {
         "isStandalone": true,
-        "allowedWith": ["places", "time"]
+        "allowedWith": [
+          "places",
+          "time"
+        ]
       }
     },
-    "OBJ-SOAP": {
-      "id": "OBJ-SOAP",
-      "type": "object",
-      "text": "мыло",
-      "forms": {
-        "с": "мылом"
-      },
-      "emoji": "🧼",
-      "category": "CAT-HYGIENE",
-      "sections": ["Главная"]
-    },
-    "OBJ-TOOTHBRUSH": {
-      "id": "OBJ-TOOTHBRUSH",
-      "type": "object",
-      "text": "зубная щётка",
-      "forms": {
-        "с": "зубной щёткой"
-      },
-      "emoji": "🪥",
-      "category": "CAT-HYGIENE",
-      "sections": ["Главная"]
-    },
-
     "CAT-TRANSPORT": {
       "id": "CAT-TRANSPORT",
       "type": "category",
       "text": "Транспорт",
       "emoji": "🚗",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 90,
       "color": "#607D8B"
     },
@@ -514,9 +519,16 @@
       "text": "кататься",
       "emoji": "🚗",
       "category": "CAT-TRANSPORT",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "metadata": {
-        "allowedWith": ["objects", "people", "places", "time"],
+        "allowedWith": [
+          "objects",
+          "people",
+          "places",
+          "time"
+        ],
         "maxPeople": 2,
         "maxObjects": 1,
         "transportPreposition": "на"
@@ -531,7 +543,9 @@
       },
       "emoji": "🚗",
       "category": "CAT-TRANSPORT",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
     "OBJ-BUS": {
       "id": "OBJ-BUS",
@@ -542,16 +556,19 @@
       },
       "emoji": "🚌",
       "category": "CAT-TRANSPORT",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
-
     "CAT-PEOPLE": {
       "id": "CAT-PEOPLE",
       "type": "category",
       "text": "Люди",
       "emoji": "👨‍👩‍👧‍👦",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 100,
       "color": "#2196F3"
     },
@@ -564,7 +581,9 @@
       },
       "emoji": "👩",
       "category": "CAT-PEOPLE",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
     "PERSON-DAD": {
       "id": "PERSON-DAD",
@@ -575,7 +594,9 @@
       },
       "emoji": "👨",
       "category": "CAT-PEOPLE",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
     "PERSON-GRANDMA": {
       "id": "PERSON-GRANDMA",
@@ -586,49 +607,57 @@
       },
       "emoji": "👵",
       "category": "CAT-PEOPLE",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
-
     "CAT-PLACES": {
       "id": "CAT-PLACES",
       "type": "category",
       "text": "Места",
       "emoji": "🏠",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 110,
       "color": "#8BC34A"
     },
-"PLACE-HOME": {
-  "id": "PLACE-HOME",
-  "type": "place",
-  "text": "дом",
-  "forms": {
-    "в": "дома"
-  },
-  "emoji": "🏠",
-  "category": "CAT-PLACES",
-  "sections": ["Главная"]
-},
-"PLACE-PLAYGROUND": {
-  "id": "PLACE-PLAYGROUND",
-  "type": "place",
-  "text": "площадка",
-  "forms": {
-    "в": "на площадке"
-  },
-  "emoji": "🛝",
-  "category": "CAT-PLACES",
-  "sections": ["Главная"]
-},
-
+    "PLACE-HOME": {
+      "id": "PLACE-HOME",
+      "type": "place",
+      "text": "дом",
+      "forms": {
+        "в": "дома"
+      },
+      "emoji": "🏠",
+      "category": "CAT-PLACES",
+      "sections": [
+        "Главная"
+      ]
+    },
+    "PLACE-PLAYGROUND": {
+      "id": "PLACE-PLAYGROUND",
+      "type": "place",
+      "text": "площадка",
+      "forms": {
+        "в": "на площадке"
+      },
+      "emoji": "🛝",
+      "category": "CAT-PLACES",
+      "sections": [
+        "Главная"
+      ]
+    },
     "CAT-TIME": {
       "id": "CAT-TIME",
       "type": "category",
       "text": "Время",
       "emoji": "🕐",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 120,
       "color": "#FFC107"
     },
@@ -638,7 +667,9 @@
       "text": "сейчас",
       "emoji": "🕐",
       "category": "CAT-TIME",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
     "TIME-LATER": {
       "id": "TIME-LATER",
@@ -646,7 +677,9 @@
       "text": "позже",
       "emoji": "⏩",
       "category": "CAT-TIME",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
     "TIME-TODAY": {
       "id": "TIME-TODAY",
@@ -654,7 +687,9 @@
       "text": "сегодня",
       "emoji": "📅",
       "category": "CAT-TIME",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
     "TIME-TOMORROW": {
       "id": "TIME-TOMORROW",
@@ -662,16 +697,19 @@
       "text": "завтра",
       "emoji": "⏭️",
       "category": "CAT-TIME",
-      "sections": ["Главная"]
+      "sections": [
+        "Главная"
+      ]
     },
-
     "CAT-HELP": {
       "id": "CAT-HELP",
       "type": "category",
       "text": "Помощь",
       "emoji": "🆘",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 60,
       "color": "#9C27B0"
     },
@@ -681,13 +719,14 @@
       "text": "помогите",
       "emoji": "🆘",
       "category": "CAT-HELP",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "metadata": {
         "isStandalone": true
       }
     },
-	
-      "CAT-DIALOG-BASIC": {
+    "CAT-DIALOG-BASIC": {
       "id": "CAT-DIALOG-BASIC",
       "text": "Основное",
       "emoji": "💬",
@@ -816,7 +855,7 @@
       ],
       "metadata": {}
     },
-	    "CAT-DIALOG": {
+    "CAT-DIALOG": {
       "id": "CAT-DIALOG",
       "text": "Разговор",
       "emoji": "💬",
@@ -1333,7 +1372,7 @@
       ],
       "metadata": {}
     },
-	"CAT-SHAPES": {
+    "CAT-SHAPES": {
       "id": "CAT-SHAPES",
       "text": "Формы",
       "emoji": "🔺",
@@ -2603,28 +2642,35 @@
       ],
       "metadata": {}
     },
-	  "LETTER-Y1": {
-    "id": "LETTER-Y",
-    "text": "Ы - Ыкать",
-    "emoji": "👄",
-    "type": "letter",
-    "category": "CAT-LETTERS",
-    "forms": {},
-    "tags": ["буква", "обучение", "алфавит", "звук"],
-    "difficulty": 2,
-    "status": "active",
-    "usageCount": 0,
-    "created": "2025-12-18T12:00:00.000Z",
-    "modified": "2025-12-18T12:00:00.000Z",
-    "author": "system",
-    "version": 1,
-    "color": "#D6FFE7",
-    "borderColor": "#4CAF50",
-    "sections": ["Обучение"],
-    "metadata": {
-      "description": "Буква Ы - гласный звук"
-    }
-  },
+    "LETTER-Y1": {
+      "id": "LETTER-Y",
+      "text": "Ы - Ыкать",
+      "emoji": "👄",
+      "type": "letter",
+      "category": "CAT-LETTERS",
+      "forms": {},
+      "tags": [
+        "буква",
+        "обучение",
+        "алфавит",
+        "звук"
+      ],
+      "difficulty": 2,
+      "status": "active",
+      "usageCount": 0,
+      "created": "2025-12-18T12:00:00.000Z",
+      "modified": "2025-12-18T12:00:00.000Z",
+      "author": "system",
+      "version": 1,
+      "color": "#D6FFE7",
+      "borderColor": "#4CAF50",
+      "sections": [
+        "Обучение"
+      ],
+      "metadata": {
+        "description": "Буква Ы - гласный звук"
+      }
+    },
     "LETTER-Y": {
       "id": "LETTER-Y",
       "text": "Й - Йогурт",
@@ -3086,7 +3132,6 @@
       ],
       "metadata": {}
     },
-
     "COLOR-RED": {
       "id": "COLOR-RED",
       "text": "красный",
@@ -3591,7 +3636,7 @@
         "maxObjects": 0
       }
     },
-	      "CAT-PAIN": {
+    "CAT-PAIN": {
       "id": "CAT-PAIN",
       "type": "category",
       "text": "Болит",
@@ -3599,7 +3644,9 @@
       "color": "#FFEBEE",
       "borderColor": "#FFCDD2",
       "category": null,
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "order": 41
     },
     "pain-head": {
@@ -3608,7 +3655,9 @@
       "text": "голова",
       "emoji": "🤕",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "голова",
         "genitive": "головы"
@@ -3620,7 +3669,9 @@
       "text": "зуб",
       "emoji": "🦷",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "зуб",
         "genitive": "зуба"
@@ -3632,7 +3683,9 @@
       "text": "живот",
       "emoji": "🤢",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "живот",
         "genitive": "живота"
@@ -3644,7 +3697,9 @@
       "text": "ухо",
       "emoji": "👂",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "ухо",
         "genitive": "уха"
@@ -3656,7 +3711,9 @@
       "text": "горло",
       "emoji": "🤭",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "горло",
         "genitive": "горла"
@@ -3668,7 +3725,9 @@
       "text": "нога",
       "emoji": "🦵",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "нога",
         "genitive": "ноги"
@@ -3680,7 +3739,9 @@
       "text": "рука",
       "emoji": "💪",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "рука",
         "genitive": "руки"
@@ -3692,7 +3753,9 @@
       "text": "спина",
       "emoji": "🧑‍🦽",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "спина",
         "genitive": "спины"
@@ -3704,7 +3767,9 @@
       "text": "глаз",
       "emoji": "👁️",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "глаз",
         "genitive": "глаза"
@@ -3716,7 +3781,9 @@
       "text": "нос",
       "emoji": "👃",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "нос",
         "genitive": "носа"
@@ -3728,7 +3795,9 @@
       "text": "палец ноги",
       "emoji": "🦶",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "палец ноги",
         "genitive": "пальца ноги"
@@ -3740,7 +3809,9 @@
       "text": "палец руки",
       "emoji": "👆",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "палец руки",
         "genitive": "пальца руки"
@@ -3752,7 +3823,9 @@
       "text": "грудь",
       "emoji": "❤️",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "грудь",
         "genitive": "груди"
@@ -3764,7 +3837,9 @@
       "text": "сердце",
       "emoji": "💓",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "сердце",
         "genitive": "сердца"
@@ -3776,7 +3851,9 @@
       "text": "шея",
       "emoji": "👤",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "шея",
         "genitive": "шеи"
@@ -3788,7 +3865,9 @@
       "text": "колено",
       "emoji": "🦵",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "колено",
         "genitive": "колена"
@@ -3800,7 +3879,9 @@
       "text": "локоть",
       "emoji": "🤲",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "локоть",
         "genitive": "локтя"
@@ -3812,7 +3893,9 @@
       "text": "плечо",
       "emoji": "💪",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "плечо",
         "genitive": "плеча"
@@ -3824,7 +3907,9 @@
       "text": "лодыжка",
       "emoji": "🦶",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "лодыжка",
         "genitive": "лодыжки"
@@ -3836,7 +3921,9 @@
       "text": "запястье",
       "emoji": "🤲",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "запястье",
         "genitive": "запястья"
@@ -3848,7 +3935,9 @@
       "text": "везде",
       "emoji": "😫",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "forms": {
         "direct": "везде",
         "genitive": "везде"
@@ -3861,7 +3950,9 @@
       "emoji": "🤕",
       "color": "#FFEBEE",
       "category": "CAT-PAIN",
-      "sections": ["Главная"],
+      "sections": [
+        "Главная"
+      ],
       "metadata": {
         "isStandalone": true,
         "requiresDesire": false
