@@ -299,7 +299,7 @@
     "ACT-WEAR": {
       "id": "ACT-WEAR",
       "type": "action",
-      "text": "одеваться",
+      "text": "одеть",
       "emoji": "👕",
       "category": "CAT-CLOTHING",
       "sections": [
