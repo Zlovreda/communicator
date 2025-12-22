@@ -9,6 +9,8 @@
     * {
       box-sizing: border-box;
       margin: 0;
+	  
+	  
       padding: 0;
       font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
     }
@@ -1109,7 +1111,6 @@
             <button class="control-btn import" id="importBtn">Импорт карточек</button>
             <button class="control-btn export" id="exportBtn">Экспорт карточек</button>
             <button class="control-btn remote" id="remoteLoadBtn">Загрузить с сервера</button>
-            <button class="control-btn editor" id="editorBtn">Редактор карточек</button>
             <button class="control-btn reset" id="resetBtn">Сброс к начальным</button>
             <input type="file" id="fileInput" class="file-input" accept=".json">
           </div>
@@ -1162,6 +1163,41 @@
           </div>
           <div class="font-size-demo" id="fontSizeDemo">Пример текста: Я хочу играть</div>
         </div>
+
+<div class="settings-card">
+  <h3>Инструкция и инструменты</h3>
+  <div class="settings-info">
+    <div class="settings-controls" style="display: flex; flex-direction: column; gap: 10px;">
+      <a href="https://zlovreda.github.io/Kom-Kom-Communicator/index-manual.html" 
+         target="_blank" 
+         class="control-btn" 
+         style="background: #3498db; text-decoration: none; text-align: center;">
+        📖 Полная инструкция
+      </a>
+      <a href="https://zlovreda.github.io/Kom-Kom-Communicator/editor.html" 
+         target="_blank" 
+         class="control-btn" 
+         style="background: #9b59b6; text-decoration: none; text-align: center;">
+         📝 Редактор карточек
+      </a>
+      <a href="https://zlovreda.github.io/Kom-Kom-Communicator/schedule.html" 
+         target="_blank" 
+         class="control-btn" 
+         style="background: #9b59b6; text-decoration: none; text-align: center;">
+        📅 Распорядок дня
+      </a>
+      <a href="https://t.me/kom_kom_chat" 
+         target="_blank" 
+         class="control-btn" 
+         style="background: #0088cc; text-decoration: none; text-align: center;">
+        💬 Телеграм-чат поддержки
+      </a>
+    </div>
+  </div>
+  <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">
+    Дополнительные материалы и инструменты для работы с коммуникатором.
+  </p>
+</div>
 
 		<div class="settings-card">
           <h3>Информация о системе</h3>
@@ -1224,18 +1260,6 @@
               <span class="settings-info-value">
                 <a href="https://author.today/u/zlovreda/works" target="_blank" class="footer-link">📜 Author.today</a>               
 			   
-              </span>
-            </div>
-			</div>
-			</div>
-			
-			  <div class="settings-card">
-          <h3>Инструкция</h3>
-          <div class="settings-info">
-            <div class="settings-info-item">
-              <span class="settings-info-label">Инструкция:</span>
-              <span class="settings-info-value">
-                <a href="https://zlovreda.github.io/Kom-Kom-Communicator/index-manual.html" target="_blank" class="footer-link">📜 Инструкция</a>
               </span>
             </div>
 			</div>
@@ -2678,10 +2702,6 @@ document.addEventListener('keydown', (e) => {
     document.getElementById('remoteLoadModal').style.display = 'none';
   }
 });
-
-        document.getElementById('editorBtn').addEventListener('click', () => {
-          window.open(EDITOR_URL, '_blank');
-        });
 
         document.getElementById('speakBtn').addEventListener('click', () => {
           this.speakPhrase();
